@@ -17,6 +17,9 @@ externas = [TR1, TR2, TR3, Agujero]
 lista_secciones = ControladorSecciones.creasecciones(externas, internas, dir)
 
 
+
+
+
 """print("")
 print(Tuberia_dos)
 print("")
