@@ -6,9 +6,17 @@
       <sourceFolder url="file://$MODULE_DIR$/Modelo" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Modelo/Hidraulica/Metodos" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Modelo/Hidraulica" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Modelo/Objetos/Tuberia" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Modelo/Objetos" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Modelo/Objetos/Hidraulica" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Modelo/Objetos/Direccional" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Controlador/Direccional" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Controlador/Hidraulica" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Modelo/Direccional" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Controlador" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/venv" />
     </content>
-    <orderEntry type="inheritedJdk" />
+    <orderEntry type="jdk" jdkName="Python 3.7 (Tesis)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
   <component name="TestRunnerService">

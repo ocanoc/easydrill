@@ -4,11 +4,11 @@ import math
 def set_ley_potencias_modificado(tuberia_interna, secciones, fluido, bomba):
     for x in tuberia_interna:
         x.setdp(ley_potencias__modificado_int(fluido.get_lec_fan_300(), fluido.get_lec_fan_600(), bomba.get_gasto(),
-                                              x.getDint(), fluido.get_dl(), x.getLong(), fluido.get_vp(),
+                                              x.get_dint(), fluido.get_dl(), x.get_long(), fluido.get_vp(),
                                               fluido.get_pc(), fluido.get_gel()))
     for x in secciones:
         x.setdp(ley_potencias_modificado_ea(fluido.get_lec_fan_300(), fluido.get_lec_fan_600(), bomba.get_gasto(),
-                                            x.get_dmayor(), x.get_dmenor(), fluido.get_dl(), x.getLong(),
+                                            x.get_dmayor(), x.get_dmenor(), fluido.get_dl(), x.get_long(),
                                             fluido.get_vp(), fluido.get_pc(), fluido.get_gel()))
 
 

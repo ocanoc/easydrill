@@ -3,11 +3,11 @@ import math
 
 def set_plastico_bingham(tuberia_interna, secciones, fluido, bomba):
     for x in tuberia_interna:
-        x.setdp(plastico_bingham_int(bomba.get_gasto(), x.getDint(), fluido.get_dl(),
-                                     x.getLong(), fluido.get_pc(), fluido.get_vc()))
+        x.setdp(plastico_bingham_int(bomba.get_gasto(), x.get_dint(), fluido.get_dl(),
+                                     x.get_long(), fluido.get_pc(), fluido.get_vc()))
     for x in secciones:
         x.setdp(plastico_bingham_ea(bomba.get_gasto(), x.get_dmayor(), x.get_dmenor(), fluido.get_dl(),
-                                    x.getLong(), fluido.get_pc(), fluido.get_vc()))
+                                    x.get_long(), fluido.get_pc(), fluido.get_vc()))
 
 
 def plastico_bingham_int(gasto, diametro_interior, densidad_lodo, longitud, punto_cedencia, visc_plastica):
