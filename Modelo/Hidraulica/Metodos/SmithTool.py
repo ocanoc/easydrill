@@ -3,11 +3,11 @@ import math
 
 def set_smith_tool(tuberia_interna, secciones, fluido, bomba):
     for x in tuberia_interna:
-        x.setdp(smith_tool_int(fluido.get_vp(), x.getDint(), bomba.get_gasto(),
-                               x.getLong(), fluido.get_dl()))
+        x.setdp(smith_tool_int(fluido.get_vp(), x.get_dint(), bomba.get_gasto(),
+                               x.get_long(), fluido.get_dl()))
     for x in secciones:
         x.setdp(smit_tool_ea(fluido.get_vp(), x.get_dmayor(), x.get_dmenor(), bomba.get_gasto(),
-                             x.getLong(), fluido.get_dl()))
+                             x.get_long(), fluido.get_dl()))
 
 
 def smith_tool_int(viscocidad_plastica, diametro_interior, gasto, longitud, densidad_lodo):

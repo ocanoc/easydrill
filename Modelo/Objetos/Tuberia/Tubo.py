@@ -13,7 +13,6 @@ class General:
     capacidad = 0
     VolInterior = 0
 
-
     def profundidad(self, dd):
         l = self.longMD
         inicio = self.inicioPD
@@ -62,28 +61,28 @@ Longitud PV             \t{}
 Fin PV                  \t{}""".format(self.dExt, self.dInt, self.inicioPD, self.longMD, self.finPD, self.inicioPV,
                                        self.longMV, self.finPV)
 
-    def getInicioPD(self):
+    def get_inicio_pd(self):
         return self.inicioPD
 
-    def getInicioPV(self):
+    def get_inicio_pv(self):
         return self.inicioPV
 
-    def getLV(self):
+    def get_lv(self):
         return self.longMV
 
-    def getFinPD(self):
+    def get_fin_pd(self):
         return self.finPD
 
-    def getFinPV(self):
+    def get_fin_pv(self):
         return self.finPV
 
-    def getDext(self):
+    def get_dext(self):
         return self.dExt
 
-    def getDint(self):
+    def get_dint(self):
         return self.dInt
 
-    def getLong(self):
+    def get_long(self):
         return self.longMD
 
 
