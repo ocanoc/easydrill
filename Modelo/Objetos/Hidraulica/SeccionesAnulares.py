@@ -1,7 +1,5 @@
 import math
 
-from Controlador.Hidraulica.PlasticoBingham import *
-
 
 class SeccionesAnulares:
     id = ""
