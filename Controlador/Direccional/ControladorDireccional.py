@@ -1,3 +1,4 @@
+import math
 from Modelo.Objetos.Direccional.Direccional import *
 
 SECCION_VERTICAL = "Seccion Vertical"
