@@ -7,7 +7,7 @@ TANGENTE = "Tangente"
 DECREMENTO = "Decremento"
 
 
-class ManejadorDireccional:
+class ControladorDireccional:
     @staticmethod
     def get_coseno(angulo):
         return math.cos(math.radians(angulo))
@@ -31,25 +31,25 @@ class ManejadorDireccional:
         for x in range(0, esatciones):
             angulo += severidad
             lista_direccional.append(Direccional(INCREMENTO, angulo, long_estaciones,
-                                                 ManejadorDireccional.get_coseno_estaciones(angulo), profd, profv))
+                                                 ControladorDireccional.get_coseno_estaciones(angulo), profd, profv))
             profd += long_estaciones
-            profv += ManejadorDireccional.get_coseno(angulo)
+            profv += ControladorDireccional.get_coseno(angulo)
         if otro:
-            profv -= ManejadorDireccional.get_coseno(angulo)
+            profv -= ControladorDireccional.get_coseno(angulo)
             angulo -= severidad
             angulo += angulomax - angulo
-            profv += ManejadorDireccional.get_coseno(angulo)
+            profv += ControladorDireccional.get_coseno(angulo)
             lista_direccional.append(Direccional(INCREMENTO, angulo, long_estaciones,
-                                                 ManejadorDireccional.get_coseno_estaciones(angulo), profd, profv))
-            profv += ManejadorDireccional.get_coseno(angulo)
+                                                 ControladorDireccional.get_coseno_estaciones(angulo), profd, profv))
+            profv += ControladorDireccional.get_coseno(angulo)
         lista_direccional.append(Direccional(TANGENTE, angulomax, profmax - profd,
-                                             ((profmax - profd) * ManejadorDireccional.get_coseno(angulo)),
+                                             ((profmax - profd) * ControladorDireccional.get_coseno(angulo)),
                                              profd, profv))
         return lista_direccional
 
     @staticmethod
     def seccionvertical(kop, severidad, angulomax, profmax, dop, dor):
-        lista_direccional = ManejadorDireccional.tipo_j(kop, severidad, angulomax, dop)
+        lista_direccional = ControladorDireccional.tipo_j(kop, severidad, angulomax, dop)
         ultima = lista_direccional.pop()
         lista_direccional.append(ultima)
         angulo = angulomax
@@ -66,20 +66,20 @@ class ManejadorDireccional:
         for x in range(0, esatciones):
             angulo -= dor
             lista_direccional.append(Direccional(DECREMENTO, angulo, long_estaciones,
-                                                 ManejadorDireccional.get_coseno_estaciones(angulo), profd, profv))
+                                                 ControladorDireccional.get_coseno_estaciones(angulo), profd, profv))
             profd += long_estaciones
-            profv += ManejadorDireccional.get_coseno(angulo)
+            profv += ControladorDireccional.get_coseno(angulo)
 
         if otro:
-            profv -= ManejadorDireccional.get_coseno(angulo)
+            profv -= ControladorDireccional.get_coseno(angulo)
             angulo += severidad
             angulo -= angulomax - angulo
-            profv += ManejadorDireccional.get_coseno(angulo)
+            profv += ControladorDireccional.get_coseno(angulo)
             lista_direccional.append(Direccional(DECREMENTO, angulo, long_estaciones,
-                                                 ManejadorDireccional.get_coseno_estaciones(angulo), profd, profv))
-            profv += ManejadorDireccional.get_coseno(angulo)
+                                                 ControladorDireccional.get_coseno_estaciones(angulo), profd, profv))
+            profv += ControladorDireccional.get_coseno(angulo)
 
         lista_direccional.append(Direccional(SECCION_VERTICAL, angulo, profmax - profd,
-                                             ((profmax - profd) * ManejadorDireccional.get_coseno(angulo)),
+                                             ((profmax - profd) * ControladorDireccional.get_coseno(angulo)),
                                              profd, profv))
         return lista_direccional

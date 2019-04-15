@@ -1,10 +1,10 @@
-from Controlador.Direccional. ControladorDireccional import *
+from ControladorDireccional import *
 from Modelo.Objetos.Tuberia.Interior import *
 from Modelo.Objetos.Tuberia.Exterior import *
-from Controlador.Direccional. ControladorSeccionesAnulares import *
+from ControladorSeccionesAnulares import *
 
 
-dir = ManejadorDireccional.tipo_j(1500, 1.5, 30, 5000)
+dir = ControladorDireccional.tipo_j(1500, 1.5, 30, 5000)
 Tuberia_uno = Interior(10, 9, 500, dir, None)
 Tuberia_dos = Interior(8, 7, 800, dir, Tuberia_uno)
 Tuberia_tres = Interior(5, 4, 1000, dir, Tuberia_dos)
@@ -25,8 +25,3 @@ print(Tuberia_tres)
 #dir2 = Direccional.creaS(500,1.22,45,5000,3500,1.5)"""
 for x in lista_secciones:
     print(x, "\n")
-
-
-
-
-
