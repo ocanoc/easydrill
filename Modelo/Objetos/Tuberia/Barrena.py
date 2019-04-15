@@ -7,6 +7,7 @@ class Barrena(General):
     diametro_toberas = 0
     area_toberas = 0
     cadida_de_presion = 0
+    indice_limpieza = 0
 
     def set_toberas(self, numero, diametro):
         sumatoria = 0
@@ -17,3 +18,9 @@ class Barrena(General):
 
     def set_caida_presion(self, gasto, densidad_lodo):
         self.cadida_de_presion = (gasto ** 2) * densidad_lodo / (18511.7 * (self.area_toberas ** 2))
+
+    def set_indice_limpieza (self, il):
+        self.indice_limpieza = il
+
+    def get_indice_limpieza(self):
+        return self.indice_limpieza
