@@ -1,6 +1,6 @@
 import math
 
-from Metodos.PlasticoBingham import *
+from Controlador.Hidraulica.PlasticoBingham import *
 
 
 class SeccionesAnulares:
@@ -23,8 +23,8 @@ class SeccionesAnulares:
         self.longitudD = longmd
         self.texterna = texterna
         self.titnerna = tinterna
-        self.diametroMenor = float(tinterna.getDext())
-        self.diametroMayor = float(texterna.getDint())
+        self.diametroMenor = float(tinterna.get_dext())
+        self.diametroMayor = float(texterna.get_dint())
         self.capacidad = 0.5067 * ((self.diametroMayor ** 2) - (self.diametroMenor ** 2))
         self.volumen = self.capacidad * self.longitudD
         self.profundidad(dd)
@@ -33,11 +33,11 @@ class SeccionesAnulares:
         inicio = self.inicioPD
         long = self.longitudD
         for x in dd:
-            disponible = x.getFinPD()
-            if inicio > x.getInicioPD() and self.finPD < x.getFinPD():
+            disponible = x.get_fin_pd()
+            if inicio > x.get_inicio_pd() and self.finPD < x.get_fin_pd():
                 self.longitudV = get_long_pv(self.longitudD, x)
                 return 0
-            if inicio > x.getInicioPD() and self.finPD > x.getFinPD():
+            if inicio > x.get_inicio_pd() and self.finPD > x.get_fin_pd():
                 long -= disponible
                 self.longitudV += get_long_pv(disponible, x)
                 inicio += disponible
@@ -74,31 +74,5 @@ class SeccionesAnulares:
         return self.diametroMenor
 
 
-def creasecciones(exterior, interior, direccional):
-    longrestante = 0
-    listasecciones = []
-    for x in exterior:
-        longdisp = x.getLong()
-        for y in interior:
-            if longdisp > 0 and y.getentr() is False:
-                if (y.getInicioPD() >= x.getInicioPD()) and (y.getFinPD() <= x.getFinPD()):
-                    longdisp -= y.getLong()
-                    y.setentr()
-                    listasecciones.append(SeccionesAnulares(y.getInicioPD(), y.getFinPD(), y.getLong(),
-                                                            x, y, direccional))
-                if (y.getInicioPD() >= x.getInicioPD()) and (y.getFinPD() > x.getFinPD()):
-                    listasecciones.append(SeccionesAnulares(x.getFinPD() - longdisp, x.getFinPD(), longdisp,
-                                                            x, y, direccional))
-                    longrestante = y.getLong() - longdisp
-                    longdisp = 0
-                    break
-                else:
-                    longdisp -= longrestante
-                    listasecciones.append(SeccionesAnulares(y.getFinPD() - longrestante, y.getFinPD(),
-                                                            longrestante, x, y, direccional))
-                    y.setentr()
-    return listasecciones
-
-
 def get_long_pv(long_pd, x):
-    return long_pd * (math.cos(math.radians(x.getAngulo())))
+    return long_pd * (math.cos(math.radians(x.get_angulo())))

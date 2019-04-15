@@ -13,12 +13,11 @@ class General:
     capacidad = 0
     VolInterior = 0
 
-
     def profundidad(self, dd):
         l = self.longMD
         inicio = self.inicioPD
         for x in dd:
-            disponible = x.getFinPD() - inicio
+            disponible = x.get_fin_pd() - inicio
             if disponible >= l:
                 self.finPD += l
                 self.finPV += get_long_pv(l, x)
@@ -39,8 +38,8 @@ class General:
         self.longMD = l
         self.capacidad = 0.5067*(self.dInt**2)
         if previa is not None:
-            self.inicioPD = previa.getFinPD()
-            self.inicioPV = previa.getFinPV()
+            self.inicioPD = previa.get_fin_pd()
+            self.inicioPV = previa.get_fin_pv()
         else:
             self.inicioPD = 0
             self.inicioPV = 0
@@ -62,30 +61,30 @@ Longitud PV             \t{}
 Fin PV                  \t{}""".format(self.dExt, self.dInt, self.inicioPD, self.longMD, self.finPD, self.inicioPV,
                                        self.longMV, self.finPV)
 
-    def getInicioPD(self):
+    def get_inicio_pd(self):
         return self.inicioPD
 
-    def getInicioPV(self):
+    def get_inicio_pv(self):
         return self.inicioPV
 
-    def getLV(self):
+    def get_lv(self):
         return self.longMV
 
-    def getFinPD(self):
+    def get_fin_pd(self):
         return self.finPD
 
-    def getFinPV(self):
+    def get_fin_pv(self):
         return self.finPV
 
-    def getDext(self):
+    def get_dext(self):
         return self.dExt
 
-    def getDint(self):
+    def get_dint(self):
         return self.dInt
 
-    def getLong(self):
+    def get_long(self):
         return self.longMD
 
 
 def get_long_pv(long_pd, x):
-    return long_pd * (math.cos(math.radians(x.getAngulo())))
+    return long_pd * (math.cos(math.radians(x.get_angulo())))

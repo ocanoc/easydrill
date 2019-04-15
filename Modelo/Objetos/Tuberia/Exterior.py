@@ -7,5 +7,3 @@ class Exterior (General):
     CAnular = 0
     VolAnular = 0
     tinterior = ""
-
-
