@@ -4,6 +4,11 @@ from Modelo.Objetos.Tuberia.Exterior import *
 from ControladorSeccionesAnulares import *
 
 
+
+
+
+
+
 dir = ControladorDireccional.tipo_j(1500, 1.5, 30, 5000)
 Tuberia_uno = Interior(10, 9, 500, dir, None)
 Tuberia_dos = Interior(8, 7, 800, dir, Tuberia_uno)
