@@ -14,6 +14,8 @@ class SeccionesAnulares:
     deltaP = 0
     texterno = None
     titnerna = None
+    vel_anular = 0
+    indice_acarreo = 0
 
     def __init__(self, iniciopd, finpd, longmd, texterna, tinterna, dd):
         self.inicioPD = iniciopd
@@ -70,6 +72,21 @@ class SeccionesAnulares:
 
     def get_dmenor(self):
         return self.diametroMenor
+
+    def get_velocidad(self):
+        return self.vel_anular
+
+    def set_velocidad(self, anular):
+        self.vel_anular = anular
+
+    def get_indice(self):
+        return self.indice_acarreo
+
+    def set_indice(self, acarreo):
+        self.indice_acarreo = acarreo
+
+    def get_caida_presion(self):
+        return self.deltaP
 
 
 def get_long_pv(long_pd, x):
