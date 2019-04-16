@@ -47,7 +47,7 @@ class Pozo:
     def set_sarta(self, s):
         self.arreglo_sarta = s
 
-    def get_anualres(self):
+    def get_anulares(self):
         return self.secciones_anulares
 
     def set_anulares(self, a):
