@@ -19,7 +19,10 @@ class Barrena(General):
     def set_caida_presion(self, gasto, densidad_lodo):
         self.cadida_de_presion = (gasto ** 2) * densidad_lodo / (18511.7 * (self.area_toberas ** 2))
 
-    def set_indice_limpieza (self, il):
+    def get_caidad_presion(self):
+        return self.cadida_de_presion
+
+    def set_indice_limpieza(self, il):
         self.indice_limpieza = il
 
     def get_indice_limpieza(self):
