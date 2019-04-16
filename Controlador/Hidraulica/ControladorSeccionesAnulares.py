@@ -31,3 +31,8 @@ class ControladorSecciones:
                         y.setentr()
         return listasecciones
 
+    @staticmethod
+    def vel_anular(pozo):
+        for x in pozo.get_anulares():
+            x.set_velocidad((pozo.get_bombas().get_gasto() * 24.51) /
+                            (x.get_diametroMayor ** 2 - x.get_diametroMenor ** 2))
