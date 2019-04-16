@@ -14,22 +14,22 @@ class General:
     VolInterior = 0
 
     def profundidad(self, dd):
-        l = self.longMD
+        long = self.longMD
         inicio = self.inicioPD
         for x in dd:
             disponible = x.get_fin_pd() - inicio
-            if disponible >= l:
-                self.finPD += l
-                self.finPV += get_long_pv(l, x)
+            if disponible >= long:
+                self.finPD += long
+                self.finPV += get_long_pv(long, x)
                 return 0
-            elif disponible > 0 and l > disponible:
-                l -= disponible
+            elif disponible > long > disponible:
+                long -= disponible
                 self.finPD += disponible
                 self.finPV += get_long_pv(disponible, x)
                 inicio += disponible
             else:
-                self.finPD += l
-                self.finPV += get_long_pv(l, x)
+                self.finPD += long
+                self.finPV += get_long_pv(long, x)
                 return 0
 
     def __init__(self, d_e, d, l, d_direccional, previa):

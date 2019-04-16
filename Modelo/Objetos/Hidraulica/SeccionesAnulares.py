@@ -14,8 +14,10 @@ class SeccionesAnulares:
     deltaP = 0
     texterno = None
     titnerna = None
+    vel_anular = 0
+    indice_acarreo = 0
 
-    def __init__(self, iniciopd, finpd, longmd, texterna, tinterna, dd):
+    def __init__(self, iniciopd, finpd, longmd, texterna, tinterna, longitudv):
         self.inicioPD = iniciopd
         self.finPD = finpd
         self.longitudD = longmd
@@ -25,23 +27,7 @@ class SeccionesAnulares:
         self.diametroMayor = float(texterna.get_dint())
         self.capacidad = 0.5067 * ((self.diametroMayor ** 2) - (self.diametroMenor ** 2))
         self.volumen = self.capacidad * self.longitudD
-        self.profundidad(dd)
-
-    def profundidad(self, dd):
-        inicio = self.inicioPD
-        long = self.longitudD
-        for x in dd:
-            disponible = x.get_fin_pd()
-            if inicio > x.get_inicio_pd() and self.finPD < x.get_fin_pd():
-                self.longitudV = get_long_pv(self.longitudD, x)
-                return 0
-            if inicio > x.get_inicio_pd() and self.finPD > x.get_fin_pd():
-                long -= disponible
-                self.longitudV += get_long_pv(disponible, x)
-                inicio += disponible
-            else:
-                self.longitudV += get_long_pv(long, x)
-                return 0
+        self.longitudV = longitudv
 
     def __str__(self):
         return """\
@@ -71,6 +57,18 @@ class SeccionesAnulares:
     def get_dmenor(self):
         return self.diametroMenor
 
+    def get_velocidad(self):
+        return self.vel_anular
 
-def get_long_pv(long_pd, x):
-    return long_pd * (math.cos(math.radians(x.get_angulo())))
+    def set_velocidad(self, anular):
+        self.vel_anular = anular
+
+    def get_indice(self):
+        return self.indice_acarreo
+
+    def set_indice(self, acarreo):
+        self.indice_acarreo = acarreo
+
+    def get_caida_presion(self):
+        return self.deltaP
+

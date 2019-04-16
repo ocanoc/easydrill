@@ -5,17 +5,25 @@ class LeyDePotenciasModificado:
     @staticmethod
     def set_ley_potencias_modificado(tuberia_interna, secciones, fluido, bomba):
         for x in tuberia_interna:
-            x.setdp(LeyDePotenciasModificado.interior(fluido.get_lec_fan_300(), fluido.get_lec_fan_600(),
+            x.setdp(LeyDePotenciasModificado.interior(fluido, fluido.get_lec_fan_300(), fluido.get_lec_fan_600(),
                                                       bomba.get_gasto(), x.get_dint(), fluido.get_dl(),
                                                       x.get_long(), fluido.get_vp(), fluido.get_pc(), fluido.get_gel()))
         for x in secciones:
-            x.setdp(LeyDePotenciasModificado.espacio_anular(fluido.get_lec_fan_300(), fluido.get_lec_fan_600(),
+            x.setdp(LeyDePotenciasModificado.espacio_anular(fluido, fluido.get_lec_fan_300(), fluido.get_lec_fan_600(),
                                                             bomba.get_gasto(), x.get_dmayor(), x.get_dmenor(),
                                                             fluido.get_dl(), x.get_long(), fluido.get_vp(),
                                                             fluido.get_pc(), fluido.get_gel()))
 
     @staticmethod
-    def interior(lec_fan_300, lec_fan_600, gasto, diametro_interior, densidad_lodo, longitud,
+    def set_ley_potencias_modificado_superficial(pozo):
+        LeyDePotenciasModificado.interior(pozo.get_fluido(), pozo.get_fluido().get_lec_fan_300(),
+                                          pozo.get_fluido().get_lec_fan_600(), pozo.get_bombas().get_gasto(),
+                                          pozo.get_superficial().get_diametro(), pozo.get_fluido().get_dl(),
+                                          pozo.get_superficial().get_longitud(), pozo.get_fluido().get_vp(),
+                                          pozo.get_fluido().get_pc(), pozo.get_fluido().get_gel())
+
+    @staticmethod
+    def interior(fluido, lec_fan_300, lec_fan_600, gasto, diametro_interior, densidad_lodo, longitud,
                  visco_plastica, punto_cedencia, gel):
         dimetro_cuadrado = diametro_interior ** 2
         if visco_plastica is 0 and punto_cedencia is 0:
@@ -25,6 +33,8 @@ class LeyDePotenciasModificado:
             n = 3.32 * math.log10(((2 * visco_plastica) + punto_cedencia + gel) /
                                   (visco_plastica + punto_cedencia + gel))
             indice_consistencia = (visco_plastica + punto_cedencia + gel) / math.pow(511, n)
+        fluido.set_k(indice_consistencia)
+        fluido.set_n(n)
         vel_flujo = 24.51 * gasto / dimetro_cuadrado
         factor_geometrico = (((3*n) + 1) / (4*n)) * 8.13 * n * math.pow(0.123, 1/n)
         rotacion_equivalente = 0.939 * factor_geometrico * vel_flujo / diametro_interior
@@ -44,7 +54,7 @@ class LeyDePotenciasModificado:
             return (f * densidad_lodo * (vel_flujo ** 2) * longitud) / (48251 * diametro_interior)
 
     @staticmethod
-    def espacio_anular(lec_fan_300, lec_fan_600, gasto, diametro_mayor, diametro_menor, densidad_lodo,
+    def espacio_anular(fluido, lec_fan_300, lec_fan_600, gasto, diametro_mayor, diametro_menor, densidad_lodo,
                        longitud, visco_plastica, punto_cedencia, gel):
         dif_cuadrados = (diametro_mayor ** 2) - (diametro_menor ** 2)
         ea = diametro_mayor - diametro_menor
@@ -55,6 +65,8 @@ class LeyDePotenciasModificado:
             n = 3.32 * math.log10(((2 * visco_plastica) + punto_cedencia + gel) /
                                   (visco_plastica + punto_cedencia + gel))
             indice_consistencia = (visco_plastica + punto_cedencia + gel) / math.pow(511, n)
+        fluido.set_k(indice_consistencia)
+        fluido.set_n(n)
         vel_flujo = 24.51 * gasto / dif_cuadrados
         alpha = diametro_menor / diametro_mayor
         x = 0.37 * pow(n, -0.14)

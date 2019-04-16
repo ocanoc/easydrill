@@ -22,7 +22,7 @@ class Barrena(General):
     def get_caidad_presion(self):
         return self.cadida_de_presion
 
-    def set_indice_limpieza (self, il):
+    def set_indice_limpieza(self, il):
         self.indice_limpieza = il
 
     def get_indice_limpieza(self):
