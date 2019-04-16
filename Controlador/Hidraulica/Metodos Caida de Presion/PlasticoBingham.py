@@ -6,10 +6,10 @@ class PlacticoBingham:
     def set_plastico_bingham(tuberia_interna, secciones, fluido, bomba):
         for x in tuberia_interna:
             x.setdp(PlacticoBingham.interior(bomba.get_gasto(), x.get_dint(), fluido.get_dl(),
-                                             x.get_long(), fluido.get_pc(), fluido.get_vc()))
+                                             x.get_long(), fluido.get_pc(), fluido.get_vp()))
         for x in secciones:
             x.setdp(PlacticoBingham.espacio_anular(bomba.get_gasto(), x.get_dmayor(), x.get_dmenor(), fluido.get_dl(),
-                                                   x.get_long(), fluido.get_pc(), fluido.get_vc()))
+                                                   x.get_long(), fluido.get_pc(), fluido.get_vp()))
 
     @staticmethod
     def interior(gasto, diametro_interior, densidad_lodo, longitud, punto_cedencia, visc_plastica):

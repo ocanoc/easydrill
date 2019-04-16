@@ -6,6 +6,8 @@ class Fluido:
     gel = 0
     punto_cendecia = 0
     factor_flotacion = 0
+    n = 0
+    k = 0
 
     def __init__(self, densidad, vp, lf6, lf3, pc):
         self.factor_flotacion = 1 - (densidad / 7.85)
@@ -27,7 +29,7 @@ class Fluido:
     def get_pc(self):
         return self.punto_cendecia
 
-    def get_vc(self):
+    def get_vp(self):
         return self.viscocidad_plastica
 
     def get_lec_fan_300(self):
@@ -41,3 +43,15 @@ class Fluido:
 
     def get_ff(self):
         return self.factor_flotacion
+
+    def get_k(self):
+        return self.k
+
+    def set_k(self, k):
+        self.k = k
+
+    def get_n(self):
+        return self.n
+
+    def set_n(self, n):
+        self.n = n
