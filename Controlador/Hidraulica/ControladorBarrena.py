@@ -1,4 +1,5 @@
 from Objetos.Tuberia.Barrena import *
 
-class ControladorBarrena:
 
+class ControladorBarrena:
+    pass
