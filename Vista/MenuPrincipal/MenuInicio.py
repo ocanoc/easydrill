@@ -3,44 +3,39 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from win32api import GetSystemMetrics
-import qtmodern
+
 
 class MainWindow (QMainWindow):
     """docstring for Main Window."""
     def __init__(self):
         super(MainWindow, self).__init__()
-        width = 1920
-        height = 1080
+        width = 800
+        height = 600
         self.setWindowTitle("Easy Drill")
         self.setGeometry((GetSystemMetrics(0)-width)/2, (GetSystemMetrics(1)-height)/2,width,height)
         self.setWindowIcon(QIcon('petro.png'))
         self.initUI()
 
-
-
     def initUI (self):
-        self.setStyleSheet("""
-
-
-        
-        
-        
-        """)
-
-        weas = QVBoxLayout()
+        Horizotal = QHBoxLayout()
+        vertical = QVBoxLayout()
         btn1 = QPushButton("Nuevo")
         btn2 = QPushButton("Cargar")
         btn3 = QPushButton("Tuberias y Herramientas")
+        central_widget = QWidget()
+        vertical.addStretch()
+        vertical.addWidget(btn1)
+        vertical.addWidget(btn2)
+        vertical.addWidget(btn3)
+        vertical.addStretch()
+        Logo = QLabel()
+        Logo.setPixmap(QPixmap("G:\Tesis\Recursos\Imagenes\EasyDrillLogo.png").scaledToHeight(100))
 
-
-        botones = QWidget()
-
-        weas.addWidget(btn1)
-        weas.addWidget(btn2)
-        weas.addWidget(btn3)
-        botones.setLayout(weas)
-        self.setCentralWidget(botones)
-
+        Horizotal.addWidget(Logo)
+        Horizotal.addSpacing(50)
+        Horizotal.addLayout(vertical)
+        central_widget.setLayout(Horizotal)
+        self.setCentralWidget(central_widget)
 
 if __name__ == '__main__':
     print("Width =", GetSystemMetrics(0))
