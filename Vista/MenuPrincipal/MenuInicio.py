@@ -3,7 +3,8 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from win32api import GetSystemMetrics
-
+from Fluidos.MenuFluidos import *
+from Fluidos.DatosFluidos import *
 
 class MainWindow (QMainWindow):
     """docstring for Main Window."""
@@ -16,7 +17,9 @@ class MainWindow (QMainWindow):
         self.setWindowIcon(QIcon('petro.png'))
         self.setMaximumHeight(700)
         self.setMinimumHeight(600)
-        self.trayectoria()
+        #fluidos(self)
+        #self.trayectoria()
+        datos(self)
 
 
     def trayectoria (self):
@@ -25,21 +28,30 @@ class MainWindow (QMainWindow):
         Vertical = QLabel()
         Vertical.setPixmap(QPixmap("Vertical.png").scaledToHeight(60))
         ImagenVertical = QLabel()
-        ImagenVertical.setPixmap(QPixmap("ImagenVertical.png").scaledToHeight(425))
+        ImagenVertical.setPixmap(QPixmap("ImagenVertical.png").scaledToHeight(350))
         TipoJ = QLabel()
         TipoJ.setPixmap(QPixmap("TipoJ.png").scaledToHeight(60))
         ImagenTipoJ = QLabel()
-        ImagenTipoJ.setPixmap(QPixmap("ImagenTipoJ.png").scaledToHeight(425))
+        ImagenTipoJ.setPixmap(QPixmap("ImagenTipoJ.png").scaledToHeight(350))
         TipoS = QLabel()
         TipoS.setPixmap(QPixmap("TipoS.png").scaledToHeight(60))
         ImagenTipoS = QLabel()
-        ImagenTipoS.setPixmap(QPixmap("ImagenTipoS.png").scaledToHeight(425))
+        ImagenTipoS.setPixmap(QPixmap("ImagenTipoS.png").scaledToHeight(350))
         Horizontal = QLabel()
         Horizontal.setPixmap(QPixmap("Horizontal.png").scaledToHeight(60))
         ImagenHorizontal = QLabel()
-        ImagenHorizontal.setPixmap(QPixmap("ImagenHorizontal.png").scaledToHeight(425))
+        ImagenHorizontal.setPixmap(QPixmap("ImagenHorizontal.png").scaledToHeight(350))
         EasyDrillLogo = QLabel()
         EasyDrillLogo.setPixmap(QPixmap("EasyDrillLogo.png").scaledToHeight(30))
+        BtnAceptar = QPushButton("Aceptar")
+        BtnAceptar.setFixedHeight(30)
+        BtnAceptar.setFixedWidth(100)
+        BtnCancelar = QPushButton("Cancelar")
+        BtnCancelar.setFixedHeight(30)
+        BtnCancelar.setFixedWidth(100)
+        BtnRegresar = QPushButton("Regresar")
+        BtnRegresar.setFixedHeight(30)
+        BtnRegresar.setFixedWidth(100)
         layoutTipoVertical = QVBoxLayout()
         layoutTipoVertical.addWidget(Vertical, Qt.StretchTile, Qt.AlignCenter)
         layoutTipoVertical.addWidget(ImagenVertical)
@@ -52,6 +64,10 @@ class MainWindow (QMainWindow):
         layoutHorizontal = QVBoxLayout()
         layoutHorizontal.addWidget(Horizontal, Qt.StretchTile, Qt.AlignCenter)
         layoutHorizontal.addWidget(ImagenHorizontal)
+        layoutBtn = QHBoxLayout()
+        layoutBtn.addWidget(BtnAceptar, Qt.StretchTile, Qt.AlignRight)
+        layoutBtn.addWidget(BtnCancelar)
+        layoutBtn.addWidget(BtnRegresar)
         layoutTipos = QHBoxLayout()
         layoutTipos.addLayout(layoutTipoVertical)
         layoutTipos.addLayout(layoutJ)
@@ -61,6 +77,8 @@ class MainWindow (QMainWindow):
         layoutPantalla.addWidget(EasyDrillLogo, Qt.StretchTile, Qt.AlignRight)
         layoutPantalla.addWidget(TextoTrayectoria)
         layoutPantalla.addLayout(layoutTipos)
+        layoutPantalla.addSpacing(30)
+        layoutPantalla.addLayout(layoutBtn)
         central_widget = QWidget()
         central_widget.setLayout(layoutPantalla)
         self.setCentralWidget(central_widget)
