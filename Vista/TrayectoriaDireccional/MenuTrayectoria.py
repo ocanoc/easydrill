@@ -1,0 +1,40 @@
+from PyQt5.QtGui import *
+from PyQt5.QtWidgets import *
+from PyQt5.QtCore import *
+
+
+def trayectoria():
+    vertical = QLabel()
+    vertical.setPixmap(QPixmap("Imagenes/Vertical.png").scaledToHeight(60))
+    imagen_vertical = QLabel()
+    imagen_vertical.setPixmap(QPixmap("Imagenes/ImagenVertical.png").scaledToHeight(350))
+    tipo_j = QLabel()
+    tipo_j.setPixmap(QPixmap("Imagenes/TipoJ.png").scaledToHeight(60))
+    imagen_tipo_j = QLabel()
+    imagen_tipo_j.setPixmap(QPixmap("Imagenes/ImagenTipoJ.png").scaledToHeight(350))
+    tipo_s = QLabel()
+    tipo_s.setPixmap(QPixmap("Imagenes/TipoS.png").scaledToHeight(60))
+    imagen_tipo_s = QLabel()
+    imagen_tipo_s.setPixmap(QPixmap("Imagenes/ImagenTipoS.png").scaledToHeight(350))
+    horizontal = QLabel()
+    horizontal.setPixmap(QPixmap("Imagenes/Horizontal.png").scaledToHeight(60))
+    imagen_horizontal = QLabel()
+    imagen_horizontal.setPixmap(QPixmap("Imagenes/ImagenHorizontal.png").scaledToHeight(350))
+    layout_tipo_vertical = QVBoxLayout()
+    layout_tipo_vertical.addWidget(vertical, Qt.StretchTile, Qt.AlignCenter)
+    layout_tipo_vertical.addWidget(imagen_vertical)
+    layout_j = QVBoxLayout()
+    layout_j.addWidget(tipo_j, Qt.StretchTile, Qt.AlignCenter)
+    layout_j.addWidget(imagen_tipo_j)
+    layout_s = QVBoxLayout()
+    layout_s.addWidget(tipo_s, Qt.StretchTile, Qt.AlignCenter)
+    layout_s.addWidget(imagen_tipo_s)
+    layout_horizontal = QVBoxLayout()
+    layout_horizontal.addWidget(horizontal, Qt.StretchTile, Qt.AlignCenter)
+    layout_horizontal.addWidget(imagen_horizontal)
+    layout_tipos = QHBoxLayout()
+    layout_tipos.addLayout(layout_tipo_vertical)
+    layout_tipos.addLayout(layout_j)
+    layout_tipos.addLayout(layout_s)
+    layout_tipos.addLayout(layout_horizontal)
+    return layout_tipos

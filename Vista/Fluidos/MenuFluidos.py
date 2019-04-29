@@ -1,0 +1,40 @@
+from PyQt5.QtCore import *
+from PyQt5.QtGui import *
+from PyQt5.QtWidgets import *
+
+
+def tipo_fluidos():
+    texto_p_bingham = QLabel()
+    texto_p_bingham.setPixmap(QPixmap("Imagenes/TextoPBingham.png").scaledToHeight(50))
+    grafica_bingham = QLabel()
+    grafica_bingham.setPixmap(QPixmap("Imagenes/GraficaBingham.png").scaledToHeight(260))
+    texto_potencias = QLabel()
+    texto_potencias.setPixmap(QPixmap("Imagenes/TextoPotencias.png").scaledToHeight(50))
+    grafica_potencias = QLabel()
+    grafica_potencias.setPixmap(QPixmap("Imagenes/GraficaPotencias.png").scaledToHeight(260))
+    texto_potencias_m = QLabel()
+    texto_potencias_m.setPixmap(QPixmap("Imagenes/TextoPotenciasM.png").scaledToHeight(70))
+    grafica_potencias_m = QLabel()
+    grafica_potencias_m.setPixmap(QPixmap("Imagenes/GraficaPotenciasM.png").scaledToHeight(260))
+    texto_smith = QLabel()
+    texto_smith.setPixmap(QPixmap("Imagenes/TextoSmith.png").scaledToHeight(50))
+    dibujo_smith = QLabel()
+    dibujo_smith.setPixmap(QPixmap("Imagenes/DibujoSmith.png").scaledToHeight(260))
+    layout_bingham = QVBoxLayout()
+    layout_bingham.addWidget(texto_p_bingham)
+    layout_bingham.addWidget(grafica_bingham)
+    layout_potencias = QVBoxLayout()
+    layout_potencias.addWidget(texto_potencias)
+    layout_potencias.addWidget(grafica_potencias)
+    layout_potencias_m = QVBoxLayout()
+    layout_potencias_m.addWidget(texto_potencias_m)
+    layout_potencias_m.addWidget(grafica_potencias_m)
+    layout_smith = QVBoxLayout()
+    layout_smith.addWidget(texto_smith, Qt. StretchTile, Qt.AlignCenter)
+    layout_smith.addWidget(dibujo_smith)
+    layout_conjunto = QHBoxLayout()
+    layout_conjunto.addLayout(layout_bingham)
+    layout_conjunto.addLayout(layout_potencias)
+    layout_conjunto.addLayout(layout_potencias_m)
+    layout_conjunto.addLayout(layout_smith)
+    return layout_conjunto
