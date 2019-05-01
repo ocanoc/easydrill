@@ -6,8 +6,36 @@ from Vista.Fluidos.MenuFluidos import *
 
 
 class MainWindow (QMainWindow):
+    app = QApplication(sys.argv)
+    pos = 0
+    btn_aceptar = QPushButton("Aceptar")
+    btn_aceptar.setFixedHeight(30)
+    btn_aceptar.setFixedWidth(100)
+    btn_cancelar = QPushButton("Cancelar")
+    btn_cancelar.setFixedHeight(30)
+    btn_cancelar.setFixedWidth(100)
+    btn_regresar = QPushButton("Regresar")
+    btn_regresar.setFixedHeight(30)
+    btn_regresar.setFixedWidth(100)
+    btn_regresar.hide()
+    texto_encabezado = QLabel()
+    layout_trayectoria = trayectoria()
+    layout_menu_fluiods = tipo_fluidos()
+    layout_datos_fluiods = datos_fluido()
+    easy_drill_logo = QLabel()
+    easy_drill_logo.setPixmap(QPixmap("Imagenes/EasyDrllLogo.png").scaledToHeight(30))
+    layout_pantalla = QVBoxLayout()
+    layout_pantalla.addWidget(easy_drill_logo, Qt.StretchTile, Qt.AlignRight)
+    layout_pantalla.addWidget(texto_encabezado)
+    layout_btn = QHBoxLayout()
+    layout_btn.addWidget(btn_aceptar, Qt.StretchTile, Qt.AlignRight)
+    layout_btn.addWidget(btn_cancelar)
+    layout_btn.addWidget(btn_regresar)
+    layout_pantalla = QVBoxLayout()
+    central_widget = QWidget()
+
+
     def __init__(self):
-        pos = 0
         super(MainWindow, self).__init__()
         width = 800
         height = 600
@@ -16,58 +44,82 @@ class MainWindow (QMainWindow):
         self.setWindowIcon(QIcon("Imagenes/EasyDrllLogo.png"))
         self.setMaximumHeight(800)
         self.setMinimumHeight(600)
-        easy_drill_logo = QLabel()
-        easy_drill_logo.setPixmap(QPixmap("Imagenes/EasyDrllLogo.png").scaledToHeight(30))
-        texto_encabezado = QLabel()
-        self.cambiar_encabezado(texto_encabezado, 2)
-        btn_aceptar = QPushButton("Aceptar")
-        btn_aceptar.setFixedHeight(30)
-        btn_aceptar.setFixedWidth(100)
-        btn_cancelar = QPushButton("Cancelar")
-        btn_cancelar.setFixedHeight(30)
-        btn_cancelar.setFixedWidth(100)
-        btn_regresar = QPushButton("Regresar")
-        btn_regresar.setFixedHeight(30)
-        btn_regresar.setFixedWidth(100)
-        layout_btn = QHBoxLayout()
-        layout_btn.addWidget(btn_aceptar, Qt.StretchTile, Qt.AlignRight)
-        layout_btn.addWidget(btn_cancelar)
-        layout_btn.addWidget(btn_regresar)
-        layout_pantalla = QVBoxLayout()
-        layout_pantalla.addWidget(easy_drill_logo, Qt.StretchTile, Qt.AlignRight)
-        layout_pantalla.addWidget(texto_encabezado)
-        layout_central = self.cambiar_central(2)
-        layout_pantalla.addLayout(layout_central)
-        layout_pantalla.addSpacing(20)
-        layout_pantalla.addLayout(layout_btn)
-        layout_pantalla.addSpacing(20)
-        central_widget = QWidget()
-        central_widget.setLayout(layout_pantalla)
-        self.setCentralWidget(central_widget)
+        self.cambiar_encabezado()
+        self.limpiar()
+        self.layout_pantalla.addLayout(self.layout_trayectoria)
+        self.agregarbototnes()
+        self.btn_aceptar.clicked.connect(self.aceptar)
+        self.btn_regresar.clicked.connect(self.regresar)
 
-    @staticmethod
-    def cambiar_encabezado(label, numero):
-        if numero is 0:
-            label.setPixmap(QPixmap("Imagenes/TextoTrayectoria.png").scaledToHeight(50))
-        if numero is 1:
-            label.setPixmap(QPixmap("Imagenes/TextoModelo.png").scaledToHeight(60))
-        if numero is 2:
-            label.setPixmap(QPixmap("Imagenes/TextoHidraulica.png").scaledToHeight(50))
+    def cambiar_encabezado(self):
+        print(self.pos)
+        if self.pos is 0:
+            self.texto_encabezado.setPixmap(QPixmap("Imagenes/TextoTrayectoria.png").scaledToHeight(50))
+        if self.pos is 1:
+            self.texto_encabezado.setPixmap(QPixmap("Imagenes/TextoModelo.png").scaledToHeight(50))
+        if self.pos is 2:
+            self.texto_encabezado.setPixmap(QPixmap("Imagenes/TextoHidraulica.png").scaledToHeight(50))
 
-    @staticmethod
-    def cambiar_central(numero):
-        if numero is 0:
-            return trayectoria()
-        if numero is 1:
-            return tipo_fluidos()
-        if numero is 2:
-            return datos_fluido()
+    def cambiar_central(self):
+        print(self.pos)
+        if self.pos is 0:
+            self.layout_pantalla.insertLayout(2, self.layout_trayectoria)
+        if self.pos is 1:
+            self.layout_pantalla.insertLayout(2, self.layout_menu_fluiods)
+        if self.pos is 2:
+            self.layout_pantalla.insertLayout(2, self.layout_datos_fluiods)
+
+
+
+    def limpiar(self):
+        self.layout_pantalla = QVBoxLayout()
+        self.layout_pantalla.addWidget(self.easy_drill_logo, Qt.StretchTile, Qt.AlignRight)
+        self.layout_pantalla.addWidget(self.texto_encabezado)
+        self.layout_btn = QHBoxLayout()
+        self.layout_btn.addWidget(self.btn_aceptar, Qt.StretchTile, Qt.AlignRight)
+        self.layout_btn.addWidget(self.btn_cancelar)
+        self.layout_btn.addWidget(self.btn_regresar)
+
+    @pyqtSlot()
+    def agregarbototnes(self):
+        self.layout_pantalla.addSpacing(20)
+        self.layout_pantalla.removeItem(self.layout_btn)
+        self.layout_pantalla.addLayout(self.layout_btn)
+        self.layout_pantalla.addSpacing(20)
+        self.central_widget = QWidget()
+        self.central_widget.setLayout(self.layout_pantalla)
+        self.setCentralWidget(self.central_widget)
+
+
+    @pyqtSlot()
+    def regresar(self):
+        if self.pos is 0:
+            self.btn_regresar.hide()
+        elif self.pos is 1:
+            self.pos = 0
+            self.cambiar_encabezado()
+            self.cambiar_central()
+        elif self.pos is 2:
+            self.pos = 1
+            self.cambiar_encabezado()
+            self.cambiar_central()
+    @pyqtSlot()
+    def aceptar(self):
+        if self.pos is 0:
+            self.pos = 1
+            self.btn_regresar.show()
+            self.cambiar_encabezado()
+            self.cambiar_central()
+            self.update()
+        elif self.pos is 1:
+            self.pos = 2
+            self.cambiar_encabezado()
+            self.cambiar_central()
+            self.update()
+
 
 
 if __name__ == '__main__':
-    print("Width =", GetSystemMetrics(0))
-    print("Height =", GetSystemMetrics(1))
-    app = QApplication(sys.argv)
     w = MainWindow()
     w.show()
-    sys.exit(app.exec_())
+    sys.exit(w.app.exec_())

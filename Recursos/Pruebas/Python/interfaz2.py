@@ -14,7 +14,7 @@ class MainWindow (QMainWindow):
         self.setWindowTitle("Easy Drill")
         self.setGeometry((GetSystemMetrics(0)-width)/2, (GetSystemMetrics(1)-height)/2,width,height)
         self.setWindowIcon(QIcon('petro.png'))
-        self.ui2()
+        self.initUI()
 
     def ui2(self):
         central_widget = QWidget()
