@@ -1,7 +1,9 @@
 import sys
 from win32api import GetSystemMetrics
-from Fluidos.DatosFluidos import *
-
+from PyQt5.QtCore import *
+from PyQt5.QtGui import *
+from PyQt5.QtWidgets import *
+from Vista.Ventana.Ventana import *
 
 class MainWindow (QMainWindow):
     def __init__(self):
@@ -10,24 +12,25 @@ class MainWindow (QMainWindow):
         height = 600
         self.setWindowTitle("Easy Drill")
         self.setGeometry((GetSystemMetrics(0)-width)/2, (GetSystemMetrics(1)-height)/2,width,height)
-        self.setWindowIcon(QIcon("Imagenes/EasyDrllLogo.png"))
-        self.setMaximumHeight(700)
-        self.setMinimumHeight(600)
+        self.setWindowIcon(QIcon("Imagenes/Gota.png"))
         self.init_ui()
+        self.setBackgroundRole(QColor(#7F7E82))
 
     def init_ui(self):
         horizontal = QHBoxLayout()
         vertical = QVBoxLayout()
         btn1 = QPushButton("Nuevo")
         btn2 = QPushButton("Cargar")
-        btn3 = QPushButton()
-        btn1.setFont(QFont("Calibri(Cuerpo)", 15))
-        btn2.setFont(QFont("Calibri(Cuerpo)", 15))
-        btn3.setFont(QFont("Calibri(Cuerpo)", 15))
+        btn3 = QPushButton("Tuberia y Herramientas")
+        btn1.setFont(QFont("Calibri(Cuerpo)", 12))
+        btn2.setFont(QFont("Calibri(Cuerpo)", 12))
+        btn3.setFont(QFont("Calibri(Cuerpo)", 12))
         btn3.setIcon(QIcon("BtnTuberias.png"))
-        btn3.setIconSize(QSize(280,1800))
+        btn3.setIconSize(QSize(280, 1800))
+        btn1.setFixedWidth(250)
+        btn2.setFixedWidth(250)
+        btn3.setFixedWidth(250)
         btn1.setFixedHeight(40)
-        btn1.setFixedWidth(280)
         btn2.setFixedHeight(40)
         btn3.setFixedHeight(40)
         central_widget = QWidget()
@@ -40,14 +43,16 @@ class MainWindow (QMainWindow):
         vertical.addSpacing(10)
         vertical.addStretch()
         logo = QLabel()
-        logo.setPixmap(QPixmap("Imagenes/EasyDrllLogo.png").scaledToHeight(90))
+        logo.setPixmap(QPixmap("Imagenes/EasyDrllLogo.png"))
         linea = QLabel()
         linea.setPixmap(QPixmap("Imagenes/Linea.png").scaledToHeight(250))
-        horizontal.addWidget(logo)
-        horizontal.addSpacing(8)
+        horizontal.addSpacing(10)
+        horizontal.addWidget(logo, Qt.StretchTile, Qt.AlignHCenter)
+        horizontal.addSpacing(10)
         horizontal.addWidget(linea)
-        horizontal.addSpacing(8)
-        horizontal.addLayout(vertical)
+        horizontal.addSpacing(20)
+        horizontal.addLayout(vertical, Qt.AlignHCenter)
+        horizontal.addSpacing(20)
         central_widget.setLayout(horizontal)
         self.setCentralWidget(central_widget)
 
@@ -57,6 +62,7 @@ if __name__ == '__main__':
     print("Height =", GetSystemMetrics(1))
     app = QApplication(sys.argv)
     w = MainWindow()
+    w.setFixedSize(1000, 600)
     w.show()
     sys.exit(app.exec_())
 

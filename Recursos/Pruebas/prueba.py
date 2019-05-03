@@ -1,39 +1,38 @@
+from PyQt5.QtWidgets import *
+from PyQt5.QtGui import *
+from PyQt5.QtCore import *
 import sys
-from PyQt5.QtWidgets import QApplication, QWidget, QPushButton
-from PyQt5.QtGui import QIcon
-from PyQt5.QtCore import pyqtSlot
 
-
-class App(QWidget):
+class mouseoverEvent(QWidget):
 
     def __init__(self):
         super().__init__()
-        self.title = 'PyQt5 button - pythonspot.com'
-        self.left = 10
-        self.top = 10
-        self.width = 320
-        self.height = 200
+        self.stop = False # your 'stop' variable
         self.initUI()
 
     def initUI(self):
-        self.setWindowTitle(self.title)
-        self.setGeometry(self.left, self.top, self.width, self.height)
-
-        button = QPushButton('PyQt5 button', self)
-        button.setToolTip('This is an example button')
-        button.move(100, 70)
-        button.clicked.connect(self.on_click)
+        self.lbl=QLabel(self)
+        self.lbl.setText("Hover over me to stop the program")
+        self.lbl.installEventFilter(self)
+        self.setGeometry(1000, 30, 300, 100)
+        self.setWindowTitle('QLineEdit')
 
         self.show()
 
-    @pyqtSlot()
-    def on_click(self):
-        print('PyQt5 button click')
-        self.holi()
+    def eventFilter(self, object, event):
+        if event.type() == QEvent.Enter:
+            print("Mouse is over the label")
+            self.stop = True
+            print('program stop is', self.stop)
+            return True
+        elif event.type() == QEvent.Leave:
+            print("Mouse is not over the label")
+            self.stop = False
+            print('program stop is', self.stop)
+        return False
 
-    def holi(self):
-        print("Holi")
+
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    ex = App()
+    ex = mouseoverEvent()
     sys.exit(app.exec_())
