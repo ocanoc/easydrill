@@ -1,20 +1,20 @@
-import sys
-from win32api import GetSystemMetrics
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
-from PyQt5.QtWidgets import *
 from Vista.Ventana.Ventana import *
 
-class MainWindow (QMainWindow):
+
+# noinspection PyArgumentList
+class MainWindow(QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
-        width = 800
+        width = 1000
         height = 600
+        fondo = QImage("Imagenes/Fondo.png")
+        palette = QPalette()
+        palette.setBrush(10, QBrush(fondo))
+        self.setPalette(palette)
         self.setWindowTitle("Easy Drill")
-        self.setGeometry((GetSystemMetrics(0)-width)/2, (GetSystemMetrics(1)-height)/2,width,height)
+        self.setGeometry((GetSystemMetrics(0) - width) / 2, (GetSystemMetrics(1) - height) / 2, width, height)
         self.setWindowIcon(QIcon("Imagenes/Gota.png"))
         self.init_ui()
-        self.setBackgroundRole(QColor(#7F7E82))
 
     def init_ui(self):
         horizontal = QHBoxLayout()
@@ -25,7 +25,6 @@ class MainWindow (QMainWindow):
         btn1.setFont(QFont("Calibri(Cuerpo)", 12))
         btn2.setFont(QFont("Calibri(Cuerpo)", 12))
         btn3.setFont(QFont("Calibri(Cuerpo)", 12))
-        btn3.setIcon(QIcon("BtnTuberias.png"))
         btn3.setIconSize(QSize(280, 1800))
         btn1.setFixedWidth(250)
         btn2.setFixedWidth(250)
@@ -65,5 +64,3 @@ if __name__ == '__main__':
     w.setFixedSize(1000, 600)
     w.show()
     sys.exit(app.exec_())
-
-

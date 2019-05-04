@@ -1,4 +1,5 @@
 import math
+
 from Modelo.Objetos.Direccional.Direccional import *
 
 SECCION_VERTICAL = "Seccion Vertical"
@@ -48,7 +49,7 @@ class ControladorDireccional:
         return lista_direccional
 
     @staticmethod
-    def seccionvertical(kop, severidad, angulomax, profmax, dop, dor):
+    def tipos(kop, severidad, angulomax, profmax, dop, dor):
         lista_direccional = ControladorDireccional.tipo_j(kop, severidad, angulomax, dop)
         ultima = lista_direccional.pop()
         lista_direccional.append(ultima)
