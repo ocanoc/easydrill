@@ -1,40 +1,114 @@
+import sys
+
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
 
-def tipo_fluidos():
-    texto_p_bingham = QLabel()
-    texto_p_bingham.setPixmap(QPixmap("Imagenes/TextoPBingham.png").scaledToHeight(50))
+class MenuFluidos(QMainWindow):
+    app = QApplication(sys.argv)
+    stop = False
+    clicked = 0
+    app.setStyle('Fusion')
+    texto_encabezado = QLabel()
+    texto_encabezado.setScaledContents(True)
+    texto_encabezado.setFixedSize(250, 50)
+    texto_encabezado.setPixmap(QPixmap("Imagenes/TextoModeloReologico.png"))
+    instruccioes = QLabel()
+    instruccioes.setScaledContents(True)
+    instruccioes.setFixedSize(820, 28)
+    instruccioes.setPixmap(QPixmap("Imagenes/InstruccionesFluido.png"))
     grafica_bingham = QLabel()
-    grafica_bingham.setPixmap(QPixmap("Imagenes/GraficaBingham.png").scaledToHeight(260))
-    texto_potencias = QLabel()
-    texto_potencias.setPixmap(QPixmap("Imagenes/TextoPotencias.png").scaledToHeight(50))
+    grafica_bingham.setPixmap(QPixmap("Imagenes/GraficaBingham.png"))
     grafica_potencias = QLabel()
-    grafica_potencias.setPixmap(QPixmap("Imagenes/GraficaPotencias.png").scaledToHeight(260))
-    texto_potencias_m = QLabel()
-    texto_potencias_m.setPixmap(QPixmap("Imagenes/TextoPotenciasM.png").scaledToHeight(70))
+    grafica_potencias.setPixmap(QPixmap("Imagenes/GraficaPotencias.png"))
     grafica_potencias_m = QLabel()
-    grafica_potencias_m.setPixmap(QPixmap("Imagenes/GraficaPotenciasM.png").scaledToHeight(260))
-    texto_smith = QLabel()
-    texto_smith.setPixmap(QPixmap("Imagenes/TextoSmith.png").scaledToHeight(50))
+    grafica_potencias_m.setPixmap(QPixmap("Imagenes/GraficaPotenciasM.png"))
     dibujo_smith = QLabel()
-    dibujo_smith.setPixmap(QPixmap("Imagenes/DibujoSmith.png").scaledToHeight(260))
-    layout_bingham = QVBoxLayout()
-    layout_bingham.addWidget(texto_p_bingham)
-    layout_bingham.addWidget(grafica_bingham)
-    layout_potencias = QVBoxLayout()
-    layout_potencias.addWidget(texto_potencias)
-    layout_potencias.addWidget(grafica_potencias)
-    layout_potencias_m = QVBoxLayout()
-    layout_potencias_m.addWidget(texto_potencias_m)
-    layout_potencias_m.addWidget(grafica_potencias_m)
-    layout_smith = QVBoxLayout()
-    layout_smith.addWidget(texto_smith, Qt. StretchTile, Qt.AlignCenter)
-    layout_smith.addWidget(dibujo_smith)
-    layout_conjunto = QHBoxLayout()
-    layout_conjunto.addLayout(layout_bingham)
-    layout_conjunto.addLayout(layout_potencias)
-    layout_conjunto.addLayout(layout_potencias_m)
-    layout_conjunto.addLayout(layout_smith)
-    return layout_conjunto
+    dibujo_smith.setPixmap(QPixmap("Imagenes/DibujoSmith.png"))
+    layout_contenido = QHBoxLayout()
+    layout_contenido.addWidget(grafica_bingham)
+    layout_contenido.addWidget(grafica_potencias)
+    layout_contenido.addWidget(grafica_potencias_m)
+    layout_contenido.addWidget(dibujo_smith)
+    layout_pantalla = QVBoxLayout()
+    layout_pantalla.addSpacing(11)
+    layout_pantalla.addWidget(texto_encabezado)
+    layout_pantalla.addSpacing(80)
+    layout_pantalla.addWidget(instruccioes)
+    layout_pantalla.addStretch(10)
+    layout_pantalla.addLayout(layout_contenido)
+    layout_pantalla.addSpacing(10)
+    frame_pantalla = QFrame()
+    frame_pantalla.setLayout(layout_pantalla)
+    frame_pantalla.setFont(QFont('Calibri (Cuerpo)', 12, QFont.Bold))
+
+    def __init__(self):
+        super(MenuFluidos, self).__init__()
+        self.acondiciona(self.grafica_bingham)
+        self.acondiciona(self.grafica_potencias_m)
+        self.acondiciona(self.grafica_potencias)
+        self.acondiciona(self.dibujo_smith)
+
+    def get_frame(self):
+        return self.frame_pantalla
+
+    def intercambiar_imagen(self, source, flag):
+        if source is self.grafica_bingham:
+            if flag:
+                source.setPixmap(QPixmap("Imagenes/BinghamSelect.png"))
+            elif self.clicked is not 1:
+                source.setPixmap(QPixmap("Imagenes/GraficaBingham.png"))
+        elif source is self.grafica_potencias:
+            if flag:
+                source.setPixmap(QPixmap("Imagenes/PotenciasSelect.png"))
+            elif self.clicked is not 2:
+                source.setPixmap(QPixmap("Imagenes/GraficaPotencias.png"))
+        elif source is self.grafica_potencias_m:
+            if flag:
+                source.setPixmap(QPixmap("Imagenes/PModificadoSelect.png"))
+            elif self.clicked is not 3:
+                source.setPixmap(QPixmap("Imagenes/GraficaPotenciasM.png"))
+        elif source is self.dibujo_smith:
+            if flag:
+                source.setPixmap(QPixmap("Imagenes/SmithSelect.png"))
+            elif self.clicked is not 4:
+                source.setPixmap(QPixmap("Imagenes/DibujoSmith.png"))
+
+    def isclicked(self, source):
+        print("Holii")
+        if source is self.grafica_bingham:
+            source.setPixmap(QPixmap("Imagenes/BinghamSelect.png"))
+            self.grafica_potencias.setPixmap(QPixmap("Imagenes/GraficaPotencias.png"))
+            self.grafica_potencias_m.setPixmap(QPixmap("Imagenes/GraficaPotenciasM.png"))
+            self.dibujo_smith.setPixmap(QPixmap("Imagenes/DibujoSmith.png"))
+            self.clicked = 1
+        if source is self.grafica_potencias:
+            source.setPixmap(QPixmap("Imagenes/PotenciasSelect.png"))
+            self.grafica_bingham.setPixmap(QPixmap("Imagenes/GraficaBingham.png"))
+            self.grafica_potencias_m.setPixmap(QPixmap("Imagenes/GraficaPotenciasM.png"))
+            self.dibujo_smith.setPixmap(QPixmap("Imagenes/DibujoSmith.png"))
+            self.clicked = 2
+        if source is self.grafica_potencias_m:
+            source.setPixmap(QPixmap("Imagenes/PModificadoSelect.png"))
+            self.grafica_bingham.setPixmap(QPixmap("Imagenes/GraficaBingham.png"))
+            self.grafica_potencias.setPixmap(QPixmap("Imagenes/GraficaPotencias.png"))
+            self.dibujo_smith.setPixmap(QPixmap("Imagenes/DibujoSmith.png"))
+            self.clicked = 3
+        if source is self.dibujo_smith:
+            source.setPixmap(QPixmap("Imagenes/SmithSelect.png"))
+            self.grafica_bingham.setPixmap(QPixmap("Imagenes/GraficaBingham.png"))
+            self.grafica_potencias.setPixmap(QPixmap("Imagenes/GraficaPotencias.png"))
+            self.grafica_potencias_m.setPixmap(QPixmap("Imagenes/GraficaPotenciasM.png"))
+            self.clicked = 4
+
+    def get_clicked(self):
+        return self.clicked
+
+    @staticmethod
+    def acondiciona(label):
+        ancho = 220
+        largo = 270
+        label.setScaledContents(True)
+        label.setFixedSize(ancho, largo)
+        label.setCursor(Qt.PointingHandCursor)

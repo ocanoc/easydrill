@@ -1,7 +1,7 @@
 from win32api import GetSystemMetrics
 
 from DatosTrayectoria.DatosTrayectoria import *
-from Fluidos.DatosFluidos import *
+from Fluidos.DatosFluidos.DatosFluidos import *
 from Fluidos.MenuFluidos import *
 from TrayectoriaDireccional.MenuTrayectoria import Trayectoria
 
@@ -26,12 +26,12 @@ class MainWindow (QMainWindow):
     DatosTrayectoria = DatosTrayectoria()
     frame_datos_trayectoria = DatosTrayectoria.get_frame()
     frame_datos_trayectoria.hide()
-    frame_menu_fluiods = QFrame()
-    frame_menu_fluiods.setLayout(tipo_fluidos())
+    menu_fluidos = MenuFluidos()
+    frame_menu_fluiods = menu_fluidos.get_frame()
     frame_menu_fluiods.hide()
-    frame_datos_fluidos = QFrame()
+    DatosFluidos = DatosFluidos()
+    frame_datos_fluidos = DatosFluidos.get_frame()
     frame_datos_fluidos.hide()
-    frame_datos_fluidos.setLayout(datos_fluido())
     layout_btn = QHBoxLayout()
     layout_btn.addSpacing(50)
     layout_btn.addWidget(btn_cancelar, 1, Qt.AlignLeft)
@@ -60,6 +60,10 @@ class MainWindow (QMainWindow):
         self.trayectoria.imagen_tipo_s.installEventFilter(self)
         self.trayectoria.imagen_tipo_j.installEventFilter(self)
         self.trayectoria.imagen_horizontal.installEventFilter(self)
+        self.menu_fluidos.grafica_bingham.installEventFilter(self)
+        self.menu_fluidos.grafica_potencias.installEventFilter(self)
+        self.menu_fluidos.grafica_potencias_m.installEventFilter(self)
+        self.menu_fluidos.dibujo_smith.installEventFilter(self)
         self.setWindowTitle("Easy Drill")
         self.setGeometry((GetSystemMetrics(0)-width)/2, (GetSystemMetrics(1)-height)/2, width, height)
         self.setWindowIcon(QIcon("Imagenes/Gota.png"))
@@ -90,17 +94,17 @@ class MainWindow (QMainWindow):
     def regresar(self):
         if self.pos is 0:
             self.btn_regresar.hide()
-            self.cambiar_central()
+            self.cambia_pantalla()
         elif self.pos is 1:
             self.pos = 0
             self.btn_regresar.hide()
-            self.cambiar_central()
+            self.cambia_pantalla()
         elif self.pos is 2:
             self.pos = 1
-            self.cambiar_central()
+            self.cambia_pantalla()
         elif self.pos is 3:
             self.pos = 2
-            self.cambiar_central()
+            self.cambia_pantalla()
 
     @pyqtSlot()
     def aceptar(self):
@@ -108,15 +112,18 @@ class MainWindow (QMainWindow):
             if self.trayectoria.get_clicked() is not 0:
                 self.pos = 1
                 self.btn_regresar.show()
-                self.cambiar_central()
+                self.cambia_pantalla()
             else:
                 print("Error")
         elif self.pos is 1:
             self.pos = 2
-            self.cambiar_central()
+            self.cambia_pantalla()
         elif self.pos is 2:
-            self.pos = 3
-            self.cambiar_central()
+            if self.menu_fluidos.get_clicked() is not 0:
+                self.pos = 3
+                self.cambia_pantalla()
+            else:
+                print("Error")
 
     @pyqtSlot()
     def cancelar(self):
@@ -131,18 +138,34 @@ class MainWindow (QMainWindow):
             self.intercambiar_imagen(source, False)
             self.stop = False
         elif event.type() == QEvent.MouseButtonPress:
-            print("Holi")
             self.ponimagen(source)
         return False
 
     def intercambiar_imagen(self, source, flag):
-        if self.frame_trayectoria.show:
+        if self.pos is 0:
             self.trayectoria.cambiar_imagen(source, flag)
+        elif self.pos is 2:
+            self.menu_fluidos.intercambiar_imagen(source, flag)
 
     def ponimagen(self, source):
-        if self.frame_trayectoria.show:
+        if self.pos is 0:
             self.trayectoria.isclicked(source)
+        if self.pos is 2:
+            self.menu_fluidos.isclicked(source)
 
+    def cambiarfondo(self):
+        if self.pos is 1 or self.pos is 3:
+            palette = QPalette()
+            palette.setBrush(10, QBrush(QImage("Imagenes/Fondo 2.png")))
+            self.setPalette(palette)
+        else:
+            palette = QPalette()
+            palette.setBrush(10, QBrush(QImage("Imagenes/Fondo.png")))
+            self.setPalette(palette)
+
+    def cambia_pantalla(self):
+        self.cambiar_central()
+        self.cambiarfondo()
 
 if __name__ == '__main__':
     w = MainWindow()
