@@ -76,7 +76,6 @@ class MenuFluidos(QMainWindow):
                 source.setPixmap(QPixmap("Imagenes/DibujoSmith.png"))
 
     def isclicked(self, source):
-        print("Holii")
         if source is self.grafica_bingham:
             source.setPixmap(QPixmap("Imagenes/BinghamSelect.png"))
             self.grafica_potencias.setPixmap(QPixmap("Imagenes/GraficaPotencias.png"))

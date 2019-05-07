@@ -89,7 +89,7 @@ class DatosFluidos:
         self.acondicionar(self.campo_vp)
         self.acondicionar(self.campo_pc)
 
-    def cambia_trayectoria(self, tipo):
+    def cambia_modelo(self, tipo):
         if tipo is 1:
             self.imagen_tipo.setPixmap(QPixmap("Imagenes/GraficaBingham.png"))
             self.desactiva_todo()

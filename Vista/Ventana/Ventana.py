@@ -89,6 +89,7 @@ class MainWindow (QMainWindow):
         if self.pos is 3:
             self.frame_menu_fluiods.hide()
             self.frame_datos_fluidos.show()
+            self.DatosFluidos.cambia_modelo(self.menu_fluidos.get_clicked())
 
     @pyqtSlot()
     def regresar(self):
