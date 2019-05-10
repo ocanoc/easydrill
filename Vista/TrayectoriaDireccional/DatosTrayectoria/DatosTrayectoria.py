@@ -8,6 +8,7 @@ from PyQt5.QtWidgets import *
 class DatosTrayectoria:
     app = QApplication(sys.argv)
     app.setStyle('Fusion')
+    trayectoria_select = 0
     texto_encabezado = QLabel()
     texto_encabezado.setScaledContents(True)
     texto_encabezado.setFixedSize(250, 50)
@@ -26,15 +27,15 @@ class DatosTrayectoria:
     layout_vertical = QFormLayout()
     layout_vertical.setFormAlignment(Qt.AlignCenter)
     layout_vertical.setVerticalSpacing(50)
-    layout_vertical.addRow("Profunidad [m]", campo_profundidad)
-    layout_vertical.addRow("KOP [m]", campo_KOP)
-    layout_vertical.addRow("BUR [°/ 30 m]", campo_severidad_incremeto)
+    layout_vertical.addRow("Profunidad [md]", campo_profundidad)
+    layout_vertical.addRow("KOP [md]", campo_KOP)
+    layout_vertical.addRow("BUR [°/ 30 md]", campo_severidad_incremeto)
     layout_vertical.addRow("Angulo Máximo [°]", campo_angulo_maximo)
     layout_vertical2 = QFormLayout()
     layout_vertical2.setFormAlignment(Qt.AlignCenter)
     layout_vertical2.setVerticalSpacing(50)
-    layout_vertical2.addRow("DOP [m]", campo_dop)
-    layout_vertical2.addRow("DOR [°/ 30 m]", campo_severdad_decremento)
+    layout_vertical2.addRow("DOP [md]", campo_dop)
+    layout_vertical2.addRow("DOR [°/ 30 md]", campo_severdad_decremento)
     layout_vertical2.addRow("Angulo final [°]", campo_angulo_final)
     layout_vertical2.addRow("", QLabel())
     layout_contenido = QHBoxLayout()
@@ -66,6 +67,7 @@ class DatosTrayectoria:
             self.imagen_tipo.setPixmap(QPixmap("Imagenes/ImagenVertical.png"))
             self.desactiva_todo()
             self.activa_vertical()
+
         elif tipo is 2:
             self.imagen_tipo.setPixmap(QPixmap("Imagenes/ImagenTipoJ.png"))
             self.desactiva_todo()
@@ -78,6 +80,7 @@ class DatosTrayectoria:
             self.imagen_tipo.setPixmap(QPixmap("Imagenes/ImagenHorizontal.png"))
             self.desactiva_todo()
             self.activa_h()
+        self.trayectoria_select = tipo
 
     @staticmethod
     def acondicionar(lineedit):
@@ -117,3 +120,22 @@ class DatosTrayectoria:
         self.acondicionar(self.campo_dop)
         self.acondicionar(self.campo_KOP)
         self.acondicionar(self.campo_angulo_maximo)
+
+    def check(self):
+        if self.trayectoria_select is 1:
+            try:
+                if float(self.campo_profundidad.text()) > 0:
+                    return True
+            except ValueError:
+                return False
+        elif self.trayectoria_select is 2:
+            try:
+                if float(self.campo_profundidad.text()) > 0:
+                    return True
+            except ValueError:
+                return False
+        elif self.trayectoria_select is 3:
+            print("Holi")
+        elif self.trayectoria_select is 4:
+            print("Holi")
+        return False

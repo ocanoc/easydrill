@@ -26,9 +26,6 @@ class MainWindow (QMainWindow):
     DatosTrayectoria = DatosTrayectoria()
     frame_datos_trayectoria = DatosTrayectoria.get_frame()
     frame_datos_trayectoria.hide()
-    menu_fluidos = MenuFluidos()
-    frame_menu_fluiods = menu_fluidos.get_frame()
-    frame_menu_fluiods.hide()
     DatosFluidos = DatosFluidos()
     frame_datos_fluidos = DatosFluidos.get_frame()
     frame_datos_fluidos.hide()
@@ -44,10 +41,12 @@ class MainWindow (QMainWindow):
     layout_pantalla.addWidget(frame_trayectoria)
     layout_pantalla.addWidget(frame_datos_trayectoria)
     layout_pantalla.addWidget(frame_datos_fluidos)
-    layout_pantalla.addWidget(frame_menu_fluiods)
     layout_pantalla.addLayout(layout_btn)
     layout_pantalla.addSpacing(25)
     central_widget.setLayout(layout_pantalla)
+    error_dialog = QErrorMessage()
+
+
 
     def __init__(self):
         super(MainWindow, self).__init__()
@@ -60,10 +59,11 @@ class MainWindow (QMainWindow):
         self.trayectoria.imagen_tipo_s.installEventFilter(self)
         self.trayectoria.imagen_tipo_j.installEventFilter(self)
         self.trayectoria.imagen_horizontal.installEventFilter(self)
-        self.menu_fluidos.grafica_bingham.installEventFilter(self)
-        self.menu_fluidos.grafica_potencias.installEventFilter(self)
-        self.menu_fluidos.grafica_potencias_m.installEventFilter(self)
-        self.menu_fluidos.dibujo_smith.installEventFilter(self)
+        self.DatosFluidos.tipo_datos.installEventFilter(self)
+        self.DatosFluidos.MenuFluidos.grafica_bingham.installEventFilter(self)
+        self.DatosFluidos.MenuFluidos.grafica_potencias.installEventFilter(self)
+        self.DatosFluidos.MenuFluidos.grafica_potencias_m.installEventFilter(self)
+        self.DatosFluidos.MenuFluidos.dibujo_smith.installEventFilter(self)
         self.setWindowTitle("Easy Drill")
         self.setGeometry((GetSystemMetrics(0)-width)/2, (GetSystemMetrics(1)-height)/2, width, height)
         self.setWindowIcon(QIcon("Imagenes/Gota.png"))
@@ -81,15 +81,10 @@ class MainWindow (QMainWindow):
             self.frame_trayectoria.hide()
             self.DatosTrayectoria.cambia_trayectoria(self.trayectoria.get_clicked())
             self.frame_datos_trayectoria.show()
-            self.frame_menu_fluiods.hide()
+            self.frame_datos_fluidos.hide()
         if self.pos is 2:
             self.frame_datos_trayectoria.hide()
-            self.frame_menu_fluiods.show()
-            self.frame_datos_fluidos.hide()
-        if self.pos is 3:
-            self.frame_menu_fluiods.hide()
             self.frame_datos_fluidos.show()
-            self.DatosFluidos.cambia_modelo(self.menu_fluidos.get_clicked())
 
     @pyqtSlot()
     def regresar(self):
@@ -115,44 +110,60 @@ class MainWindow (QMainWindow):
                 self.btn_regresar.show()
                 self.cambia_pantalla()
             else:
-                print("Error")
+                self.error_dialog.showMessage('Debes seleccionar el tipo de trayectoria')
         elif self.pos is 1:
-            self.pos = 2
-            self.cambia_pantalla()
-        elif self.pos is 2:
-            if self.menu_fluidos.get_clicked() is not 0:
-                self.pos = 3
+            if self.DatosTrayectoria.check():
+                self.pos = 2
                 self.cambia_pantalla()
             else:
-                print("Error")
+                self.error_dialog.showMessage('Datos Errorneos o incompletos')
+
+        elif self.pos is 2:
+            self.pos = 3
+            self.cambia_pantalla()
+
 
     @pyqtSlot()
     def cancelar(self):
         pass
 
     def eventFilter(self, source, event):
-        if event.type() == QEvent.Enter:
-            self.intercambiar_imagen(source, True)
-            self.stop = True
-            return True
-        elif event.type() == QEvent.Leave:
-            self.intercambiar_imagen(source, False)
-            self.stop = False
-        elif event.type() == QEvent.MouseButtonPress:
-            self.ponimagen(source)
+        if source is self.DatosFluidos.tipo_datos:
+            if event.type() == QEvent.MouseButtonPress:
+                if self.DatosFluidos.flag:
+                    self.DatosFluidos.cambia_datos(False)
+                    print("Laboratorio")
+                else:
+                    self.DatosFluidos.cambia_datos(True)
+                    print("Campo")
+        else:
+            if event.type() == QEvent.Enter:
+                self.intercambiar_imagen(source, True)
+                self.stop = True
+                return True
+            elif event.type() == QEvent.Leave:
+                self.intercambiar_imagen(source, False)
+                self.stop = False
+            elif event.type() == QEvent.MouseButtonPress:
+                self.ponimagen(source)
+            return False
         return False
 
     def intercambiar_imagen(self, source, flag):
         if self.pos is 0:
             self.trayectoria.cambiar_imagen(source, flag)
         elif self.pos is 2:
-            self.menu_fluidos.intercambiar_imagen(source, flag)
+            self.DatosFluidos.MenuFluidos.intercambiar_imagen(source, flag)
 
     def ponimagen(self, source):
         if self.pos is 0:
             self.trayectoria.isclicked(source)
+            self.aceptar()
         if self.pos is 2:
-            self.menu_fluidos.isclicked(source)
+            if self.DatosFluidos.checkdatos():
+                self.DatosFluidos.MenuFluidos.isclicked(source)
+            else:
+                self.error_dialog.showMessage('Oh no!')
 
     def cambiarfondo(self):
         if self.pos is 1 or self.pos is 3:

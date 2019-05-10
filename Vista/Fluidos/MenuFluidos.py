@@ -31,14 +31,12 @@ class MenuFluidos(QMainWindow):
     layout_contenido.addWidget(grafica_potencias)
     layout_contenido.addWidget(grafica_potencias_m)
     layout_contenido.addWidget(dibujo_smith)
+
     layout_pantalla = QVBoxLayout()
-    layout_pantalla.addSpacing(11)
     layout_pantalla.addWidget(texto_encabezado)
-    layout_pantalla.addSpacing(80)
     layout_pantalla.addWidget(instruccioes)
-    layout_pantalla.addStretch(10)
+    layout_pantalla.addStretch()
     layout_pantalla.addLayout(layout_contenido)
-    layout_pantalla.addSpacing(10)
     frame_pantalla = QFrame()
     frame_pantalla.setLayout(layout_pantalla)
     frame_pantalla.setFont(QFont('Calibri (Cuerpo)', 12, QFont.Bold))
@@ -106,8 +104,8 @@ class MenuFluidos(QMainWindow):
 
     @staticmethod
     def acondiciona(label):
-        ancho = 220
-        largo = 270
+        ancho = 150
+        largo = 180
         label.setScaledContents(True)
         label.setFixedSize(ancho, largo)
         label.setCursor(Qt.PointingHandCursor)

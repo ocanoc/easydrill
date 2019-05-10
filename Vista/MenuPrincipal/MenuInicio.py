@@ -1,3 +1,4 @@
+from Recursos.Widgets.SwitchButton.SwitchButton import *
 from Vista.Ventana.Ventana import *
 
 
@@ -19,6 +20,8 @@ class MainWindow(QMainWindow):
     def init_ui(self):
         horizontal = QHBoxLayout()
         vertical = QVBoxLayout()
+        swt = SwitchButton()
+        print(swt.isEnabled())
         btn1 = QPushButton("Nuevo")
         btn2 = QPushButton("Cargar")
         btn3 = QPushButton("Tuberia y Herramientas")
@@ -40,6 +43,7 @@ class MainWindow(QMainWindow):
         vertical.addSpacing(10)
         vertical.addWidget(btn3)
         vertical.addSpacing(10)
+        vertical.addWidget(swt)
         vertical.addStretch()
         logo = QLabel()
         logo.setPixmap(QPixmap("Imagenes/EasyDrllLogo.png"))
