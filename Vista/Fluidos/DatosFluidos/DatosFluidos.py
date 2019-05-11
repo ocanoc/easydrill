@@ -6,21 +6,26 @@ class DatosFluidos:
     flag = True
     app = QApplication(sys.argv)
     app.setStyle('Fusion')
+
     texto_encabezado = QLabel()
     texto_encabezado.setScaledContents(True)
     texto_encabezado.setFixedSize(250, 50)
     texto_encabezado.setPixmap(QPixmap("Imagenes/TextoDatosFluido.png"))
+
     tipo_datos = SwitchButton()
     label_dc = QLabel("Datos de campo")
     label_dl = QLabel("Datos de laboratorio")
+
     campo_densidad = QLineEdit()
     campo_l600 = QLineEdit()
     campo_l300 = QLineEdit()
     campo_pc = QLineEdit()
     campo_vp = QLineEdit()
     campo_gel = QLineEdit()
+
     MenuFluidos = MenuFluidos()
     frame_reologia = MenuFluidos.get_frame()
+
     layout_izquierda = QFormLayout()
     layout_izquierda.addRow("""Densidad<div class="fraction">
 <span class="fup">gr</span>
@@ -42,6 +47,8 @@ class DatosFluidos:
 <span class="bar">/</span>
 <span class="fdn">100ft<sup>2</sup></span>
 </div>""", campo_l600)
+    layout_izquierda.setVerticalSpacing(20)
+    layout_izquierda.setFormAlignment(Qt.AlignCenter)
 
     layout_derecha = QFormLayout()
     layout_derecha.addRow("Vp cp", campo_vp)
@@ -53,8 +60,6 @@ class DatosFluidos:
     layout_derecha.setVerticalSpacing(20)
     layout_derecha.itemAt(0, QFormLayout.LabelRole)
     layout_derecha.setRowWrapPolicy(QFormLayout.WrapLongRows)
-    layout_izquierda.setVerticalSpacing(20)
-    layout_izquierda.setFormAlignment(Qt.AlignCenter)
     layout_derecha.setFormAlignment(Qt.AlignTop)
     layout_centro.setFormAlignment(Qt.AlignTop)
     layout_centro.setVerticalSpacing(20)
@@ -129,5 +134,22 @@ class DatosFluidos:
         lineedit.setPlaceholderText("0")
         lineedit.setFixedWidth(80)
 
-    def checkdatos(self):
-        pass
+    def check(self):
+        try:
+            if self.flag:
+                if float(self.campo_pc.text()) > 0 and float(self.campo_vp.text()) > 0:
+                    return True
+            else:
+                if float(self.campo_l600.text()) > 0 and float(self.campo_l300.text()) > 0:
+                    return True
+        except ValueError:
+            return False
+        return False
+
+    def check_gel(self):
+        try:
+            if float(self.campo_gel.text()) > 0:
+                return True
+        except ValueError:
+            return False
+        return False

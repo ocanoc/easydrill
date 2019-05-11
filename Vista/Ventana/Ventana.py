@@ -13,6 +13,7 @@ class MainWindow (QMainWindow):
     app.setStyle('Fusion')
     pos = 0
     stop = False
+
     btn_aceptar = QPushButton("Aceptar")
     btn_aceptar.setFixedSize(100, 30)
     btn_cancelar = QPushButton("Cancelar")
@@ -20,15 +21,19 @@ class MainWindow (QMainWindow):
     btn_regresar = QPushButton("Regresar")
     btn_regresar.setFixedSize(100, 30)
     btn_regresar.hide()
+
     trayectoria = Trayectoria()
     frame_trayectoria = trayectoria.get_frame()
     frame_trayectoria.hide()
+
     DatosTrayectoria = DatosTrayectoria()
     frame_datos_trayectoria = DatosTrayectoria.get_frame()
     frame_datos_trayectoria.hide()
+
     DatosFluidos = DatosFluidos()
     frame_datos_fluidos = DatosFluidos.get_frame()
     frame_datos_fluidos.hide()
+
     layout_btn = QHBoxLayout()
     layout_btn.addSpacing(50)
     layout_btn.addWidget(btn_cancelar, 1, Qt.AlignLeft)
@@ -36,17 +41,18 @@ class MainWindow (QMainWindow):
     layout_btn.addSpacing(20)
     layout_btn.addWidget(btn_aceptar, 1)
     layout_btn.addSpacing(50)
+
     layout_pantalla = QVBoxLayout()
-    central_widget = QWidget()
     layout_pantalla.addWidget(frame_trayectoria)
     layout_pantalla.addWidget(frame_datos_trayectoria)
     layout_pantalla.addWidget(frame_datos_fluidos)
     layout_pantalla.addLayout(layout_btn)
     layout_pantalla.addSpacing(25)
+
+    central_widget = QWidget()
     central_widget.setLayout(layout_pantalla)
+
     error_dialog = QErrorMessage()
-
-
 
     def __init__(self):
         super(MainWindow, self).__init__()
@@ -119,9 +125,9 @@ class MainWindow (QMainWindow):
                 self.error_dialog.showMessage('Datos Errorneos o incompletos')
 
         elif self.pos is 2:
+            if
             self.pos = 3
             self.cambia_pantalla()
-
 
     @pyqtSlot()
     def cancelar(self):
@@ -160,10 +166,16 @@ class MainWindow (QMainWindow):
             self.trayectoria.isclicked(source)
             self.aceptar()
         if self.pos is 2:
-            if self.DatosFluidos.checkdatos():
+            if source is self.DatosFluidos.MenuFluidos.grafica_potencias_m:
+                if self.DatosFluidos.check_gel() and self.DatosFluidos.check():
+                    self.DatosFluidos.MenuFluidos.isclicked(source)
+                    print("Ok")
+                else:
+                    self.error_dialog.showMessage('Este modelo reologico necesita el campo Gel.')
+            elif self.DatosFluidos.check():
                 self.DatosFluidos.MenuFluidos.isclicked(source)
             else:
-                self.error_dialog.showMessage('Oh no!')
+                self.error_dialog.showMessage('Datos Errorneos o incompletos')
 
     def cambiarfondo(self):
         if self.pos is 1 or self.pos is 3:
@@ -178,6 +190,7 @@ class MainWindow (QMainWindow):
     def cambia_pantalla(self):
         self.cambiar_central()
         self.cambiarfondo()
+
 
 if __name__ == '__main__':
     w = MainWindow()
