@@ -2,8 +2,8 @@ from win32api import GetSystemMetrics
 
 from DatosTrayectoria.DatosTrayectoria import *
 from Fluidos.DatosFluidos.DatosFluidos import *
-from Fluidos.MenuFluidos import *
 from TrayectoriaDireccional.MenuTrayectoria import Trayectoria
+from TuberiasRevestmiento.MenuTuberiasRevestimiento import *
 
 
 # noinspection PyArgumentList
@@ -34,6 +34,10 @@ class MainWindow (QMainWindow):
     frame_datos_fluidos = DatosFluidos.get_frame()
     frame_datos_fluidos.hide()
 
+    Tuberiras_revetimietno = TuberiasRevestimiento()
+    frame_tuberias_revestimiento = Tuberiras_revetimietno.get_frame()
+    frame_tuberias_revestimiento.hide()
+
     layout_btn = QHBoxLayout()
     layout_btn.addSpacing(50)
     layout_btn.addWidget(btn_cancelar, 1, Qt.AlignLeft)
@@ -46,6 +50,7 @@ class MainWindow (QMainWindow):
     layout_pantalla.addWidget(frame_trayectoria)
     layout_pantalla.addWidget(frame_datos_trayectoria)
     layout_pantalla.addWidget(frame_datos_fluidos)
+    layout_pantalla.addWidget(frame_tuberias_revestimiento)
     layout_pantalla.addLayout(layout_btn)
     layout_pantalla.addSpacing(25)
 
@@ -91,6 +96,10 @@ class MainWindow (QMainWindow):
         if self.pos is 2:
             self.frame_datos_trayectoria.hide()
             self.frame_datos_fluidos.show()
+            self.frame_tuberias_revestimiento.hide()
+        if self.pos is 3:
+            self.frame_datos_fluidos.hide()
+            self.frame_tuberias_revestimiento.show()
 
     @pyqtSlot()
     def regresar(self):
@@ -123,11 +132,12 @@ class MainWindow (QMainWindow):
                 self.cambia_pantalla()
             else:
                 self.error_dialog.showMessage('Datos Errorneos o incompletos')
-
         elif self.pos is 2:
-            if
-            self.pos = 3
-            self.cambia_pantalla()
+            if self.DatosFluidos.check() and self.DatosFluidos.MenuFluidos.get_clicked():
+                self.pos = 3
+                self.cambia_pantalla()
+            else:
+                self.error_dialog.showMessage('Datos Errorneos o incompletos')
 
     @pyqtSlot()
     def cancelar(self):

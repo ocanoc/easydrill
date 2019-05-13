@@ -61,6 +61,7 @@ class DatosFluidos:
     layout_derecha.itemAt(0, QFormLayout.LabelRole)
     layout_derecha.setRowWrapPolicy(QFormLayout.WrapLongRows)
     layout_derecha.setFormAlignment(Qt.AlignTop)
+
     layout_centro.setFormAlignment(Qt.AlignTop)
     layout_centro.setVerticalSpacing(20)
 
@@ -137,10 +138,14 @@ class DatosFluidos:
     def check(self):
         try:
             if self.flag:
-                if float(self.campo_pc.text()) > 0 and float(self.campo_vp.text()) > 0:
+                if float(self.campo_pc.text()) > 0 \
+                        and float(self.campo_vp.text()) > 0 \
+                        and float(self.campo_densidad.text()) > 0:
                     return True
             else:
-                if float(self.campo_l600.text()) > 0 and float(self.campo_l300.text()) > 0:
+                if float(self.campo_l600.text()) > 0 \
+                        and float(self.campo_l300.text()) > 0 \
+                        and float(self.campo_densidad.text()) > 0:
                     return True
         except ValueError:
             return False

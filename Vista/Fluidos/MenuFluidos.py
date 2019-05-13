@@ -100,7 +100,9 @@ class MenuFluidos(QMainWindow):
             self.clicked = 4
 
     def get_clicked(self):
-        return self.clicked
+        if self.clicked:
+            return True
+        return False
 
     @staticmethod
     def acondiciona(label):
