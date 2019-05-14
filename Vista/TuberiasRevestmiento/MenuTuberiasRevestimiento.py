@@ -10,7 +10,6 @@ from TuberiasRevestmiento.DatosTuberiaRevestimiento.DatosTuberias import DatosTu
 class TuberiasRevestimiento:
     app = QApplication(sys.argv)
     app.setStyle('Fusion')
-    trayectoria_select = 0
 
     texto_encabezado = QLabel()
     texto_encabezado.setScaledContents(True)
@@ -22,23 +21,16 @@ class TuberiasRevestimiento:
     imagen_mecanico.setScaledContents(True)
     imagen_mecanico.setFixedSize(196, 379)
 
-    wea = DatosTuberia()
     etapa = QToolBox()
-    etapa.insertItem(1, wea, "Hlolis")
-    etapa.insertItem(2, DatosTuberia(), "Etapa 1")
-    etapa.insertItem(3, DatosTuberia(), "Etapa 2")
     etapa.setFixedSize(550, 315)
 
-    btnancho = 30
     mas = QPushButton()
     mas.setIcon(QIcon("Imagenes/mas.png"))
-    mas.setIconSize(QSize(btnancho, btnancho))
-    mas.setFixedSize(btnancho, btnancho)
+    mas.setToolTip("Agrega Etapa")
 
     menos = QPushButton()
     menos.setIcon(QIcon("Imagenes/menos.png"))
-    menos.setIconSize(QSize(btnancho, btnancho))
-    menos.setFixedSize(btnancho, btnancho)
+    menos.setToolTip("Elimina Etapa")
 
     layout_botones = QHBoxLayout()
     layout_botones.addStretch(10)
@@ -67,7 +59,31 @@ class TuberiasRevestimiento:
     frame_pantalla.setFont(QFont('Calibri (Cuerpo)', 12, QFont.Bold))
 
     def __init__(self):
-        pass
+        self.etapa.addItem(DatosTuberia(self.etapa), "Etapa 1")
+        self.mas.clicked.connect(lambda *args: self.agrega())
+        self.menos.clicked.connect(lambda *args: self.elimina())
+        self.acodiciona(self.mas)
+        self.acodiciona(self.menos)
+
+    def agrega(self):
+        self.etapa.addItem(DatosTuberia(self.etapa), "Etapa {}".format(self.etapa.count() + 1))
+
+    def elimina(self):
+        self.etapa.removeItem(self.etapa.currentIndex())
+        self.actualiza()
+
+    def actualiza(self):
+        count = self.etapa.count()  # number of items
+        for x in range(count):
+            self.etapa.setItemText(x, "Etapa {}".format(x + 1))
+            print(self.etapa.widget(x))
 
     def get_frame(self):
         return self.frame_pantalla
+
+    @staticmethod
+    def acodiciona(btn):
+        btnancho = 30
+        btn.setIconSize(QSize(btnancho, btnancho))
+        btn.setFixedSize(btnancho, btnancho)
+        btn.setCursor(Qt.PointingHandCursor)

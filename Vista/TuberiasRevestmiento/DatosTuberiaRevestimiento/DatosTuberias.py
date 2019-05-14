@@ -1,50 +1,50 @@
-import sys
-
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
 
-class DatosTuberia(QFrame):
-    app = QApplication(sys.argv)
-    app.setStyle('Fusion')
+class DatosTuberia(QWidget):
+    def __init__(self, parent=None):
+        super(DatosTuberia, self).__init__(parent)
+        self.campo_longitud = QLineEdit()
+        self.campo_id = QLineEdit()
+        self.campo_od = QLineEdit()
+        self.campo_bl = QLineEdit()
 
-    campo_longitud = QLineEdit()
-    campo_id = QLineEdit()
-    campo_od = QLineEdit()
-    campo_bl = QLineEdit()
+        self.tipo_tuberia = QComboBox()
+        self.tipo_tuberia.insertItem(0, "TR")
+        self.tipo_tuberia.insertItem(1, "Liner")
+        self.tipo_tuberia.setCursor(Qt.PointingHandCursor)
+        self.tipo_tuberia.currentIndexChanged.connect(self.selectionchange)
 
-    tipo_tuberia = QComboBox()
-    tipo_tuberia.addItems({"Liner", "TR"})
+        self.layout_izquierda = QFormLayout()
+        self.layout_izquierda.addRow("Tipo de tuberia", self.tipo_tuberia)
+        self.layout_izquierda.addRow("Longitud [m]", self.campo_longitud)
+        self.layout_izquierda.setVerticalSpacing(20)
+        self.layout_izquierda.setFormAlignment(Qt.AlignTop)
 
-    layout_izquierda = QFormLayout()
-    layout_izquierda.addRow("Tipo de tuberia", tipo_tuberia)
-    layout_izquierda.addRow("Longitud [m]", campo_longitud)
-    layout_izquierda.setVerticalSpacing(20)
-    layout_izquierda.setFormAlignment(Qt.AlignTop)
+        self.layout_derecha = QFormLayout()
+        self.layout_derecha.addRow("ID [pg]", self.campo_id)
+        self.layout_derecha.addRow("OD [pg]", self.campo_od)
+        self.layout_derecha.setVerticalSpacing(20)
+        self.layout_derecha.setFormAlignment(Qt.AlignTop)
 
-    layout_derecha = QFormLayout()
-    layout_derecha.addRow("ID [pg]", campo_id)
-    layout_derecha.addRow("OD [pg]", campo_od)
-    layout_derecha.addRow("B.L [m]", campo_bl)
-    layout_derecha.setVerticalSpacing(20)
-    layout_derecha.setFormAlignment(Qt.AlignTop)
+        self.layout_campos = QHBoxLayout()
+        self.layout_campos.addLayout(self.layout_izquierda)
+        self.layout_campos.addLayout(self.layout_derecha)
 
-    layout_campos = QHBoxLayout()
-    layout_campos.addLayout(layout_izquierda)
-    layout_campos.addLayout(layout_derecha)
-
-    layout_pantalla = QVBoxLayout()
-    layout_pantalla.addLayout(layout_campos)
-
-    def __init__(self):
-        super(DatosTuberia, self).__init__()
+        self.layout_pantalla = QVBoxLayout()
+        self.layout_pantalla.addLayout(self.layout_campos)
         self.setLayout(self.layout_pantalla)
-        self.setFont(QFont('Calibri (Cuerpo)', 12, QFont.Bold))
         palette = QPalette()
         self.setAutoFillBackground(True)
         palette.setColor(self.backgroundRole(), QColor(208, 206, 206))
         self.setPalette(palette)
+        self.setFont(QFont('Calibri (Cuerpo)', 12, QFont.Bold))
 
-    def get_frame(self):
-        return self.frame_pantalla
+    def selectionchange(self, i):
+        if i is 0:
+            self.layout_derecha.removeRow(2)
+        elif i is 1:
+            self.campo_bl = QLineEdit()
+            self.layout_derecha.addRow("B.L [m]", self.campo_bl)

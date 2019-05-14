@@ -15,11 +15,8 @@ class MainWindow (QMainWindow):
     stop = False
 
     btn_aceptar = QPushButton("Aceptar")
-    btn_aceptar.setFixedSize(100, 30)
     btn_cancelar = QPushButton("Cancelar")
-    btn_cancelar.setFixedSize(100, 30)
     btn_regresar = QPushButton("Regresar")
-    btn_regresar.setFixedSize(100, 30)
     btn_regresar.hide()
 
     trayectoria = Trayectoria()
@@ -63,9 +60,17 @@ class MainWindow (QMainWindow):
         super(MainWindow, self).__init__()
         width = 1000
         height = 600
+        self.setWindowTitle("Easy Drill")
+        self.setGeometry((GetSystemMetrics(0) - width) / 2, (GetSystemMetrics(1) - height) / 2, width, height)
+        self.setWindowIcon(QIcon("Imagenes/Gota.png"))
+        self.acodiciona(self.btn_aceptar)
+        self.acodiciona(self.btn_cancelar)
+        self.acodiciona(self.btn_regresar)
+
         palette = QPalette()
         palette.setBrush(10, QBrush(QImage("Imagenes/Fondo.png")))
         self.setPalette(palette)
+
         self.trayectoria.imagen_vertical.installEventFilter(self)
         self.trayectoria.imagen_tipo_s.installEventFilter(self)
         self.trayectoria.imagen_tipo_j.installEventFilter(self)
@@ -75,9 +80,7 @@ class MainWindow (QMainWindow):
         self.DatosFluidos.MenuFluidos.grafica_potencias.installEventFilter(self)
         self.DatosFluidos.MenuFluidos.grafica_potencias_m.installEventFilter(self)
         self.DatosFluidos.MenuFluidos.dibujo_smith.installEventFilter(self)
-        self.setWindowTitle("Easy Drill")
-        self.setGeometry((GetSystemMetrics(0)-width)/2, (GetSystemMetrics(1)-height)/2, width, height)
-        self.setWindowIcon(QIcon("Imagenes/Gota.png"))
+
         self.cambiar_central()
         self.setCentralWidget(self.central_widget)
         self.btn_aceptar.clicked.connect(self.aceptar)
@@ -125,19 +128,19 @@ class MainWindow (QMainWindow):
                 self.btn_regresar.show()
                 self.cambia_pantalla()
             else:
-                self.error_dialog.showMessage('Debes seleccionar el tipo de trayectoria')
+                QMessageBox.critical(self, "Error", "Datos erroneos o incompletos")
         elif self.pos is 1:
             if self.DatosTrayectoria.check():
                 self.pos = 2
                 self.cambia_pantalla()
             else:
-                self.error_dialog.showMessage('Datos Errorneos o incompletos')
+                QMessageBox.critical(self, "Error", "Datos erroneos o incompletos")
         elif self.pos is 2:
             if self.DatosFluidos.check() and self.DatosFluidos.MenuFluidos.get_clicked():
                 self.pos = 3
                 self.cambia_pantalla()
             else:
-                self.error_dialog.showMessage('Datos Errorneos o incompletos')
+                QMessageBox.critical(self, "Error", "Datos erroneos o incompletos")
 
     @pyqtSlot()
     def cancelar(self):
@@ -148,10 +151,8 @@ class MainWindow (QMainWindow):
             if event.type() == QEvent.MouseButtonPress:
                 if self.DatosFluidos.flag:
                     self.DatosFluidos.cambia_datos(False)
-                    print("Laboratorio")
                 else:
                     self.DatosFluidos.cambia_datos(True)
-                    print("Campo")
         else:
             if event.type() == QEvent.Enter:
                 self.intercambiar_imagen(source, True)
@@ -181,11 +182,11 @@ class MainWindow (QMainWindow):
                     self.DatosFluidos.MenuFluidos.isclicked(source)
                     print("Ok")
                 else:
-                    self.error_dialog.showMessage('Este modelo reologico necesita el campo Gel.')
+                    QMessageBox.critical(self, "Error", "Este modelo reologico necesita el campo Gel.")
             elif self.DatosFluidos.check():
                 self.DatosFluidos.MenuFluidos.isclicked(source)
             else:
-                self.error_dialog.showMessage('Datos Errorneos o incompletos')
+                QMessageBox.critical(self, "Error", "Datos erroneos o incompletos")
 
     def cambiarfondo(self):
         if self.pos is 1 or self.pos is 3:
@@ -200,6 +201,26 @@ class MainWindow (QMainWindow):
     def cambia_pantalla(self):
         self.cambiar_central()
         self.cambiarfondo()
+
+    @staticmethod
+    def acodiciona(btn):
+        btn.setCursor(Qt.PointingHandCursor)
+        btn.setFixedSize(100, 30)
+        btn.setStyleSheet("""
+            QPushButton {
+            background-color: rgb(0, 80, 85);
+            border-style: outset;
+            border-width: 1px;
+            border-radius: 5px;
+            font:  12px;
+            min-width: 8em;
+            padding: 6px;
+            color: white
+        }
+        QPushButton:pressed {
+            background-color: rgb(154, 154, 154);
+            border-style: inset;
+        }""")
 
 
 if __name__ == '__main__':
