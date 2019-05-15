@@ -50,9 +50,11 @@ class TuberiasRevestimiento(QWidget):
     layout_contenido.addLayout(layout_etapa)
 
     layout_pantalla = QVBoxLayout()
+    layout_pantalla.addSpacing(9)
     layout_pantalla.addWidget(texto_encabezado)
     layout_pantalla.addSpacing(20)
     layout_pantalla.addLayout(layout_contenido)
+    layout_pantalla.addStretch(1)
 
     def __init__(self):
         super(TuberiasRevestimiento, self).__init__()

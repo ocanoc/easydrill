@@ -52,7 +52,7 @@ class DatosTrayectoria(QWidget):
     layout_vertical2.addRow("", QLabel())
 
     layout_contenido = QHBoxLayout()
-    layout_contenido.addSpacing(21)
+    layout_contenido.addSpacing(17)
     layout_contenido.addWidget(imagen_tipo, 2, Qt.AlignLeft)
     layout_contenido.addSpacing(60)
     layout_contenido.addLayout(layout_vertical)
@@ -61,9 +61,9 @@ class DatosTrayectoria(QWidget):
     layout_contenido.addStretch(10)
 
     layout_pantalla = QVBoxLayout()
-    layout_pantalla.addSpacing(11)
+    layout_pantalla.addSpacing(9)
     layout_pantalla.addWidget(texto_encabezado)
-    layout_pantalla.addSpacing(8)
+    layout_pantalla.addSpacing(9)
     layout_pantalla.addLayout(layout_contenido)
     layout_pantalla.addSpacing(10)
 

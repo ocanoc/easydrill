@@ -3,7 +3,6 @@ import sys
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
-from win32api import GetSystemMetrics
 
 from DatosTrayectoria.DatosTrayectoria import DatosTrayectoria
 from Fluidos.DatosFluidos.DatosFluidos import DatosFluidos
@@ -13,7 +12,7 @@ from TuberiasRevestmiento.MenuTuberiasRevestimiento import TuberiasRevestimiento
 
 
 # noinspection PyArgumentList
-class Nuevo(QMainWindow):
+class Nuevo(QWidget):
     seleccion = 0
     app = QApplication(sys.argv)
     app.setStyle('Fusion')
@@ -54,24 +53,14 @@ class Nuevo(QMainWindow):
     layout_pantalla.addWidget(Tuberiras_revetimietno)
     layout_pantalla.addWidget(frame_tp)
     layout_pantalla.addLayout(layout_btn)
-    layout_pantalla.addSpacing(25)
-
-    central_widget = QWidget()
-    central_widget.setLayout(layout_pantalla)
-
-    error_dialog = QErrorMessage()
 
     def __init__(self):
         super(Nuevo, self).__init__()
-        width = 1000
-        height = 600
-        self.setWindowTitle("Easy Drill")
-        self.setGeometry((GetSystemMetrics(0) - width) / 2, (GetSystemMetrics(1) - height) / 2, width, height)
-        self.setWindowIcon(QIcon("Imagenes/Iconos/Gota.png"))
+
         self.acodiciona(self.btn_aceptar)
         self.acodiciona(self.btn_cancelar)
         self.acodiciona(self.btn_regresar)
-
+        self.setLayout(self.layout_pantalla)
         palette = QPalette()
         palette.setBrush(10, QBrush(QImage("Imagenes/Fondo/Fondo.png")))
         self.setPalette(palette)
@@ -87,10 +76,8 @@ class Nuevo(QMainWindow):
         self.DatosFluidos.MenuFluidos.dibujo_smith.installEventFilter(self)
 
         self.cambiar_central()
-        self.setCentralWidget(self.central_widget)
         self.btn_aceptar.clicked.connect(self.aceptar)
         self.btn_regresar.clicked.connect(self.regresar)
-        self.btn_cancelar.clicked.connect(self.cancelar)
 
     def cambiar_central(self):
         if self.pos is 0:
@@ -156,10 +143,6 @@ class Nuevo(QMainWindow):
         elif self.pos is 3:
             self.pos = 4
             self.cambia_pantalla()
-
-    @pyqtSlot()
-    def cancelar(self):
-        pass
 
     def eventFilter(self, source, event):
         if source is self.DatosFluidos.tipo_datos:
@@ -237,10 +220,3 @@ class Nuevo(QMainWindow):
                 background-color: rgb(154, 154, 154);
                 border-style: inset;
             }""")
-
-
-if __name__ == '__main__':
-    w = Nuevo()
-    w.setFixedSize(1000, 605)
-    w.show()
-    sys.exit(w.app.exec_())

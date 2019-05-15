@@ -42,7 +42,6 @@ class MenuFluidos(QWidget):
     layout_pantalla = QVBoxLayout()
     layout_pantalla.addWidget(texto_encabezado)
     layout_pantalla.addWidget(instruccioes)
-    layout_pantalla.addStretch()
     layout_pantalla.addLayout(layout_contenido)
 
     def __init__(self):

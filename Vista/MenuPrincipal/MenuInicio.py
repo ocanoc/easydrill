@@ -1,9 +1,26 @@
-from Recursos.Widgets.SwitchButton.SwitchButton import *
-from Vista.VentanaNuevo.VentanaNuevo import *
+import sys
+
+from PyQt5.QtCore import *
+from PyQt5.QtGui import *
+from PyQt5.QtWidgets import *
+from win32api import GetSystemMetrics
+
+from Vista.VentanaNuevo.VentanaNuevo import Nuevo
 
 
-# noinspection PyArgumentList
 class MenuInicio(QMainWindow):
+    stop = True
+    Nuevo = Nuevo()
+    Nuevo.hide()
+    frame_menu = QFrame()
+    layout_pantalla = QVBoxLayout()
+    layout_pantalla.addWidget(Nuevo)
+    layout_pantalla.addWidget(frame_menu)
+    layout_pantalla.addSpacing(10)
+    btn_nuevo = QPushButton()
+    btn_cargar = QPushButton()
+    btn_admin = QPushButton()
+
     def __init__(self):
         super(MenuInicio, self).__init__()
         width = 1000
@@ -15,56 +32,104 @@ class MenuInicio(QMainWindow):
         self.setWindowTitle("Easy Drill")
         self.setGeometry((GetSystemMetrics(0) - width) / 2, (GetSystemMetrics(1) - height) / 2, width, height)
         self.setWindowIcon(QIcon("Imagenes/Iconos/Gota.png"))
+        self.setFont(QFont('Calibri (Cuerpo)', 12, QFont.Bold))
         self.init_ui()
 
+
     def init_ui(self):
-        horizontal = QHBoxLayout()
-        vertical = QVBoxLayout()
-        swt = SwitchButton()
-        print(swt.isEnabled())
-        btn1 = QPushButton("Nuevo")
-        btn2 = QPushButton("Cargar")
-        btn3 = QPushButton("Tuberia y Herramientas")
-        btn1.setFont(QFont("Calibri(Cuerpo)", 12))
-        btn2.setFont(QFont("Calibri(Cuerpo)", 12))
-        btn3.setFont(QFont("Calibri(Cuerpo)", 12))
-        btn3.setIconSize(QSize(280, 1800))
-        btn1.setFixedWidth(250)
-        btn2.setFixedWidth(250)
-        btn3.setFixedWidth(250)
-        btn1.setFixedHeight(40)
-        btn2.setFixedHeight(40)
-        btn3.setFixedHeight(40)
-        central_widget = QWidget()
-        vertical.addStretch()
-        vertical.addWidget(btn1)
-        vertical.addSpacing(10)
-        vertical.addWidget(btn2)
-        vertical.addSpacing(10)
-        vertical.addWidget(btn3)
-        vertical.addSpacing(10)
-        vertical.addWidget(swt)
-        vertical.addStretch()
+        self.btn_nuevo.setIcon(QIcon("Imagenes/MenuPrincipal/nuevo.png"))
+        self.btn_cargar.setIcon(QIcon("Imagenes/MenuPrincipal/carga.png"))
+        self.btn_admin.setIcon(QIcon("Imagenes/MenuPrincipal/admin.png"))
+
+        self.acodiciona(self.btn_nuevo)
+        self.acodiciona(self.btn_cargar)
+        self.acodiciona(self.btn_admin)
+
         logo = QLabel()
-        logo.setPixmap(QPixmap("Imagenes/EasyDrllLogo.png"))
+        logo.setPixmap(QPixmap("Imagenes/MenuPrincipal/EasyDrllLogo.png"))
+        logo.setScaledContents(True)
+        logo.setFixedSize(556, 99)
+
         linea = QLabel()
-        linea.setPixmap(QPixmap("Imagenes/Linea.png").scaledToHeight(250))
+        linea.setPixmap(QPixmap("Imagenes/MenuPrincipal/Linea.png").scaledToHeight(250))
+
+        vertical = QVBoxLayout()
+        vertical.addStretch()
+        vertical.addWidget(self.btn_nuevo)
+        vertical.addSpacing(8)
+        vertical.addWidget(self.btn_cargar)
+        vertical.addSpacing(8)
+        vertical.addWidget(self.btn_admin)
+        vertical.addSpacing(8)
+        vertical.addStretch()
+
+        horizontal = QHBoxLayout()
         horizontal.addSpacing(10)
         horizontal.addWidget(logo, Qt.StretchTile, Qt.AlignHCenter)
-        horizontal.addSpacing(10)
+        horizontal.addSpacing(15)
         horizontal.addWidget(linea)
         horizontal.addSpacing(20)
         horizontal.addLayout(vertical, Qt.AlignHCenter)
         horizontal.addSpacing(20)
-        central_widget.setLayout(horizontal)
+
+        self.frame_menu.setLayout(horizontal)
+        central_widget = QWidget()
+        central_widget.setLayout(self.layout_pantalla)
         self.setCentralWidget(central_widget)
+        self.Nuevo.btn_cancelar.clicked.connect(lambda *args: self.cancelar())
+        self.btn_nuevo.clicked.connect(lambda *args: self.nuevo())
+
+    def cancelar(self):
+        self.Nuevo.hide()
+        self.frame_menu.show()
+
+    def nuevo(self):
+        self.Nuevo.show()
+        self.frame_menu.hide()
+
+    def eventFilter(self, source, event):
+        if event.type() == QEvent.Enter:
+            self.intercambiar_imagen(source, True)
+            self.stop = True
+            return True
+        elif event.type() == QEvent.Leave:
+            self.intercambiar_imagen(source, False)
+            self.stop = False
+        return False
+
+    def intercambiar_imagen(self, source, flag):
+        if source is self.btn_nuevo:
+            if flag:
+                source.setIcon(QIcon("Imagenes/MenuPrincipal/nuevopress.png"))
+            else:
+                source.setIcon(QIcon("Imagenes/MenuPrincipal/nuevo.png"))
+        if source is self.btn_cargar:
+            if flag:
+                source.setIcon(QIcon("Imagenes/MenuPrincipal/cargarpress.png"))
+            else:
+                source.setIcon(QIcon("Imagenes/MenuPrincipal/carga.png"))
+        if source is self.btn_admin:
+            if flag:
+                source.setIcon(QIcon("Imagenes/MenuPrincipal/adminpress.png"))
+            else:
+                source.setIcon(QIcon("Imagenes/MenuPrincipal/admin.png"))
+
+    def acodiciona(self, btn):
+        ancho = 300
+        largo = 60
+        btn.setCursor(Qt.PointingHandCursor)
+        btn.setFixedSize(ancho, largo)
+        btn.setIconSize(QSize(ancho, largo))
+        btn.setStyleSheet("border: 0px;")
+        btn.installEventFilter(self)
+
 
 
 if __name__ == '__main__':
     print("Width =", GetSystemMetrics(0))
     print("Height =", GetSystemMetrics(1))
     app = QApplication(sys.argv)
-    w = MainWindow()
-    w.setFixedSize(1000, 600)
+    w = MenuInicio()
+    w.setFixedSize(1000, 604)
     w.show()
     sys.exit(app.exec_())

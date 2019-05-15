@@ -22,7 +22,7 @@ class TuberiaPerforacion(QWidget):
     table.setModel(model)
     header = table.horizontalHeader()
     header.setMinimumSectionSize(65)
-    table.setFixedSize(719, 200)
+    table.setFixedSize(719, 185)
     table.setHorizontalHeader(header)
     table.setAlternatingRowColors(True)
     table.setStyleSheet("""
@@ -47,7 +47,7 @@ class TuberiaPerforacion(QWidget):
     menos.setToolTip("Elimina Etapa")
 
     layout_botones = QHBoxLayout()
-    layout_botones.addSpacing(735)
+    layout_botones.addSpacing(720)
     layout_botones.addWidget(mas)
     layout_botones.addSpacing(25)
     layout_botones.addWidget(menos)
@@ -55,7 +55,7 @@ class TuberiaPerforacion(QWidget):
 
     layout_inferior = QVBoxLayout()
     layout_inferior.addWidget(texto_tp)
-    layout_inferior.addSpacing(3)
+    layout_inferior.addSpacing(5)
     layout_inferior.addWidget(table, 1, Qt.AlignCenter)
     layout_inferior.addLayout(layout_botones)
 
@@ -81,11 +81,11 @@ class TuberiaPerforacion(QWidget):
     layout_equiposup.addRow("Longitud equivalente Tp [m]", longitud_equivalente)
     layout_equiposup.addRow("Bomba", bomba)
     layout_equiposup.addRow("Gasto[gpm]", label_gasto)
-    layout_equiposup.setVerticalSpacing(20)
+    layout_equiposup.setVerticalSpacing(10)
     layout_equiposup.setAlignment(Qt.AlignCenter)
 
     layout_izquierda = QVBoxLayout()
-    layout_izquierda.addSpacing(11)
+    layout_izquierda.addSpacing(9)
     layout_izquierda.addWidget(texto_conexiones)
     layout_izquierda.addSpacing(10)
     layout_izquierda.addLayout(layout_equiposup)
@@ -100,16 +100,15 @@ class TuberiaPerforacion(QWidget):
     layout_barrena = QFormLayout()
     layout_barrena.addRow("Barrena", barrena)
     layout_barrena.addRow("Area toberas [pg<sup>2</sup>]", laabel_area_toberas)
-    layout_barrena.setVerticalSpacing(20)
+    layout_barrena.setVerticalSpacing(10)
 
     layout_derecha = QVBoxLayout()
-    layout_derecha.addSpacing(11)
+    layout_derecha.addSpacing(9)
     layout_derecha.addWidget(texto_barrena)
     layout_derecha.addSpacing(10)
     layout_derecha.addLayout(layout_barrena)
 
     layout_superior = QHBoxLayout()
-    layout_superior.addSpacing(10)
     layout_superior.addLayout(layout_izquierda)
     layout_superior.addSpacing(10)
     layout_superior.addWidget(btn_tabla, 1, Qt.AlignBaseline)
@@ -119,7 +118,7 @@ class TuberiaPerforacion(QWidget):
 
     layout_pantalla = QVBoxLayout()
     layout_pantalla.addLayout(layout_superior)
-    layout_pantalla.addSpacing(40)
+    layout_pantalla.addSpacing(10)
     layout_pantalla.addLayout(layout_inferior)
 
     def __init__(self, parent=None):
