@@ -26,7 +26,7 @@
       <sourceFolder url="file://$MODULE_DIR$/Vista/TrayectoriaDireccional" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Vista/MenuPrincipal/Imagenes" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Vista/TrayectoriaDireccional/DatosTrayectoria" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Vista/Ventana" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Vista/VentanaNuevo" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Vista/TuberiasRevestmiento" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Vista/TuberiasRevestmiento/DatosTuberiaRevestimiento" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Recursos/Widgets" isTestSource="false" />

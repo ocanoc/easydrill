@@ -7,17 +7,17 @@ from PyQt5.QtWidgets import *
 from TuberiasRevestmiento.DatosTuberiaRevestimiento.DatosTuberias import DatosTuberia
 
 
-class TuberiasRevestimiento:
+class TuberiasRevestimiento(QWidget):
     app = QApplication(sys.argv)
     app.setStyle('Fusion')
 
     texto_encabezado = QLabel()
     texto_encabezado.setScaledContents(True)
     texto_encabezado.setFixedSize(250, 50)
-    texto_encabezado.setPixmap(QPixmap("Imagenes/TextiDatiosMecanicos.png"))
+    texto_encabezado.setPixmap(QPixmap("Imagenes/Revestimieto/TextoDatosMecanicos.png"))
 
     imagen_mecanico = QLabel()
-    imagen_mecanico.setPixmap(QPixmap("Imagenes/ImagenEstadoMecanico.png"))
+    imagen_mecanico.setPixmap(QPixmap("Imagenes/Revestimieto/ImagenEstadoMecanico.png"))
     imagen_mecanico.setScaledContents(True)
     imagen_mecanico.setFixedSize(196, 379)
 
@@ -25,11 +25,11 @@ class TuberiasRevestimiento:
     etapa.setFixedSize(550, 315)
 
     mas = QPushButton()
-    mas.setIcon(QIcon("Imagenes/mas.png"))
+    mas.setIcon(QIcon("Imagenes/Iconos/mas.png"))
     mas.setToolTip("Agrega Etapa")
 
     menos = QPushButton()
-    menos.setIcon(QIcon("Imagenes/menos.png"))
+    menos.setIcon(QIcon("Imagenes/Iconos/menos.png"))
     menos.setToolTip("Elimina Etapa")
 
     layout_botones = QHBoxLayout()
@@ -54,16 +54,15 @@ class TuberiasRevestimiento:
     layout_pantalla.addSpacing(20)
     layout_pantalla.addLayout(layout_contenido)
 
-    frame_pantalla = QFrame()
-    frame_pantalla.setLayout(layout_pantalla)
-    frame_pantalla.setFont(QFont('Calibri (Cuerpo)', 12, QFont.Bold))
-
     def __init__(self):
+        super(TuberiasRevestimiento, self).__init__()
         self.etapa.addItem(DatosTuberia(self.etapa), "Etapa 1")
         self.mas.clicked.connect(lambda *args: self.agrega())
         self.menos.clicked.connect(lambda *args: self.elimina())
         self.acodiciona(self.mas)
         self.acodiciona(self.menos)
+        self.setLayout(self.layout_pantalla)
+        self.setFont(QFont('Calibri (Cuerpo)', 12, QFont.Bold))
 
     def agrega(self):
         self.etapa.addItem(DatosTuberia(self.etapa), "Etapa {}".format(self.etapa.count() + 1))
@@ -77,9 +76,6 @@ class TuberiasRevestimiento:
         for x in range(count):
             self.etapa.setItemText(x, "Etapa {}".format(x + 1))
             print(self.etapa.widget(x))
-
-    def get_frame(self):
-        return self.frame_pantalla
 
     @staticmethod
     def acodiciona(btn):

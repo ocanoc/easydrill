@@ -5,14 +5,14 @@ from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
 
-class DatosTrayectoria:
+class DatosTrayectoria(QWidget):
     app = QApplication(sys.argv)
     app.setStyle('Fusion')
     trayectoria_select = 0
     texto_encabezado = QLabel()
     texto_encabezado.setScaledContents(True)
     texto_encabezado.setFixedSize(250, 50)
-    texto_encabezado.setPixmap(QPixmap("Imagenes/TextoDatosTrayectoria.png"))
+    texto_encabezado.setPixmap(QPixmap("Imagenes/Trayectoria/TextoDatosTrayectoria.png"))
 
     campo_profundidad = QLineEdit()
     campo_KOP = QLineEdit()
@@ -31,7 +31,7 @@ class DatosTrayectoria:
     campo_angulo_final.setToolTip("Ángulo fial del pozo.")
 
     imagen_tipo = QLabel()
-    imagen_tipo.setPixmap(QPixmap("Imagenes/ImagenVertical.png"))
+    imagen_tipo.setPixmap(QPixmap("Imagenes/Trayectoria/ImagenVertical.png"))
     imagen_tipo.setScaledContents(True)
     imagen_tipo.setFixedSize(210, 417)
 
@@ -67,11 +67,10 @@ class DatosTrayectoria:
     layout_pantalla.addLayout(layout_contenido)
     layout_pantalla.addSpacing(10)
 
-    frame_pantalla = QFrame()
-    frame_pantalla.setLayout(layout_pantalla)
-    frame_pantalla.setFont(QFont('Calibri (Cuerpo)', 12, QFont.Bold))
-
     def __init__(self):
+        super(DatosTrayectoria, self).__init__()
+        self.setLayout(self.layout_pantalla)
+        self.setFont(QFont('Calibri (Cuerpo)', 12, QFont.Bold))
         self.desactiva_todo()
 
     def get_frame(self):
@@ -79,19 +78,19 @@ class DatosTrayectoria:
 
     def cambia_trayectoria(self, tipo):
         if tipo is 1:
-            self.imagen_tipo.setPixmap(QPixmap("Imagenes/ImagenVertical.png"))
+            self.imagen_tipo.setPixmap(QPixmap("Imagenes/Trayectoria/ImagenVertical.png"))
             self.desactiva_todo()
             self.activa_vertical()
         elif tipo is 2:
-            self.imagen_tipo.setPixmap(QPixmap("Imagenes/ImagenTipoJ.png"))
+            self.imagen_tipo.setPixmap(QPixmap("Imagenes/Trayectoria/ImagenTipoJ.png"))
             self.desactiva_todo()
             self.activa_j()
         elif tipo is 3:
-            self.imagen_tipo.setPixmap(QPixmap("Imagenes/ImagenTipoS.png"))
+            self.imagen_tipo.setPixmap(QPixmap("Imagenes/Trayectoria/ImagenTipoS.png"))
             self.desactiva_todo()
             self.activa_s()
         elif tipo is 4:
-            self.imagen_tipo.setPixmap(QPixmap("Imagenes/ImagenHorizontal.png"))
+            self.imagen_tipo.setPixmap(QPixmap("Imagenes/Trayectoria/ImagenHorizontal.png"))
             self.desactiva_todo()
             self.activa_h()
         self.trayectoria_select = tipo

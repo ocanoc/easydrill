@@ -1,20 +1,20 @@
 from Recursos.Widgets.SwitchButton.SwitchButton import *
-from Vista.Ventana.Ventana import *
+from Vista.VentanaNuevo.VentanaNuevo import *
 
 
 # noinspection PyArgumentList
-class MainWindow(QMainWindow):
+class MenuInicio(QMainWindow):
     def __init__(self):
-        super(MainWindow, self).__init__()
+        super(MenuInicio, self).__init__()
         width = 1000
         height = 600
-        fondo = QImage("Imagenes/Fondo.png")
+        fondo = QImage("Imagenes/Fondo/Fondo.png")
         palette = QPalette()
         palette.setBrush(10, QBrush(fondo))
         self.setPalette(palette)
         self.setWindowTitle("Easy Drill")
         self.setGeometry((GetSystemMetrics(0) - width) / 2, (GetSystemMetrics(1) - height) / 2, width, height)
-        self.setWindowIcon(QIcon("Imagenes/Gota.png"))
+        self.setWindowIcon(QIcon("Imagenes/Iconos/Gota.png"))
         self.init_ui()
 
     def init_ui(self):

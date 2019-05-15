@@ -1,13 +1,19 @@
+import sys
+
+from PyQt5.QtCore import *
+from PyQt5.QtGui import *
+from PyQt5.QtWidgets import *
 from win32api import GetSystemMetrics
 
-from DatosTrayectoria.DatosTrayectoria import *
-from Fluidos.DatosFluidos.DatosFluidos import *
+from DatosTrayectoria.DatosTrayectoria import DatosTrayectoria
+from Fluidos.DatosFluidos.DatosFluidos import DatosFluidos
+from MenuTuberiasPerforacion import TuberiaPerforacion
 from TrayectoriaDireccional.MenuTrayectoria import Trayectoria
-from TuberiasRevestmiento.MenuTuberiasRevestimiento import *
+from TuberiasRevestmiento.MenuTuberiasRevestimiento import TuberiasRevestimiento
 
 
 # noinspection PyArgumentList
-class MainWindow (QMainWindow):
+class Nuevo(QMainWindow):
     seleccion = 0
     app = QApplication(sys.argv)
     app.setStyle('Fusion')
@@ -19,21 +25,19 @@ class MainWindow (QMainWindow):
     btn_regresar = QPushButton("Regresar")
     btn_regresar.hide()
 
-    trayectoria = Trayectoria()
-    frame_trayectoria = trayectoria.get_frame()
-    frame_trayectoria.hide()
+    Trayectoria = Trayectoria()
 
     DatosTrayectoria = DatosTrayectoria()
-    frame_datos_trayectoria = DatosTrayectoria.get_frame()
-    frame_datos_trayectoria.hide()
+    DatosTrayectoria.hide()
 
     DatosFluidos = DatosFluidos()
-    frame_datos_fluidos = DatosFluidos.get_frame()
-    frame_datos_fluidos.hide()
+    DatosFluidos.hide()
 
     Tuberiras_revetimietno = TuberiasRevestimiento()
-    frame_tuberias_revestimiento = Tuberiras_revetimietno.get_frame()
-    frame_tuberias_revestimiento.hide()
+    Tuberiras_revetimietno.hide()
+
+    frame_tp = TuberiaPerforacion()
+    frame_tp.hide()
 
     layout_btn = QHBoxLayout()
     layout_btn.addSpacing(50)
@@ -44,10 +48,11 @@ class MainWindow (QMainWindow):
     layout_btn.addSpacing(50)
 
     layout_pantalla = QVBoxLayout()
-    layout_pantalla.addWidget(frame_trayectoria)
-    layout_pantalla.addWidget(frame_datos_trayectoria)
-    layout_pantalla.addWidget(frame_datos_fluidos)
-    layout_pantalla.addWidget(frame_tuberias_revestimiento)
+    layout_pantalla.addWidget(Trayectoria)
+    layout_pantalla.addWidget(DatosTrayectoria)
+    layout_pantalla.addWidget(DatosFluidos)
+    layout_pantalla.addWidget(Tuberiras_revetimietno)
+    layout_pantalla.addWidget(frame_tp)
     layout_pantalla.addLayout(layout_btn)
     layout_pantalla.addSpacing(25)
 
@@ -57,24 +62,24 @@ class MainWindow (QMainWindow):
     error_dialog = QErrorMessage()
 
     def __init__(self):
-        super(MainWindow, self).__init__()
+        super(Nuevo, self).__init__()
         width = 1000
         height = 600
         self.setWindowTitle("Easy Drill")
         self.setGeometry((GetSystemMetrics(0) - width) / 2, (GetSystemMetrics(1) - height) / 2, width, height)
-        self.setWindowIcon(QIcon("Imagenes/Gota.png"))
+        self.setWindowIcon(QIcon("Imagenes/Iconos/Gota.png"))
         self.acodiciona(self.btn_aceptar)
         self.acodiciona(self.btn_cancelar)
         self.acodiciona(self.btn_regresar)
 
         palette = QPalette()
-        palette.setBrush(10, QBrush(QImage("Imagenes/Fondo.png")))
+        palette.setBrush(10, QBrush(QImage("Imagenes/Fondo/Fondo.png")))
         self.setPalette(palette)
 
-        self.trayectoria.imagen_vertical.installEventFilter(self)
-        self.trayectoria.imagen_tipo_s.installEventFilter(self)
-        self.trayectoria.imagen_tipo_j.installEventFilter(self)
-        self.trayectoria.imagen_horizontal.installEventFilter(self)
+        self.Trayectoria.imagen_vertical.installEventFilter(self)
+        self.Trayectoria.imagen_tipo_s.installEventFilter(self)
+        self.Trayectoria.imagen_tipo_j.installEventFilter(self)
+        self.Trayectoria.imagen_horizontal.installEventFilter(self)
         self.DatosFluidos.tipo_datos.installEventFilter(self)
         self.DatosFluidos.MenuFluidos.grafica_bingham.installEventFilter(self)
         self.DatosFluidos.MenuFluidos.grafica_potencias.installEventFilter(self)
@@ -89,20 +94,24 @@ class MainWindow (QMainWindow):
 
     def cambiar_central(self):
         if self.pos is 0:
-            self.frame_trayectoria.show()
-            self.frame_datos_trayectoria.hide()
+            self.Trayectoria.show()
+            self.DatosTrayectoria.hide()
         if self.pos is 1:
-            self.frame_trayectoria.hide()
-            self.DatosTrayectoria.cambia_trayectoria(self.trayectoria.get_clicked())
-            self.frame_datos_trayectoria.show()
-            self.frame_datos_fluidos.hide()
+            self.Trayectoria.hide()
+            self.DatosTrayectoria.cambia_trayectoria(self.Trayectoria.get_clicked())
+            self.DatosTrayectoria.show()
+            self.DatosFluidos.hide()
         if self.pos is 2:
-            self.frame_datos_trayectoria.hide()
-            self.frame_datos_fluidos.show()
-            self.frame_tuberias_revestimiento.hide()
+            self.DatosTrayectoria.hide()
+            self.DatosFluidos.show()
+            self.Tuberiras_revetimietno.hide()
         if self.pos is 3:
-            self.frame_datos_fluidos.hide()
-            self.frame_tuberias_revestimiento.show()
+            self.DatosFluidos.hide()
+            self.Tuberiras_revetimietno.show()
+            self.frame_tp.hide()
+        if self.pos is 4:
+            self.Tuberiras_revetimietno.hide()
+            self.frame_tp.show()
 
     @pyqtSlot()
     def regresar(self):
@@ -119,11 +128,14 @@ class MainWindow (QMainWindow):
         elif self.pos is 3:
             self.pos = 2
             self.cambia_pantalla()
+        elif self.pos is 4:
+            self.pos = 3
+            self.cambia_pantalla()
 
     @pyqtSlot()
     def aceptar(self):
         if self.pos is 0:
-            if self.trayectoria.get_clicked() is not 0:
+            if self.Trayectoria.get_clicked() is not 0:
                 self.pos = 1
                 self.btn_regresar.show()
                 self.cambia_pantalla()
@@ -141,6 +153,9 @@ class MainWindow (QMainWindow):
                 self.cambia_pantalla()
             else:
                 QMessageBox.critical(self, "Error", "Datos erroneos o incompletos")
+        elif self.pos is 3:
+            self.pos = 4
+            self.cambia_pantalla()
 
     @pyqtSlot()
     def cancelar(self):
@@ -168,19 +183,18 @@ class MainWindow (QMainWindow):
 
     def intercambiar_imagen(self, source, flag):
         if self.pos is 0:
-            self.trayectoria.cambiar_imagen(source, flag)
+            self.Trayectoria.cambiar_imagen(source, flag)
         elif self.pos is 2:
             self.DatosFluidos.MenuFluidos.intercambiar_imagen(source, flag)
 
     def ponimagen(self, source):
         if self.pos is 0:
-            self.trayectoria.isclicked(source)
+            self.Trayectoria.isclicked(source)
             self.aceptar()
         if self.pos is 2:
             if source is self.DatosFluidos.MenuFluidos.grafica_potencias_m:
                 if self.DatosFluidos.check_gel() and self.DatosFluidos.check():
                     self.DatosFluidos.MenuFluidos.isclicked(source)
-                    print("Ok")
                 else:
                     QMessageBox.critical(self, "Error", "Este modelo reologico necesita el campo Gel.")
             elif self.DatosFluidos.check():
@@ -189,14 +203,16 @@ class MainWindow (QMainWindow):
                 QMessageBox.critical(self, "Error", "Datos erroneos o incompletos")
 
     def cambiarfondo(self):
+        palette = QPalette()
         if self.pos is 1 or self.pos is 3:
-            palette = QPalette()
-            palette.setBrush(10, QBrush(QImage("Imagenes/Fondo 2.png")))
-            self.setPalette(palette)
+            palette.setBrush(10, QBrush(QImage("Imagenes/Fondo/Fondo 2.png")))
+        elif self.pos is 4:
+            palette.setBrush(10, QBrush(QImage("Imagenes/Fondo/Fondo 3.png")))
+        elif self.pos is 2:
+            palette.setBrush(10, QBrush(QImage("Imagenes/Fondo/Fondo 4.png")))
         else:
-            palette = QPalette()
-            palette.setBrush(10, QBrush(QImage("Imagenes/Fondo.png")))
-            self.setPalette(palette)
+            palette.setBrush(10, QBrush(QImage("Imagenes/Fondo/Fondo.png")))
+        self.setPalette(palette)
 
     def cambia_pantalla(self):
         self.cambiar_central()
@@ -216,15 +232,15 @@ class MainWindow (QMainWindow):
             min-width: 8em;
             padding: 6px;
             color: white
-        }
-        QPushButton:pressed {
-            background-color: rgb(154, 154, 154);
-            border-style: inset;
-        }""")
+            }
+            QPushButton:pressed {
+                background-color: rgb(154, 154, 154);
+                border-style: inset;
+            }""")
 
 
 if __name__ == '__main__':
-    w = MainWindow()
+    w = Nuevo()
     w.setFixedSize(1000, 605)
     w.show()
     sys.exit(w.app.exec_())
