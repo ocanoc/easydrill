@@ -25,16 +25,12 @@ class MenuInicio(QMainWindow):
         super(MenuInicio, self).__init__()
         width = 1000
         height = 600
-        fondo = QImage("Imagenes/Fondo/Fondo.png")
-        palette = QPalette()
-        palette.setBrush(10, QBrush(fondo))
-        self.setPalette(palette)
         self.setWindowTitle("Easy Drill")
         self.setGeometry((GetSystemMetrics(0) - width) / 2, (GetSystemMetrics(1) - height) / 2, width, height)
         self.setWindowIcon(QIcon("Imagenes/Iconos/Gota.png"))
         self.setFont(QFont('Calibri (Cuerpo)', 12, QFont.Bold))
+        self.cambiarfondo()
         self.init_ui()
-
 
     def init_ui(self):
         self.btn_nuevo.setIcon(QIcon("Imagenes/MenuPrincipal/nuevo.png"))
@@ -78,9 +74,14 @@ class MenuInicio(QMainWindow):
         self.setCentralWidget(central_widget)
         self.Nuevo.btn_cancelar.clicked.connect(lambda *args: self.cancelar())
         self.btn_nuevo.clicked.connect(lambda *args: self.nuevo())
+        self.Nuevo.btn_aceptar.clicked.connect(lambda *args: self.cambiarfondo())
+        self.Nuevo.btn_regresar.clicked.connect(lambda *args: self.cambiarfondo())
+        self.installEventFilter(self)
 
     def cancelar(self):
         self.Nuevo.hide()
+        self.Nuevo.pos = 0
+        self.cambiarfondo()
         self.frame_menu.show()
 
     def nuevo(self):
@@ -95,7 +96,24 @@ class MenuInicio(QMainWindow):
         elif event.type() == QEvent.Leave:
             self.intercambiar_imagen(source, False)
             self.stop = False
+        elif event.type() == QEvent.MouseButtonPress:
+            self.cambiarfondo()
         return False
+
+    def cambiarfondo(self):
+        palette = QPalette()
+        if self.Nuevo.pos is 1 or self.Nuevo.pos is 3:
+            palette.setBrush(10, QBrush(QImage("Imagenes/Fondo/Fondo 2.png")))
+            self.Nuevo.btn_aceptar.setText("Siguiente")
+        elif self.Nuevo.pos is 4:
+            self.Nuevo.btn_aceptar.setText("Finalizar")
+            palette.setBrush(10, QBrush(QImage("Imagenes/Fondo/Fondo 3.png")))
+        elif self.Nuevo.pos is 2:
+            palette.setBrush(10, QBrush(QImage("Imagenes/Fondo/Fondo 4.png")))
+        else:
+            self.Nuevo.btn_aceptar.setText("Siguiente")
+            palette.setBrush(10, QBrush(QImage("Imagenes/Fondo/Fondo.png")))
+        self.setPalette(palette)
 
     def intercambiar_imagen(self, source, flag):
         if source is self.btn_nuevo:

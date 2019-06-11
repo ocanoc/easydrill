@@ -80,7 +80,7 @@ class MenuFluidos(QWidget):
             source.setPixmap(QPixmap("Imagenes/Fluidos/BinghamSelect.png"))
             self.grafica_potencias.setPixmap(QPixmap("Imagenes/Fluidos/GraficaPotencias.png"))
             self.grafica_potencias_m.setPixmap(QPixmap("Imagenes/Fluidos/GraficaPotenciasM.png"))
-            self.dibujo_smith.setPixmap(QPixmap("Imagenes/DibujoSmith.png"))
+            self.dibujo_smith.setPixmap(QPixmap("Imagenes/Fluidos/DibujoSmith.png"))
             self.clicked = 1
         if source is self.grafica_potencias:
             source.setPixmap(QPixmap("Imagenes/Fluidos/PotenciasSelect.png"))

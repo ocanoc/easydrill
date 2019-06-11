@@ -85,6 +85,5 @@ Fin PV                  \t{}""".format(self.dExt, self.dInt, self.inicioPD, self
     def get_long(self):
         return self.longMD
 
-
 def get_long_pv(long_pd, x):
     return long_pd * (math.cos(math.radians(x.get_angulo())))

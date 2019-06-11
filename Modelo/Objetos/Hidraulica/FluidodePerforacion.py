@@ -23,13 +23,13 @@ class Fluido:
         else:
             self.punto_cendecia = pc
 
-    def get_dl(self):
+    def get_densidad(self):
         return self.densidad
 
-    def get_pc(self):
+    def get_punto_cedencia(self):
         return self.punto_cendecia
 
-    def get_vp(self):
+    def get_viscocidad_plastica(self):
         return self.viscocidad_plastica
 
     def get_lec_fan_300(self):
@@ -41,7 +41,7 @@ class Fluido:
     def get_gel(self):
         return self.gel
 
-    def get_ff(self):
+    def get_factor_flotacion(self):
         return self.factor_flotacion
 
     def get_k(self):

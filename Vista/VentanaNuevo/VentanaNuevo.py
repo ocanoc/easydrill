@@ -104,20 +104,20 @@ class Nuevo(QWidget):
     def regresar(self):
         if self.pos is 0:
             self.btn_regresar.hide()
-            self.cambia_pantalla()
+            self.cambiar_central()
         elif self.pos is 1:
             self.pos = 0
             self.btn_regresar.hide()
-            self.cambia_pantalla()
+            self.cambiar_central()
         elif self.pos is 2:
             self.pos = 1
-            self.cambia_pantalla()
+            self.cambiar_central()
         elif self.pos is 3:
             self.pos = 2
-            self.cambia_pantalla()
+            self.cambiar_central()
         elif self.pos is 4:
             self.pos = 3
-            self.cambia_pantalla()
+            self.cambiar_central()
 
     @pyqtSlot()
     def aceptar(self):
@@ -125,24 +125,24 @@ class Nuevo(QWidget):
             if self.Trayectoria.get_clicked() is not 0:
                 self.pos = 1
                 self.btn_regresar.show()
-                self.cambia_pantalla()
+                self.cambiar_central()
             else:
                 QMessageBox.critical(self, "Error", "Datos erroneos o incompletos")
         elif self.pos is 1:
             if self.DatosTrayectoria.check():
                 self.pos = 2
-                self.cambia_pantalla()
+                self.cambiar_central()
             else:
                 QMessageBox.critical(self, "Error", "Datos erroneos o incompletos")
         elif self.pos is 2:
             if self.DatosFluidos.check() and self.DatosFluidos.MenuFluidos.get_clicked():
                 self.pos = 3
-                self.cambia_pantalla()
+                self.cambiar_central()
             else:
                 QMessageBox.critical(self, "Error", "Datos erroneos o incompletos")
         elif self.pos is 3:
             self.pos = 4
-            self.cambia_pantalla()
+            self.cambiar_central()
 
     def eventFilter(self, source, event):
         if source is self.DatosFluidos.tipo_datos:
@@ -184,22 +184,6 @@ class Nuevo(QWidget):
                 self.DatosFluidos.MenuFluidos.isclicked(source)
             else:
                 QMessageBox.critical(self, "Error", "Datos erroneos o incompletos")
-
-    def cambiarfondo(self):
-        palette = QPalette()
-        if self.pos is 1 or self.pos is 3:
-            palette.setBrush(10, QBrush(QImage("Imagenes/Fondo/Fondo 2.png")))
-        elif self.pos is 4:
-            palette.setBrush(10, QBrush(QImage("Imagenes/Fondo/Fondo 3.png")))
-        elif self.pos is 2:
-            palette.setBrush(10, QBrush(QImage("Imagenes/Fondo/Fondo 4.png")))
-        else:
-            palette.setBrush(10, QBrush(QImage("Imagenes/Fondo/Fondo.png")))
-        self.setPalette(palette)
-
-    def cambia_pantalla(self):
-        self.cambiar_central()
-        self.cambiarfondo()
 
     @staticmethod
     def acodiciona(btn):

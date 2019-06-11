@@ -52,7 +52,7 @@ class TuberiasRevestimiento(QWidget):
     layout_pantalla = QVBoxLayout()
     layout_pantalla.addSpacing(9)
     layout_pantalla.addWidget(texto_encabezado)
-    layout_pantalla.addSpacing(20)
+    layout_pantalla.addSpacing(38)
     layout_pantalla.addLayout(layout_contenido)
     layout_pantalla.addStretch(1)
 
@@ -67,7 +67,12 @@ class TuberiasRevestimiento(QWidget):
         self.setFont(QFont('Calibri (Cuerpo)', 12, QFont.Bold))
 
     def agrega(self):
-        self.etapa.addItem(DatosTuberia(self.etapa), "Etapa {}".format(self.etapa.count() + 1))
+        if self.etapa.widget(self.etapa.count() - 1).is_fill():
+            if self.etapa.count() < 10:
+                self.etapa.setItemText(self.etapa.count() - 1, self.etapa.widget(self.etapa.count() - 1).get_name())
+                self.etapa.addItem(DatosTuberia(self.etapa), "Etapa {}".format(self.etapa.count() + 1))
+            else:
+                QMessageBox.critical(self, "Error", "Demasiadas etapas")
 
     def elimina(self):
         self.etapa.removeItem(self.etapa.currentIndex())

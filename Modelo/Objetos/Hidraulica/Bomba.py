@@ -19,3 +19,15 @@ class Bomba:
     def set_camisa(self, camisa):
         self.diametro_camisa = camisa
         self.set_gasto_bomba_triplex()
+
+    def get_diametro_camisa(self):
+        return self.diametro_camisa
+
+    def get_longitud_carrera(self):
+        return self.longitud_carrera
+
+    def get_eficiencia(self):
+        return self.eficiencia
+
+    def get_gasto(self):
+        return self.gasto

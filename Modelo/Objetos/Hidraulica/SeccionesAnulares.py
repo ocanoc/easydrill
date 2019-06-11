@@ -1,6 +1,3 @@
-import math
-
-
 class SeccionesAnulares:
     id = ""
     inicioPD = 0
@@ -11,7 +8,7 @@ class SeccionesAnulares:
     volumen = 0
     longitudV = 0
     longitudD = 0
-    deltaP = 0
+    caida_presion = 0
     texterno = None
     titnerna = None
     vel_anular = 0
@@ -42,33 +39,33 @@ class SeccionesAnulares:
     Caida de presion        \t{}""".format(self.diametroMayor, self.diametroMenor, self.inicioPD, self.longitudD,
                                            self.finPD, self.longitudV, self.capacidad, self.volumen, self.deltaP)
 
-    def set_caida_presion(self, dp):
-        self.deltaP = dp
+    def set_caida_presion(self, caida_presion):
+        self.caida_presion = caida_presion
 
-    def get_longitud_d(self):
+    def get_longitudD(self):
         return self.longitudD
 
-    def get_longitud_v(self):
+    def get_longitudV(self):
         return self.longitudV
 
-    def get_dmayor(self):
+    def get_diametroMayor(self):
         return self.diametroMayor
 
-    def get_dmenor(self):
+    def get_diametroMenor(self):
         return self.diametroMenor
 
-    def get_velocidad(self):
+    def get_vel_anular(self):
         return self.vel_anular
 
-    def set_velocidad(self, anular):
+    def set_vel_anular(self, anular):
         self.vel_anular = anular
 
-    def get_indice(self):
+    def get_indice_acarreo(self):
         return self.indice_acarreo
 
-    def set_indice(self, acarreo):
+    def set_indice_acarreo(self, acarreo):
         self.indice_acarreo = acarreo
 
-    def get_caida_presion(self):
+    def get_deltaP(self):
         return self.deltaP
 

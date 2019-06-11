@@ -1,9 +1,9 @@
 class ConexionesSuperficiales:
-    longitud_conexion_s = 0
-    diametro_conexion_s = 0
-    capacidad_conexion_s = 0
-    volumen_conexion_s = 0
-    dp_conexiones_s = 0
+    longitud = 0
+    diametro = 0
+    capacidad = 0
+    volumen = 0
+    dp = 0
 
     def get_longitud(self):
         return self.longitud_conexion_s

@@ -7,7 +7,6 @@ INCREMENTO = "Incremento"
 TANGENTE = "Tangente"
 DECREMENTO = "Decremento"
 
-
 class ControladorDireccional:
     @staticmethod
     def get_coseno(angulo):
