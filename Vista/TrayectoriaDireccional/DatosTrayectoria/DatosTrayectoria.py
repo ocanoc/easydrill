@@ -163,3 +163,21 @@ class DatosTrayectoria(QWidget):
             except ValueError:
                 return False
         return False
+
+    def get_datos(self):
+        datos = []
+        if self.trayectoria_select is 1:
+            datos = [self.dato(self.campo_profundidad)]
+        elif self.trayectoria_select is 2 or self.trayectoria_select is 4:
+            datos = [self.dato(self.campo_profundidad), self.dato(self.campo_KOP),
+                     self.dato(self.campo_severidad_incremeto), self.dato(self.campo_angulo_maximo)]
+        elif self.trayectoria_select is 3:
+            datos = [self.dato(self.campo_profundidad), self.dato(self.campo_KOP),
+                     self.dato(self.campo_severidad_incremeto), self.dato(self.campo_angulo_maximo),
+                     self.dato(self.campo_dop), self.dato(self.campo_severidad_decremento),
+                     self.dato(self.campo_angulo_final)]
+        return datos
+
+    @staticmethod
+    def dato(line):
+        return float(line.text())

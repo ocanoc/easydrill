@@ -110,9 +110,7 @@ class DatosFluidos(QWidget):
             self.frame_centro.show()
             self.frame_derecha.hide()
             self.flag = flag
-            print("Laboratorio")
         else:
-            print("Campo")
             self.frame_centro.hide()
             self.frame_derecha.show()
             self.flag = flag
@@ -154,3 +152,20 @@ class DatosFluidos(QWidget):
         except ValueError:
             return False
         return False
+
+    def get_datos(self, modelo):
+        print("holi")
+        datosfluidos = [self.dato(self.campo_densidad)]
+        if self.flag:
+            datosfluidos.append(self.dato(self.campo_pc))
+            datosfluidos.append(self.dato(self.campo_vp))
+        else:
+            datosfluidos.append(self.dato(self.campo_l600))
+            datosfluidos.append(self.dato(self.campo_l300))
+        if modelo is 3:
+            datosfluidos.append(self.dato(self.campo_gel))
+        return datosfluidos
+
+    @staticmethod
+    def dato(line):
+        return float(line.text())

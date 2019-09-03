@@ -31,9 +31,10 @@
       <sourceFolder url="file://$MODULE_DIR$/Vista/TuberiasRevestmiento/DatosTuberiaRevestimiento" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Recursos/Widgets" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Vista/TuberiasPerforacion" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Controlador/Pozo" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/venv" />
     </content>
-    <orderEntry type="jdk" jdkName="Python 3.7" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="Python 3.7 (easydrill)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
   <component name="TestRunnerService">

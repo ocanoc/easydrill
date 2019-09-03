@@ -56,6 +56,10 @@ class TuberiasRevestimiento(QWidget):
     layout_pantalla.addLayout(layout_contenido)
     layout_pantalla.addStretch(1)
 
+    datos = []
+
+    lleno = False
+
     def __init__(self):
         super(TuberiasRevestimiento, self).__init__()
         self.etapa.addItem(DatosTuberia(self.etapa), "Etapa 1")
@@ -67,22 +71,53 @@ class TuberiasRevestimiento(QWidget):
         self.setFont(QFont('Calibri (Cuerpo)', 12, QFont.Bold))
 
     def agrega(self):
-        if self.etapa.widget(self.etapa.count() - 1).is_fill():
+        try:
             if self.etapa.count() < 10:
-                self.etapa.setItemText(self.etapa.count() - 1, self.etapa.widget(self.etapa.count() - 1).get_name())
-                self.etapa.addItem(DatosTuberia(self.etapa), "Etapa {}".format(self.etapa.count() + 1))
+                if self.etapa.widget(self.etapa.count() - 1).is_fill() and self.check_di():
+                    self.rename()
+                    self.datos.append(self.etapa.widget(self.etapa.count() - 1).get_datos())
+                    self.etapa.addItem(DatosTuberia(self.etapa), "Etapa {}".format(self.etapa.count() + 1))
+                    self.etapa.setCurrentIndex(self.etapa.count()-1)
+                    self.lleno = True
             else:
                 QMessageBox.critical(self, "Error", "Demasiadas etapas")
+        except ValueError:
+            return False
 
     def elimina(self):
-        self.etapa.removeItem(self.etapa.currentIndex())
-        self.actualiza()
+        if self.etapa.count() > 1:
+            self.etapa.removeItem(self.etapa.currentIndex())
+            self.datos.pop()
+        else:
+            self.lleno = False
+            self.datos.clear()
+            self.etapa.widget(self.etapa.count() - 1).clean()
+            self.etapa.setItemText(self.etapa.count() - 1, "Etapa 1")
+            QMessageBox.information(self, "Limpio", "No hay mas elementos")
 
     def actualiza(self):
         count = self.etapa.count()  # number of items
         for x in range(count):
             self.etapa.setItemText(x, "Etapa {}".format(x + 1))
             print(self.etapa.widget(x))
+
+    def rename(self):
+        self.etapa.setItemText(self.etapa.count() - 1, self.etapa.widget(self.etapa.count() - 1).get_name())
+
+    def check_di(self):
+        if self.etapa.count() is 1:
+            return True
+        elif self.etapa.widget(self.etapa.count() - 1).get_od() < self.etapa.widget(self.etapa.count() - 2).get_id():
+            return True
+        else:
+            QMessageBox.critical(self, "Error", "El diámetro es mayor o igual al de la tubería anterior.")
+            return False
+
+    def is_fill(self):
+        if self.lleno:
+            return True
+        else:
+            return False
 
     @staticmethod
     def acodiciona(btn):

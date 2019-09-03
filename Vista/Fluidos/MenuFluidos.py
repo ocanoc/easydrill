@@ -106,6 +106,9 @@ class MenuFluidos(QWidget):
             return True
         return False
 
+    def get_modelo(self):
+        return self.clicked
+
     @staticmethod
     def acondiciona(label):
         ancho = 150

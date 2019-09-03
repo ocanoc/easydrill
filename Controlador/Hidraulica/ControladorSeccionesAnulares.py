@@ -1,4 +1,6 @@
 from Modelo.Objetos.Hidraulica.SeccionesAnulares import *
+import math
+
 
 class ControladorSecciones:
 

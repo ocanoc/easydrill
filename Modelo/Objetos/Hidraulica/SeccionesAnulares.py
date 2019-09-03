@@ -25,6 +25,7 @@ class SeccionesAnulares:
         self.capacidad = 0.5067 * ((self.diametroMayor ** 2) - (self.diametroMenor ** 2))
         self.volumen = self.capacidad * self.longitudD
         self.longitudV = longitudv
+        self.deltaP = 0
 
     def __str__(self):
         return """\

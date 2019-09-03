@@ -117,6 +117,7 @@ class Nuevo(QWidget):
             self.cambiar_central()
         elif self.pos is 4:
             self.pos = 3
+            self.btn_aceptar.setText("Aceptar")
             self.cambiar_central()
 
     @pyqtSlot()
@@ -141,8 +142,15 @@ class Nuevo(QWidget):
             else:
                 QMessageBox.critical(self, "Error", "Datos erroneos o incompletos")
         elif self.pos is 3:
-            self.pos = 4
-            self.cambiar_central()
+            if self.Tuberiras_revetimietno.is_fill():
+                self.pos = 4
+                self.cambiar_central()
+                self.btn_aceptar.setText("Terminar")
+            else:
+                QMessageBox.critical(self, "Error", "No hay etapas guardadas")
+        elif self.pos is 4:
+            print("Recoger informacion")
+            self.get_datos()
 
     def eventFilter(self, source, event):
         if source is self.DatosFluidos.tipo_datos:
@@ -184,6 +192,16 @@ class Nuevo(QWidget):
                 self.DatosFluidos.MenuFluidos.isclicked(source)
             else:
                 QMessageBox.critical(self, "Error", "Datos erroneos o incompletos")
+
+    def get_datos(self):
+        datos_trayectoria = self.DatosTrayectoria.get_datos()
+        datos_fluidos = self.DatosFluidos.get_datos(DatosFluidos.MenuFluidos.get_modelo())
+        print("Datos trayectoria")
+        for x in datos_trayectoria:
+            print(x, "\n")
+        print("Datos fluidos")
+        for x in datos_fluidos:
+            print(x, "\n")
 
     @staticmethod
     def acodiciona(btn):

@@ -142,7 +142,6 @@ class MenuInicio(QMainWindow):
         btn.installEventFilter(self)
 
 
-
 if __name__ == '__main__':
     print("Width =", GetSystemMetrics(0))
     print("Height =", GetSystemMetrics(1))

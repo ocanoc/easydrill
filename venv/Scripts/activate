@@ -37,7 +37,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="C:\Users\srosc\PycharmProjects\EasyDrill\venv"
+VIRTUAL_ENV="C:\Users\Azucena\PycharmProjects\easydrill\venv"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"

@@ -5,7 +5,10 @@ from ControladorSeccionesAnulares import *
 
 
 
+holi = 1
 
+if holi is 1 or holi is 3:
+    print("Holi")
 
 
 
@@ -19,7 +22,7 @@ TR3 = Exterior(18, 15, 800, dir, TR2)
 Agujero = Exterior(10, 8, 300, dir, TR3)
 internas = [Tuberia_uno, Tuberia_dos, Tuberia_tres]
 externas = [TR1, TR2, TR3, Agujero]
-lista_secciones = creasecciones(externas, internas, dir)
+lista_secciones = ControladorSecciones.creasecciones(externas, internas, dir)
 
 
 
