@@ -29,5 +29,3 @@ class Bomba:
     def get_eficiencia(self):
         return self.eficiencia
 
-    def get_gasto(self):
-        return self.gasto

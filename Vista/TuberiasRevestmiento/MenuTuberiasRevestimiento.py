@@ -22,7 +22,7 @@ class TuberiasRevestimiento(QWidget):
     imagen_mecanico.setFixedSize(196, 379)
 
     etapa = QToolBox()
-    etapa.setFixedSize(550, 315)
+    etapa.setFixedSize(550, 290)
 
     mas = QPushButton()
     mas.setIcon(QIcon("Imagenes/Iconos/mas.png"))
@@ -32,6 +32,8 @@ class TuberiasRevestimiento(QWidget):
     menos.setIcon(QIcon("Imagenes/Iconos/menos.png"))
     menos.setToolTip("Elimina Etapa")
 
+    label_instrucciones = QLabel("Ingresa los siguientes datos:")
+
     layout_botones = QHBoxLayout()
     layout_botones.addStretch(10)
     layout_botones.addWidget(mas)
@@ -39,20 +41,22 @@ class TuberiasRevestimiento(QWidget):
     layout_botones.addSpacing(65)
 
     layout_etapa = QVBoxLayout()
-    layout_etapa.addSpacing(15)
+    layout_etapa.addSpacing(7)
+    layout_etapa.addWidget(label_instrucciones)
     layout_etapa.addWidget(etapa)
+    layout_etapa.addStretch(1)
     layout_etapa.addLayout(layout_botones)
 
     layout_contenido = QHBoxLayout()
     layout_contenido.addSpacing(40)
     layout_contenido.addWidget(imagen_mecanico)
-    layout_contenido.addSpacing(75)
+    layout_contenido.addSpacing(58)
     layout_contenido.addLayout(layout_etapa)
 
     layout_pantalla = QVBoxLayout()
-    layout_pantalla.addSpacing(9)
+    layout_pantalla.addSpacing(0)
     layout_pantalla.addWidget(texto_encabezado)
-    layout_pantalla.addSpacing(38)
+    layout_pantalla.addSpacing(47)
     layout_pantalla.addLayout(layout_contenido)
     layout_pantalla.addStretch(1)
 

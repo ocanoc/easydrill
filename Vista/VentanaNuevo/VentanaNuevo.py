@@ -54,6 +54,12 @@ class Nuevo(QWidget):
     layout_pantalla.addWidget(frame_tp)
     layout_pantalla.addLayout(layout_btn)
 
+    datos_trayectoria = []
+    datos_fluido = []
+    datos_tuberia_revestimiento = []
+    datos_bomba = []
+    datos_barrena = []
+
     def __init__(self):
         super(Nuevo, self).__init__()
 

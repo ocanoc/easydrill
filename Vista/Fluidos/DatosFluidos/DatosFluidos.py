@@ -75,6 +75,8 @@ class DatosFluidos(QWidget):
     frame_derecha.setMaximumHeight(100)
     frame_derecha.setMinimumHeight(110)
 
+    label_instrucciones = QLabel("Ingresa los siguientes datos:")
+
     layoutvertical1 = QHBoxLayout()
     layoutvertical1.addSpacing(50)
     layoutvertical1.addLayout(layout_izquierda)
@@ -91,11 +93,10 @@ class DatosFluidos(QWidget):
     layout_switch.setAlignment(Qt.AlignRight)
 
     layout_pantalla = QVBoxLayout()
-    layout_pantalla.addSpacing(9)
+    layout_pantalla.addSpacing(0)
     layout_pantalla.addWidget(texto_encabezado)
-    layout_pantalla.addSpacing(5)
+    layout_pantalla.addWidget(label_instrucciones)
     layout_pantalla.addLayout(layoutvertical1)
-    layout_pantalla.addSpacing(5)
     layout_pantalla.addLayout(layout_switch)
     layout_pantalla.addWidget(MenuFluidos)
 

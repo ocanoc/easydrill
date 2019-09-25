@@ -17,6 +17,8 @@ class Trayectoria(QWidget):
     texto_encabezado.setFixedSize(250, 50)
     texto_encabezado.setPixmap(QPixmap("Imagenes/Trayectoria/TextoTrayectoria.png"))
 
+    label_instrucciones = QLabel("    Selecciona una trayectoria:")
+
     imagen_tipo_j = QLabel()
     imagen_tipo_j.setPixmap(QPixmap("Imagenes/Trayectoria/ImagenTipoJ.png"))
 
@@ -37,6 +39,7 @@ class Trayectoria(QWidget):
 
     layout_pantalla = QVBoxLayout()
     layout_pantalla.addWidget(texto_encabezado)
+    layout_pantalla.addWidget(label_instrucciones)
     layout_pantalla.addLayout(layout_imagenes_tipos)
 
     def __init__(self):

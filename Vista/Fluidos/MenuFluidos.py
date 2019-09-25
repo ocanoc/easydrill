@@ -18,7 +18,7 @@ class MenuFluidos(QWidget):
 
     instruccioes = QLabel()
     instruccioes.setScaledContents(True)
-    instruccioes.setFixedSize(820, 28)
+    instruccioes.setFixedSize(650, 25)
     instruccioes.setPixmap(QPixmap("Imagenes/Fluidos/InstruccionesFluido.png"))
 
     grafica_bingham = QLabel()
@@ -111,8 +111,8 @@ class MenuFluidos(QWidget):
 
     @staticmethod
     def acondiciona(label):
-        ancho = 150
-        largo = 180
+        ancho = 140
+        largo = 170
         label.setScaledContents(True)
         label.setFixedSize(ancho, largo)
         label.setCursor(Qt.PointingHandCursor)

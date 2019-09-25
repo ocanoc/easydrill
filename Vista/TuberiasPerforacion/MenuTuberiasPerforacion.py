@@ -3,6 +3,9 @@ import sys
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
+from Datos.DatosBarrena.DatosBarrena import DatosBarrena
+from Vista.TuberiasPerforacion.Datos.DatosBomba.CreaBomba import CreeaBomba
+from Vista.TuberiasPerforacion.Datos.DatosTuberiasSuperficiales.DatosTuberiasSuperficiales import DatosTuberiasSuperficiales
 
 
 class TuberiaPerforacion(QWidget):
@@ -13,7 +16,6 @@ class TuberiaPerforacion(QWidget):
     model.setHorizontalHeaderLabels(
         ['Tipo \nelemeto', 'ID\n [pg]', "OD\n [pg]", "Long.\n[m]",
          "Peso\nnominal\n[lb/ft]", "Peso\najustado\n[Kg]", "Resistencia\nTension\n[lb/ft]"])
-    model.insertRow(model.rowCount())
 
     texto_tp = QLabel()
     texto_tp.setPixmap(QPixmap("Imagenes/TP/TextoTp.png"))
@@ -65,12 +67,11 @@ class TuberiaPerforacion(QWidget):
     tipo = QComboBox()
     tipo.addItems(["Tipo 1", "Tipo 2", "Tipo 3", "Tipo 4"])
 
-    longitud_equivalente = QLabel()
+    longitud_equivalente = QLabel("133.2")
 
-    bomba = QComboBox()
-    bomba.addItems(["Datos Base"])
+    btn_bomba = QPushButton("Agregar")
 
-    label_gasto = QLabel("Datos base")
+    label_gasto = QLabel("0")
 
     btn_tabla = QPushButton()
     btn_tabla.setIcon(QIcon("Imagenes/Iconos/info.png"))
@@ -78,8 +79,8 @@ class TuberiaPerforacion(QWidget):
 
     layout_equiposup = QFormLayout()
     layout_equiposup.addRow("Conexiones superficiales", tipo)
-    layout_equiposup.addRow("Longitud equivalente Tp [m]", longitud_equivalente)
-    layout_equiposup.addRow("Bomba", bomba)
+    layout_equiposup.addRow("Longitud equivalente Tp [m]:", longitud_equivalente)
+    layout_equiposup.addRow("Bomba", btn_bomba)
     layout_equiposup.addRow("Gasto[gpm]", label_gasto)
     layout_equiposup.setVerticalSpacing(10)
     layout_equiposup.setAlignment(Qt.AlignCenter)
@@ -92,14 +93,13 @@ class TuberiaPerforacion(QWidget):
 
     texto_barrena = QLabel()
     texto_barrena.setPixmap(QPixmap("Imagenes/TP/TextoBarrena.png"))
-    barrena = QComboBox()
-    barrena.addItems(["Datos", "base"])
+    barrena = DatosBarrena()
 
-    laabel_area_toberas = QLabel("Area")
+    laabel_area_toberas = QLabel("0")
 
     layout_barrena = QFormLayout()
     layout_barrena.addRow("Barrena", barrena)
-    layout_barrena.addRow("Area toberas [pg<sup>2</sup>]", laabel_area_toberas)
+    layout_barrena.addRow("Area toberas [pg<sup>2</sup>]: ", laabel_area_toberas)
     layout_barrena.setVerticalSpacing(10)
 
     layout_derecha = QVBoxLayout()
@@ -121,22 +121,40 @@ class TuberiaPerforacion(QWidget):
     layout_pantalla.addSpacing(10)
     layout_pantalla.addLayout(layout_inferior)
 
+    bomba = None
+    is_bomba = False
+
     def __init__(self, parent=None):
         super(TuberiaPerforacion, self).__init__(parent)
         self.acodiciona(self.mas)
         self.acodiciona(self.menos)
         self.acodiciona(self.barrena)
+        self.barrena.setFixedWidth(180)
         self.acodiciona(self.tipo)
-        self.acodiciona(self.bomba)
+        self.acodiciona(self.btn_bomba)
+        self.btn_bomba.setFixedWidth(110)
         self.acodiciona(self.texto_barrena)
         self.acodiciona(self.texto_conexiones)
         self.acodiciona(self.texto_tp)
         self.acodiciona(self.btn_tabla)
+
+        self.tipo.currentIndexChanged.connect(self.cambio_tipo)
+        self.barrena.currentIndexChanged.connect(self.cambio_barrena)
         self.mas.clicked.connect(lambda *args: self.agrega())
         self.menos.clicked.connect(lambda *args: self.elimina())
         self.btn_tabla.clicked.connect(lambda *args: self.muestratabla())
+        self.btn_bomba.clicked.connect(lambda *args: self.crea_bomba())
         self.setLayout(self.layout_pantalla)
         self.setFont(QFont('Calibri (Cuerpo)', 12, QFont.Bold))
+
+    def cambio_tipo(self, i):
+        if i is 0:
+            self.longitud_equivalente.setText("133.2")
+        else:
+            self.get_opc()
+
+    def cambio_barrena(self, i):
+        self.laabel_area_toberas.setText(self.barrena.get_selection(i))
 
     def elimina(self):
         model = self.model
@@ -151,8 +169,8 @@ class TuberiaPerforacion(QWidget):
         self.model.insertRow(self.model.rowCount())
 
     def muestratabla(self):
-        dialog = Dialog(self)
-        dialog.show()
+        dialog = DatosTuberiasSuperficiales(self)
+        dialog.exec()
 
     @staticmethod
     def acodiciona(btn):
@@ -163,21 +181,48 @@ class TuberiaPerforacion(QWidget):
             btn.setCursor(Qt.PointingHandCursor)
         if isinstance(btn, QComboBox):
             btn.setFixedWidth(110)
+            btn.setCursor(Qt.PointingHandCursor)
         if isinstance(btn, QLabel):
             btn.setScaledContents(True)
             btn.setFixedSize(250, 50)
-        btn.setCursor(Qt.PointingHandCursor)
 
+    def get_opc(self):
+        print(self.tipo.currentIndex())
+        items = ("3.826", "4.276")
+        if self.tipo.currentIndex() is 1:
+            items = ("2.764", "3.826")
+            item, okPressed = QInputDialog.getItem(self, "Diametro de la tuberia", "OD [in]:", items, 0, False)
+            if okPressed and item:
+                if float(item) is 2.764:
+                    self.longitud_equivalente.setText("49.1")
+                else:
+                    self.longitud_equivalente.setText("232")
+        if self.tipo.currentIndex() is 2:
+            item, okPressed = QInputDialog.getItem(self, "Diametro de la tuberia", "OD [in]:", items, 0, False)
+            if okPressed and item:
+                if float(item) is 3.826:
+                    self.longitud_equivalente.setText("146")
+                else:
+                    self.longitud_equivalente.setText("248")
+        if self.tipo.currentIndex() is 3:
+            item, okPressed = QInputDialog.getItem(self, "Diametro de la tuberia", "OD [in]:", items, 0, False)
+            if okPressed and item:
+                if float(item) is 3.826:
+                    self.longitud_equivalente.setText("103.7")
+                else:
+                    self.longitud_equivalente.setText("176.5")
 
-class Dialog(QDialog):
-    def __init__(self, *args, **kwargs):
-        super(Dialog, self).__init__(*args, **kwargs)
-        self.setWindowTitle("Tabla conexiones superficiales")
-        self.setFixedSize(800, 400)
-        tabla = QLabel()
-        tabla.setPixmap(QPixmap("Imagenes/TP/TablaConexiones.png"))
-        tabla.setScaledContents(True)
-        tabla.setFixedSize(700, 400)
-        layout = QHBoxLayout()
-        layout.addWidget(tabla)
-        self.setLayout(layout)
+    def crea_bomba(self):
+        crea = CreeaBomba(self)
+        crea.exec_()
+        if crea.get_ya():
+            self.bomba = crea.get_bomba()
+            dato = self.bomba.get_gasto()
+            print(dato)
+            dato2 = int(dato * 10000)/10000
+            self.label_gasto.setText(f"{dato2}")
+            self.btn_bomba.setText("Cambiar")
+            self.is_bomba = True
+        else:
+            self.is_bomba = False
+
