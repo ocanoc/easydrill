@@ -27,35 +27,35 @@ class DatosFluidos(QWidget):
 
     layout_izquierda = QFormLayout()
     layout_izquierda.addRow("""Densidad<div class="fraction">
-                            <span class="fup">gr</span>
+                            [<span class="fup">gr</span>
                             <span class="bar">/</span>
                             <span class="fdn">cm<sup>2</sup></span>
-                            </div>""", campo_densidad)
+                            ]</div>""", campo_densidad)
     layout_izquierda.addRow("""θ<sub>0</sub> [ llbf / 100ft<sup>2</sup> ]""", campo_gel)
 
     layout_centro = QFormLayout()
     layout_centro.addRow("""L<sub>300</sub>
                         <div class="fraction">
-                        <span class="fup">lbf</span>
+                        [<span class="fup">lbf</span>
                         <span class="bar">/</span>
                         <span class="fdn">100ft<sup>2</sup></span>
-                        </div>""", campo_l300)
+                        ]</div>""", campo_l300)
     layout_centro.addRow("""L<sub>600</sub>
                         <div class="fraction">
-                        <span class="fup">lbf</span>
+                        [<span class="fup">lbf</span>
                         <span class="bar">/</span>
                         <span class="fdn">100ft<sup>2</sup></span>
-                        </div>""", campo_l600)
+                        ]</div>""", campo_l600)
     layout_izquierda.setVerticalSpacing(15)
     layout_izquierda.setFormAlignment(Qt.AlignCenter)
 
     layout_derecha = QFormLayout()
-    layout_derecha.addRow("Vp cp", campo_vp)
+    layout_derecha.addRow("Vp [cp]", campo_vp)
     layout_derecha.addRow("""Pc <div class="fraction">
-                        <span class="fup">lbf</span>
+                        [<span class="fup">lbf</span>
                         <span class="bar">/</span>
                         <span class="fdn">100ft<sup>2</sup></span>
-                        </div>""", campo_pc)
+                        ]</div>""", campo_pc)
     layout_derecha.setVerticalSpacing(15)
     layout_derecha.itemAt(0, QFormLayout.LabelRole)
     layout_derecha.setRowWrapPolicy(QFormLayout.WrapLongRows)
@@ -143,7 +143,9 @@ class DatosFluidos(QWidget):
                         and float(self.campo_densidad.text()) > 0:
                     return True
         except ValueError:
+            QMessageBox.critical(self, "Error", "Datos erroneos o incompletos")
             return False
+        QMessageBox.critical(self, "Error", "Datos erroneos o incompletos")
         return False
 
     def check_gel(self):

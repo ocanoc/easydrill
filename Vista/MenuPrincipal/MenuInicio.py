@@ -143,8 +143,6 @@ class MenuInicio(QMainWindow):
 
 
 if __name__ == '__main__':
-    print("Width =", GetSystemMetrics(0))
-    print("Height =", GetSystemMetrics(1))
     app = QApplication(sys.argv)
     w = MenuInicio()
     w.setFixedSize(1000, 604)

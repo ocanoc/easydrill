@@ -111,3 +111,4 @@ class Trayectoria(QWidget):
         label.setScaledContents(True)
         label.setFixedSize(ancho, largo)
         label.setCursor(Qt.PointingHandCursor)
+

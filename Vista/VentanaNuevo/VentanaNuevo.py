@@ -35,8 +35,8 @@ class Nuevo(QWidget):
     Tuberiras_revetimietno = TuberiasRevestimiento()
     Tuberiras_revetimietno.hide()
 
-    frame_tp = TuberiaPerforacion()
-    frame_tp.hide()
+    Sarta_Perforacion = TuberiaPerforacion()
+    Sarta_Perforacion.hide()
 
     layout_btn = QHBoxLayout()
     layout_btn.addSpacing(50)
@@ -51,7 +51,7 @@ class Nuevo(QWidget):
     layout_pantalla.addWidget(DatosTrayectoria)
     layout_pantalla.addWidget(DatosFluidos)
     layout_pantalla.addWidget(Tuberiras_revetimietno)
-    layout_pantalla.addWidget(frame_tp)
+    layout_pantalla.addWidget(Sarta_Perforacion)
     layout_pantalla.addLayout(layout_btn)
 
     datos_trayectoria = []
@@ -80,6 +80,8 @@ class Nuevo(QWidget):
         self.DatosFluidos.MenuFluidos.grafica_potencias.installEventFilter(self)
         self.DatosFluidos.MenuFluidos.grafica_potencias_m.installEventFilter(self)
         self.DatosFluidos.MenuFluidos.dibujo_smith.installEventFilter(self)
+        self.Sarta_Perforacion.barrena_triconica.installEventFilter(self)
+        self.Sarta_Perforacion.barrena_pdc.installEventFilter(self)
 
         self.cambiar_central()
         self.btn_aceptar.clicked.connect(self.aceptar)
@@ -101,10 +103,10 @@ class Nuevo(QWidget):
         if self.pos is 3:
             self.DatosFluidos.hide()
             self.Tuberiras_revetimietno.show()
-            self.frame_tp.hide()
+            self.Sarta_Perforacion.hide()
         if self.pos is 4:
             self.Tuberiras_revetimietno.hide()
-            self.frame_tp.show()
+            self.Sarta_Perforacion.show()
 
     @pyqtSlot()
     def regresar(self):
@@ -145,8 +147,6 @@ class Nuevo(QWidget):
             if self.DatosFluidos.check() and self.DatosFluidos.MenuFluidos.get_clicked():
                 self.pos = 3
                 self.cambiar_central()
-            else:
-                QMessageBox.critical(self, "Error", "Datos erroneos o incompletos")
         elif self.pos is 3:
             if self.Tuberiras_revetimietno.is_fill():
                 self.pos = 4
@@ -183,6 +183,8 @@ class Nuevo(QWidget):
             self.Trayectoria.cambiar_imagen(source, flag)
         elif self.pos is 2:
             self.DatosFluidos.MenuFluidos.intercambiar_imagen(source, flag)
+        elif self.pos is 4:
+            self.Sarta_Perforacion.intercambiar_imagen(source, flag)
 
     def ponimagen(self, source):
         if self.pos is 0:
@@ -198,6 +200,8 @@ class Nuevo(QWidget):
                 self.DatosFluidos.MenuFluidos.isclicked(source)
             else:
                 QMessageBox.critical(self, "Error", "Datos erroneos o incompletos")
+        if self.pos is 4:
+            self.Sarta_Perforacion.isclicked(source)
 
     def get_datos(self):
         datos_trayectoria = self.DatosTrayectoria.get_datos()

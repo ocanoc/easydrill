@@ -77,12 +77,16 @@ class TuberiasRevestimiento(QWidget):
     def agrega(self):
         try:
             if self.etapa.count() < 10:
-                if self.etapa.widget(self.etapa.count() - 1).is_fill() and self.check_di():
-                    self.rename()
-                    self.datos.append(self.etapa.widget(self.etapa.count() - 1).get_datos())
-                    self.etapa.addItem(DatosTuberia(self.etapa), "Etapa {}".format(self.etapa.count() + 1))
-                    self.etapa.setCurrentIndex(self.etapa.count()-1)
-                    self.lleno = True
+                #if self.etapa.count() is 1 and self.etapa.get_tipo() is 2:
+                 #   QMessageBox.critical(self, "Error", "Se debe agregar al menos una Tuberia de Revestimiento.")
+
+                    if self.etapa.widget(self.etapa.count() - 1).is_fill() and self.check_di():
+                        self.rename()
+                        self.datos.append(self.etapa.widget(self.etapa.count() - 1).get_datos())
+                        if self.etapa.widget(self.etapa.count() - 1).get_tipo() is not 2:
+                            self.etapa.addItem(DatosTuberia(self.etapa), "Etapa {}".format(self.etapa.count() + 1))
+                            self.etapa.setCurrentIndex(self.etapa.count()-1)
+                        self.lleno = True
             else:
                 QMessageBox.critical(self, "Error", "Demasiadas etapas")
         except ValueError:
@@ -125,7 +129,11 @@ class TuberiasRevestimiento(QWidget):
 
     @staticmethod
     def acodiciona(btn):
-        btnancho = 30
-        btn.setIconSize(QSize(btnancho, btnancho))
-        btn.setFixedSize(btnancho, btnancho)
-        btn.setCursor(Qt.PointingHandCursor)
+        if isinstance(btn, QPushButton):
+            btnancho = 30
+            btn.setIconSize(QSize(btnancho, btnancho))
+            btn.setFixedSize(btnancho, btnancho)
+            btn.setCursor(Qt.PointingHandCursor)
+        if isinstance(btn, QLineEdit):
+            btn.setCursor(Qt.IBeamCursor)
+            btn.setPlaceholderText("0")

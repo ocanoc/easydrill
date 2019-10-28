@@ -31,7 +31,7 @@ class MenuFluidos(QWidget):
     grafica_potencias_m.setPixmap(QPixmap("Imagenes/Fluidos/GraficaPotenciasM.png"))
 
     dibujo_smith = QLabel()
-    dibujo_smith.setPixmap(QPixmap("Imagenes/Fluidos/DibujoSmith.png"))
+    dibujo_smith.setPixmap(QPixmap("Imagenes/Fluidos/DeCampo.png"))
 
     layout_contenido = QHBoxLayout()
     layout_contenido.addWidget(grafica_bingham)
@@ -71,31 +71,31 @@ class MenuFluidos(QWidget):
                 source.setPixmap(QPixmap("Imagenes/Fluidos/GraficaPotenciasM.png"))
         elif source is self.dibujo_smith:
             if flag:
-                source.setPixmap(QPixmap("Imagenes/Fluidos/SmithSelect.png"))
+                source.setPixmap(QPixmap("Imagenes/Fluidos/DeCampoSelect.png"))
             elif self.clicked is not 4:
-                source.setPixmap(QPixmap("Imagenes/Fluidos/DibujoSmith.png"))
+                source.setPixmap(QPixmap("Imagenes/Fluidos/DeCampo.png"))
 
     def isclicked(self, source):
         if source is self.grafica_bingham:
             source.setPixmap(QPixmap("Imagenes/Fluidos/BinghamSelect.png"))
             self.grafica_potencias.setPixmap(QPixmap("Imagenes/Fluidos/GraficaPotencias.png"))
             self.grafica_potencias_m.setPixmap(QPixmap("Imagenes/Fluidos/GraficaPotenciasM.png"))
-            self.dibujo_smith.setPixmap(QPixmap("Imagenes/Fluidos/DibujoSmith.png"))
+            self.dibujo_smith.setPixmap(QPixmap("Imagenes/Fluidos/DeCampo.png"))
             self.clicked = 1
         if source is self.grafica_potencias:
             source.setPixmap(QPixmap("Imagenes/Fluidos/PotenciasSelect.png"))
             self.grafica_bingham.setPixmap(QPixmap("Imagenes/Fluidos/GraficaBingham.png"))
             self.grafica_potencias_m.setPixmap(QPixmap("Imagenes/Fluidos/GraficaPotenciasM.png"))
-            self.dibujo_smith.setPixmap(QPixmap("Imagenes/Fluidos/DibujoSmith.png"))
+            self.dibujo_smith.setPixmap(QPixmap("Imagenes/Fluidos/DeCampo.png"))
             self.clicked = 2
         if source is self.grafica_potencias_m:
             source.setPixmap(QPixmap("Imagenes/Fluidos/PModificadoSelect.png"))
             self.grafica_bingham.setPixmap(QPixmap("Imagenes/Fluidos/GraficaBingham.png"))
             self.grafica_potencias.setPixmap(QPixmap("Imagenes/Fluidos/GraficaPotencias.png"))
-            self.dibujo_smith.setPixmap(QPixmap("Imagenes/Fluidos/DibujoSmith.png"))
+            self.dibujo_smith.setPixmap(QPixmap("Imagenes/Fluidos/DeCampo.png"))
             self.clicked = 3
         if source is self.dibujo_smith:
-            source.setPixmap(QPixmap("Imagenes/Fluidos/SmithSelect.png"))
+            source.setPixmap(QPixmap("Imagenes/Fluidos/DeCampoSelect.png"))
             self.grafica_bingham.setPixmap(QPixmap("Imagenes/Fluidos/GraficaBingham.png"))
             self.grafica_potencias.setPixmap(QPixmap("Imagenes/Fluidos/GraficaPotencias.png"))
             self.grafica_potencias_m.setPixmap(QPixmap("Imagenes/Fluidos/GraficaPotenciasM.png"))
@@ -104,6 +104,7 @@ class MenuFluidos(QWidget):
     def get_clicked(self):
         if self.clicked:
             return True
+        QMessageBox.critical(self, "Error", "Selecciona un modelo relogico.")
         return False
 
     def get_modelo(self):

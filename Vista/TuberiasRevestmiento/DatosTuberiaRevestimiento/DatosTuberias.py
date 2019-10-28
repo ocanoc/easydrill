@@ -11,6 +11,10 @@ class DatosTuberia(QWidget):
         self.campo_od = QLineEdit()
         self.campo_id = QLineEdit()
         self.campo_bl = QLineEdit()
+        self.acodiciona(self.campo_bl)
+        self.acodiciona(self.campo_longitud)
+        self.acodiciona(self.campo_od)
+        self.acodiciona(self.campo_id)
 
         self.tipo_tuberia = QComboBox()
         self.tipo_tuberia.insertItem(0, "TR")
@@ -53,12 +57,15 @@ class DatosTuberia(QWidget):
                 self.campo_longitud = QLineEdit()
                 self.campo_od = QLineEdit()
                 self.campo_id = QLineEdit()
+                self.acodiciona(self.campo_od)
+                self.acodiciona(self.campo_id)
                 self.layout_derecha.removeRow(0)
                 self.layout_derecha.addRow("ID [pg]", self.campo_id)
                 self.layout_derecha.addRow("OD [pg]", self.campo_od)
             self.anterior = 0
         elif i is 1:
             self.campo_bl = QLineEdit()
+            self.acodiciona(self.campo_bl)
             if self.anterior is 2:
                 self.campo_od = QLineEdit()
                 self.campo_id = QLineEdit()
@@ -66,6 +73,9 @@ class DatosTuberia(QWidget):
                 self.layout_derecha.addRow("ID [pg]", self.campo_id)
                 self.layout_derecha.addRow("OD [pg]", self.campo_od)
                 self.campo_longitud = QLineEdit()
+                self.acodiciona(self.campo_longitud)
+                self.acodiciona(self.campo_od)
+                self.acodiciona(self.campo_id)
                 self.layout_izquierda.removeRow(1)
                 self.layout_izquierda.addRow("Longitud [md]", self.campo_longitud)
             self.layout_derecha.addRow("B.L [md]", self.campo_bl)
@@ -73,12 +83,13 @@ class DatosTuberia(QWidget):
         elif i is 2:
             self.campo_od = QLineEdit()
             self.campo_longitud = QLineEdit()
+            self.acodiciona(self.campo_longitud)
+            self.acodiciona(self.campo_od)
             if self.anterior is 0:
                 self.layout_derecha.removeRow(1)
                 self.layout_derecha.removeRow(0)
                 self.layout_izquierda.removeRow(1)
             if self.anterior is 1:
-                self.layout_derecha.removeRow(3)
                 self.layout_derecha.removeRow(2)
                 self.layout_derecha.removeRow(1)
                 self.layout_derecha.removeRow(0)
@@ -112,11 +123,12 @@ class DatosTuberia(QWidget):
         except ValueError:
             QMessageBox.critical(self, "Error", "Datos erroneos o incompletos")
             return False
+        QMessageBox.critical(self, "Error", "Datos erroneos o incompletos")
         return False
     
     def get_name(self):
         if self.tipo_tuberia.currentIndex() is 2:
-            return "Agujero {} pg ".format(self.campo_da.text())
+            return "Agujero {} pg ".format(self.campo_od.text())
         if self.tipo_tuberia.currentIndex() is 0:
             return "Etapa Tr {} pg ".format(self.campo_od.text())
         if self.tipo_tuberia.currentIndex() is 1:
@@ -140,8 +152,7 @@ class DatosTuberia(QWidget):
             datos.append(float(self.campo_bl.text()))
             return datos
         if self.tipo_tuberia.currentIndex() is 2:
-            datos.append(float(self.campo_da.text()))
-            datos.append(float(self.campo_agujero.text()))
+            datos.append(float(self.campo_od.text()))
             return datos
 
     def clean(self):
@@ -152,3 +163,17 @@ class DatosTuberia(QWidget):
         if self.tipo_tuberia.currentIndex() is 1:
             self.campo_id.setText("0")
             self.campo_bl.setText("0")
+
+    def get_tipo(self):
+        return self.tipo_tuberia.currentIndex()
+
+    @staticmethod
+    def acodiciona(btn):
+        if isinstance(btn, QPushButton):
+            btnancho = 30
+            btn.setIconSize(QSize(btnancho, btnancho))
+            btn.setFixedSize(btnancho, btnancho)
+            btn.setCursor(Qt.PointingHandCursor)
+        if isinstance(btn, QLineEdit):
+            btn.setCursor(Qt.IBeamCursor)
+            btn.setPlaceholderText("0")

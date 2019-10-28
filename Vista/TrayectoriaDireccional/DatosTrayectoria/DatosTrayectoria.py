@@ -54,6 +54,7 @@ class DatosTrayectoria(QWidget):
     layout_datos = QHBoxLayout()
     layout_datos.setAlignment(Qt.AlignLeft)
     layout_datos.addLayout(layout_vertical)
+    layout_datos.addSpacing(20)
     layout_datos.addLayout(layout_vertical2)
 
     label_instrucciones = QLabel("Ingresa los siguientes datos:")
