@@ -1,9 +1,9 @@
 import sys
 
 from PyQt5.QtCore import *
-from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
-from Vista.TuberiasPerforacion.VentaBombas import Bombas
+
+from Vista.SartaPerforacion.VentaBombas import Bombas
 
 
 class Window(QWidget):

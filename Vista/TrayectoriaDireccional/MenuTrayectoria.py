@@ -5,7 +5,6 @@ from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
 
-# noinspection PyArgumentList
 class Trayectoria(QWidget):
     stop = False
     clicked = 0
@@ -111,4 +110,3 @@ class Trayectoria(QWidget):
         label.setScaledContents(True)
         label.setFixedSize(ancho, largo)
         label.setCursor(Qt.PointingHandCursor)
-

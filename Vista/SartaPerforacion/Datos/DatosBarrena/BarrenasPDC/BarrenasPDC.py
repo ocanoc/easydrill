@@ -1,19 +1,24 @@
+import sys
+
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
-import sys
+
 from DatosPDC.DatosPDC import DatosPDC
 
 
 class BarrenasPDC(QDialog):
+    aceptado = False
+    data = []
+
     def __init__(self, parent=None):
         super(BarrenasPDC, self).__init__(parent)
-        self.title = 'Sarta de perforacion'
-        self.setFixedSize(480, 600)
+        self.title = 'Barrenas PDC'
+        self.setFixedSize(420, 500)
 
         self.btn_aceptar = QPushButton("Aceptar")
         self.btn_cancelar = QPushButton("Cancelar")
 
-        self.btn_aceptar.clicked.connect(lambda *args: self.aceptar(self.tabs.currentWidget()))
+        self.btn_aceptar.clicked.connect(lambda *args: self.aceptar())
         self.btn_cancelar.clicked.connect(lambda *args: self.cancelar())
 
         self.acodiciona(self.btn_aceptar)
@@ -32,45 +37,42 @@ class BarrenasPDC(QDialog):
         self.setWindowTitle(self.title)
         self.setLayout(self.layout_ventana)
 
-        self.aceptado = True
-        self.data = []
-
-    def get_selection(self, selection):
-        self.tabs.isActiveWindow()
-
-    @staticmethod
-    def aceptar(source):
-        print(source.get_data())
+    def aceptar(self):
+        self.data = self.Datos_PDC.get_data()
+        if self.data is not None:
+            for x in self.data:
+                print(x, "\n")
+            self.aceptado = True
+            self.close()
 
     def cancelar(self):
         self.close()
         self.aceptado = False
 
-    def aceptado(self):
-        return self.aceptado
-
     def get_data(self):
-        return self.data
+        if self.aceptado is True:
+            return self.data
+        else:
+            return None
 
     @staticmethod
     def acodiciona(btn):
         btn.setCursor(Qt.PointingHandCursor)
         btn.setStyleSheet("""
-                QPushButton {
-                background-color: rgb(0, 80, 85);
-                border-style: outset;
-                border-width: 1px;
-                border-radius: 5px;
-                font:  11px;
-                min-width: 6em;
-                padding: 6px;
-                color: white
-                }
-                QPushButton:pressed {
-                    background-color: rgb(154, 154, 154);
-                    border-style: inset;
-                }""")
-
+                    QPushButton {
+                    background-color: rgb(0, 80, 85);
+                    border-style: outset;
+                    border-width: 1px;
+                    border-radius: 5px;
+                    font:  11px;
+                    min-width: 6em;
+                    padding: 6px;
+                    color: white
+                    }
+                    QPushButton:pressed {
+                        background-color: rgb(154, 154, 154);
+                        border-style: inset;
+                    }""")
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

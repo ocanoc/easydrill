@@ -1,12 +1,11 @@
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
-from PyQt5.QtWidgets import *
 import csv
 import sys
 
+from PyQt5.QtWidgets import *
+
 
 class Bomba(QDialog):
-    def __init__(self,parent=None):
+    def __init__(self, parent=None):
         super(Bomba, self).__init__(parent)
         self.title = 'Bomba'
         self.bombas = []
@@ -53,6 +52,7 @@ class Bomba(QDialog):
             print(self.grupo.selectedId())
         else:
             return None
+
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

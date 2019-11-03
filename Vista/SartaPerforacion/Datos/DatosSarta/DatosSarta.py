@@ -1,26 +1,27 @@
-from PyQt5.QtWidgets import *
+import sys
+
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
-import sys
-from DatosTuberia.DatosTuberia import DatosTuberia
+
 from DatosHerramientas.DatosHerramientas import DatosHerramientas
+from DatosTuberia.DatosTuberia import DatosTuberia
 
 
-class BarrenasTriconicas(QDialog):
+class DatosSarta(QDialog):
     def __init__(self, parent=None):
-        super(BarrenasTriconicas, self).__init__(parent)
+        super(DatosSarta, self).__init__(parent)
         self.title = 'Sarta de perforacion'
         self.setFixedSize(480, 600)
 
         self.tabs = QTabWidget()
         self.Tuberia = DatosTuberia()
         self.Herramientas = DatosHerramientas()
-        #self.Coples = QWidget()
+        # self.Coples = QWidget()
 
         self.tabs.resize(250, 200)
         self.tabs.addTab(self.Tuberia, "Tuberias")
         self.tabs.addTab(self.Herramientas, "Herramientas")
-        #self.tabs.addTab(self.Coples, "Coples")
+        # self.tabs.addTab(self.Coples, "Coples")
 
         self.btn_aceptar = QPushButton("Aceptar")
         self.btn_cancelar = QPushButton("Cancelar")
@@ -85,6 +86,6 @@ class BarrenasTriconicas(QDialog):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    ex = BarrenasTriconicas()
+    ex = DatosSarta()
     ex.exec_()
     sys.exit(app.exec_())

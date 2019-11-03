@@ -157,7 +157,6 @@ class DatosFluidos(QWidget):
         return False
 
     def get_datos(self, modelo):
-        print("holi")
         datosfluidos = [self.dato(self.campo_densidad)]
         if self.flag:
             datosfluidos.append(self.dato(self.campo_pc))

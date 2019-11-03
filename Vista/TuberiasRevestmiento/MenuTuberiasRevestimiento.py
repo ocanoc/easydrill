@@ -22,7 +22,7 @@ class TuberiasRevestimiento(QWidget):
     imagen_mecanico.setFixedSize(196, 379)
 
     etapa = QToolBox()
-    etapa.setFixedSize(550, 290)
+    etapa.setFixedSize(550, 285)
 
     mas = QPushButton()
     mas.setIcon(QIcon("Imagenes/Iconos/mas.png"))
@@ -34,18 +34,26 @@ class TuberiasRevestimiento(QWidget):
 
     label_instrucciones = QLabel("Ingresa los siguientes datos:")
 
+    label_long_disp = QLabel("0")
+
+    layout_long_disp = QFormLayout()
+    layout_long_disp.addRow("Longitud Disponible [md]: ", label_long_disp)
+
     layout_botones = QHBoxLayout()
-    layout_botones.addStretch(10)
+    layout_botones.addSpacing(80)
+    layout_botones.addLayout(layout_long_disp)
+    layout_botones.addStretch(1)
     layout_botones.addWidget(mas)
-    layout_botones.addWidget(menos, 1, Qt.AlignRight)
-    layout_botones.addSpacing(65)
+    layout_botones.addSpacing(20)
+    layout_botones.addWidget(menos)
+    layout_botones.addStretch(1)
 
     layout_etapa = QVBoxLayout()
     layout_etapa.addSpacing(7)
     layout_etapa.addWidget(label_instrucciones)
     layout_etapa.addWidget(etapa)
-    layout_etapa.addStretch(1)
     layout_etapa.addLayout(layout_botones)
+    layout_etapa.addStretch(1)
 
     layout_contenido = QHBoxLayout()
     layout_contenido.addSpacing(40)
@@ -63,6 +71,8 @@ class TuberiasRevestimiento(QWidget):
     datos = []
 
     lleno = False
+    agujero = False
+    ultimo = True
 
     def __init__(self):
         super(TuberiasRevestimiento, self).__init__()
@@ -73,35 +83,56 @@ class TuberiasRevestimiento(QWidget):
         self.acodiciona(self.menos)
         self.setLayout(self.layout_pantalla)
         self.setFont(QFont('Calibri (Cuerpo)', 12, QFont.Bold))
+        self.etapa.currentChanged.connect(self.selectionchange)
 
     def agrega(self):
         try:
             if self.etapa.count() < 10:
-                #if self.etapa.count() is 1 and self.etapa.get_tipo() is 2:
-                 #   QMessageBox.critical(self, "Error", "Se debe agregar al menos una Tuberia de Revestimiento.")
-
-                    if self.etapa.widget(self.etapa.count() - 1).is_fill() and self.check_di():
-                        self.rename()
-                        self.datos.append(self.etapa.widget(self.etapa.count() - 1).get_datos())
-                        if self.etapa.widget(self.etapa.count() - 1).get_tipo() is not 2:
-                            self.etapa.addItem(DatosTuberia(self.etapa), "Etapa {}".format(self.etapa.count() + 1))
-                            self.etapa.setCurrentIndex(self.etapa.count()-1)
-                        self.lleno = True
+                if self.etapa.widget(self.etapa.count() - 1).get_tipo() is 2 and self.etapa.count() is 1:
+                    QMessageBox.critical(self, "Error", "Se debe agregar al menos una Tuberia de Revestimiento.")
+                elif self.agujero and self.lleno:
+                    QMessageBox.critical(self, "Error", "Debes borrar la etapa agujero para agregar mas etapas.")
+                elif self.etapa.widget(self.etapa.count() - 1).is_fill() and self.check_di():
+                    self.rename()
+                    self.datos.append(self.etapa.widget(self.etapa.count() - 1).get_datos())
+                    if self.etapa.widget(self.etapa.count() - 1).get_tipo() is not 2:
+                        self.etapa.addItem(DatosTuberia(self.etapa), "Etapa {}".format(self.etapa.count() + 1))
+                        self.etapa.setCurrentIndex(self.etapa.count() - 1)
+                    else:
+                        self.agujero = True
+                    self.lleno = True
             else:
-                QMessageBox.critical(self, "Error", "Demasiadas etapas")
+                QMessageBox.critical(self, "Error", "Demasiadas etapas.")
         except ValueError:
             return False
 
     def elimina(self):
-        if self.etapa.count() > 1:
-            self.etapa.removeItem(self.etapa.currentIndex())
-            self.datos.pop()
+        if self.ultimo is True:
+            if self.etapa.count() > 1:
+                self.etapa.removeItem(self.etapa.currentIndex())
+                self.datos.pop()
+            else:
+                self.lleno = False
+                self.datos.clear()
+                self.etapa.widget(self.etapa.count() - 1).clean()
+                self.etapa.setItemText(self.etapa.count() - 1, "Etapa 1")
+                QMessageBox.information(self, "Limpio", "No hay mas etapas")
         else:
-            self.lleno = False
-            self.datos.clear()
-            self.etapa.widget(self.etapa.count() - 1).clean()
-            self.etapa.setItemText(self.etapa.count() - 1, "Etapa 1")
-            QMessageBox.information(self, "Limpio", "No hay mas elementos")
+            result = QMessageBox.question(self, "Confirmacion.", "Se borrarán las etapas siguientes para"
+                                                                 " evitar inconsistencias. \n¿Deseas continuar?",
+                                          QMessageBox.Yes | QMessageBox.No)
+            if result == QMessageBox.Yes:
+                actual = self.etapa.currentIndex()
+                count = self.etapa.count()
+                eliminar = count - actual - 1
+                if self.agujero:
+                    eliminar = eliminar + 1
+                for x in range(eliminar):
+                    self.etapa.removeItem(self.etapa.count() - 1)
+                    self.datos.pop()
+                self.mas.setEnabled(True)
+                self.etapa.widget(self.etapa.count() - 1).clean()
+                self.ultimo = True
 
     def actualiza(self):
         count = self.etapa.count()  # number of items
@@ -122,9 +153,13 @@ class TuberiasRevestimiento(QWidget):
             return False
 
     def is_fill(self):
-        if self.lleno:
+        if self.lleno and self.agujero:
             return True
-        else:
+        elif self.lleno is False:
+            QMessageBox.critical(self, "Error", "No hay etapas guardadas.")
+            return False
+        elif self.agujero is False:
+            QMessageBox.critical(self, "Error", "No hay agujero descubierto.")
             return False
 
     @staticmethod
@@ -137,3 +172,17 @@ class TuberiasRevestimiento(QWidget):
         if isinstance(btn, QLineEdit):
             btn.setCursor(Qt.IBeamCursor)
             btn.setPlaceholderText("0")
+
+    def selectionchange(self, i):
+        if i is not (self.etapa.count() - 1):
+            self.mas.setEnabled(False)
+            self.ultimo = False
+        else:
+            self.ultimo = True
+            self.mas.setEnabled(True)
+
+    def get_data(self):
+        return self.datos
+
+    def set_long_disp(self, prof_maxima):
+        self.label_long_disp.setText(prof_maxima)

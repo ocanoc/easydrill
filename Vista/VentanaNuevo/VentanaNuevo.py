@@ -6,7 +6,7 @@ from PyQt5.QtWidgets import *
 
 from DatosTrayectoria.DatosTrayectoria import DatosTrayectoria
 from Fluidos.DatosFluidos.DatosFluidos import DatosFluidos
-from MenuTuberiasPerforacion import TuberiaPerforacion
+from MenuSartaPerforacion import TuberiaPerforacion
 from TrayectoriaDireccional.MenuTrayectoria import Trayectoria
 from TuberiasRevestmiento.MenuTuberiasRevestimiento import TuberiasRevestimiento
 
@@ -82,7 +82,8 @@ class Nuevo(QWidget):
         self.DatosFluidos.MenuFluidos.dibujo_smith.installEventFilter(self)
         self.Sarta_Perforacion.barrena_triconica.installEventFilter(self)
         self.Sarta_Perforacion.barrena_pdc.installEventFilter(self)
-
+        self.Sarta_Perforacion.barrena_triconica.installEventFilter(self)
+        self.Sarta_Perforacion.barrena_pdc.installEventFilter(self)
         self.cambiar_central()
         self.btn_aceptar.clicked.connect(self.aceptar)
         self.btn_regresar.clicked.connect(self.regresar)
@@ -136,7 +137,7 @@ class Nuevo(QWidget):
                 self.btn_regresar.show()
                 self.cambiar_central()
             else:
-                QMessageBox.critical(self, "Error", "Datos erroneos o incompletos")
+                QMessageBox.critical(self, "Error", "Selecciona una trayectoria.")
         elif self.pos is 1:
             if self.DatosTrayectoria.check():
                 self.pos = 2
@@ -152,8 +153,6 @@ class Nuevo(QWidget):
                 self.pos = 4
                 self.cambiar_central()
                 self.btn_aceptar.setText("Terminar")
-            else:
-                QMessageBox.critical(self, "Error", "No hay etapas guardadas")
         elif self.pos is 4:
             print("Recoger informacion")
             self.get_datos()
@@ -165,6 +164,10 @@ class Nuevo(QWidget):
                     self.DatosFluidos.cambia_datos(False)
                 else:
                     self.DatosFluidos.cambia_datos(True)
+        if (source is self.Sarta_Perforacion.barrena_triconica or source is self.Sarta_Perforacion.barrena_pdc) \
+                and event.type() == QEvent.MouseButtonPress:
+            if event.type() == QEvent.MouseButtonPress:
+                self.Sarta_Perforacion.add_barrena(source)
         else:
             if event.type() == QEvent.Enter:
                 self.intercambiar_imagen(source, True)

@@ -3,9 +3,12 @@ import sys
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
-from Datos.DatosBarrena.DatosBarrena import DatosBarrena
-from Vista.TuberiasPerforacion.Datos.DatosBomba.CreaBomba import CreeaBomba
-from Vista.TuberiasPerforacion.Datos.DatosTuberiasSuperficiales.DatosTuberiasSuperficiales import DatosTuberiasSuperficiales
+
+from Vista.SartaPerforacion.Datos.DatosBarrena.BarrenasPDC.BarrenasPDC import BarrenasPDC
+from Vista.SartaPerforacion.Datos.DatosBarrena.BarrenasTriconicas.BarrenasTriconicas import BarrenasTriconicas
+from Vista.SartaPerforacion.Datos.DatosBomba.CreaBomba import CreeaBomba
+from Vista.SartaPerforacion.Datos.DatosTuberiasSuperficiales.DatosTuberiasSuperficiales import \
+    DatosTuberiasSuperficiales
 
 
 class TuberiaPerforacion(QWidget):
@@ -15,17 +18,22 @@ class TuberiaPerforacion(QWidget):
     model = QStandardItemModel()
     model.setHorizontalHeaderLabels(
         ['Tipo \nelemeto', 'ID\n [pg]', "OD\n [pg]", "Long.\n[m]",
-         "Peso\nnominal\n[lb/ft]", "Peso\najustado\n[Kg]", "Resistencia\nTension\n[lb/ft]"])
+         "Peso\nnominal\n[lb/ft]", "Conexion\n 1", "Conexion \n 2"])
 
     texto_tp = QLabel()
     texto_tp.setPixmap(QPixmap("Imagenes/TP/TextoTp.png"))
 
+    label_instrucciones = QLabel("Ingresa los siguientes datos:")
+    label_instrucciones_barrena = QLabel("Selecciona un tipo de barrena:")
+
     table = QTableView()
-    table.setModel(model)
     header = table.horizontalHeader()
     header.setMinimumSectionSize(65)
-    table.setFixedSize(719, 233)
+    header.setMaximumSectionSize(90)
+    header.setSectionResizeMode(QHeaderView.Stretch)
+    table.setFixedSize(650, 205)
     table.setHorizontalHeader(header)
+    table.setModel(model)
     table.setAlternatingRowColors(True)
     table.setStyleSheet("""
         QHeaderView::section {
@@ -39,11 +47,13 @@ class TuberiaPerforacion(QWidget):
         {
         background-color: rgb(154, 154, 154);
         }""")
+
     barrena_triconica = QLabel()
     barrena_triconica.setPixmap(QPixmap("Imagenes/Barrenas/Triconica.png"))
 
     barrena_pdc = QLabel()
     barrena_pdc.setPixmap(QPixmap("Imagenes/Barrenas/PDC.png"))
+
     mas = QPushButton()
     mas.setIcon(QIcon("Imagenes/Iconos/mas.png"))
     mas.setToolTip("Agrega Etapa")
@@ -52,20 +62,23 @@ class TuberiaPerforacion(QWidget):
     menos.setIcon(QIcon("Imagenes/Iconos/menos.png"))
     menos.setToolTip("Elimina Etapa")
 
-    layout_botones = QVBoxLayout()
-    layout_botones.addSpacing(10)
-    layout_botones.addWidget(mas)
-    layout_botones.addSpacing(50)
-    layout_botones.addWidget(menos)
-    layout_botones.addStretch(1)
+    label_long_disp = QLabel("0")
+
+    layout_botones = QFormLayout()
+    layout_botones.addRow("", QLabel(""))
+    layout_botones.addRow("Agregar elemento", mas)
+    layout_botones.addRow("Eliminar elemento", menos)
+    layout_botones.addRow("Longitud Disponible [md]: ", label_long_disp)
+    layout_botones.setAlignment(Qt.AlignCenter)
+    layout_botones.setSpacing(15)
 
     layout_sarta = QHBoxLayout()
     layout_sarta.addWidget(table, 1, Qt.AlignCenter)
-    layout_sarta.addLayout(layout_botones)
+    layout_sarta.addSpacing(10)
+    layout_sarta.addLayout(layout_botones, 1)
     layout_sarta.addStretch(1)
 
     layout_inferior = QVBoxLayout()
-    layout_inferior.addSpacing(15)
     layout_inferior.addLayout(layout_sarta)
 
     texto_conexiones = QLabel()
@@ -87,41 +100,40 @@ class TuberiaPerforacion(QWidget):
     layout_equiposup = QFormLayout()
     layout_equiposup.addRow("Conexiones superficiales", tipo)
     layout_equiposup.addRow("Longitud equivalente Tp [m]:", longitud_equivalente)
-    #layout_equiposup.addRow("Bomba", btn_bomba)
-    layout_equiposup.addRow("Gasto [gpm]", campo_gasto)
-    layout_equiposup.setVerticalSpacing(10)
+    # layout_equiposup.addRow("Bomba", btn_bomba)
+    layout_equiposup.addRow("Gasto [gpm]:", campo_gasto)
+    layout_equiposup.setVerticalSpacing(15)
     layout_equiposup.setAlignment(Qt.AlignCenter)
 
     layout_izquierda = QVBoxLayout()
     layout_izquierda.addWidget(texto_conexiones)
-    layout_izquierda.addSpacing(10)
+    layout_izquierda.addSpacing(30)
+    layout_izquierda.addWidget(label_instrucciones)
     layout_izquierda.addLayout(layout_equiposup)
-    layout_izquierda.addSpacing(25)
+    layout_izquierda.addSpacing(40)
     layout_izquierda.addWidget(texto_tp)
+    layout_izquierda.addStretch(1)
 
     texto_barrena = QLabel()
     texto_barrena.setPixmap(QPixmap("Imagenes/TP/TextoBarrena.png"))
-    barrena = DatosBarrena()
 
-    campo_area_toberas = QLineEdit()
+    area_toberas = 0
 
     layout_barrenas = QHBoxLayout()
     layout_barrenas.addWidget(barrena_triconica)
+    layout_barrenas.addSpacing(40)
     layout_barrenas.addWidget(barrena_pdc)
-
-    layout_barrena = QFormLayout()
-    layout_barrena.addRow("Area toberas [pg<sup>2</sup>]: ", campo_area_toberas)
-    layout_barrena.setVerticalSpacing(10)
 
     layout_derecha = QVBoxLayout()
     layout_derecha.addWidget(texto_barrena)
+    layout_derecha.addWidget(label_instrucciones_barrena)
     layout_derecha.addLayout(layout_barrenas)
-    layout_derecha.addLayout(layout_barrena)
+    layout_derecha.addStretch(1)
 
     layout_superior = QHBoxLayout()
     layout_superior.addLayout(layout_izquierda)
-    layout_superior.addSpacing(10)
-    layout_superior.addWidget(btn_tabla, 1, Qt.AlignBaseline)
+    layout_superior.addSpacing(3)
+    layout_superior.addWidget(btn_tabla, 1, Qt.AlignCenter)
     layout_superior.addSpacing(75)
     layout_superior.addLayout(layout_derecha)
     layout_superior.addStretch(10)
@@ -135,17 +147,17 @@ class TuberiaPerforacion(QWidget):
     is_bomba = False
     clicked = 0
     diametro_agujero = 0
+    data_barrena = []
+    barrena = False
 
     def __init__(self, parent=None):
         super(TuberiaPerforacion, self).__init__(parent)
         self.acodiciona(self.mas)
         self.acodiciona(self.menos)
-        self.acodiciona(self.barrena)
         self.acondiciona_imagen(self.barrena_triconica)
         self.acondiciona_imagen(self.barrena_pdc)
-        self.barrena.setFixedWidth(180)
         self.acodiciona(self.tipo)
-        #self.acodiciona(self.btn_bomba)
+        # self.acondiciona(self.btn_bomba)
         self.btn_bomba.setFixedWidth(110)
         self.acodiciona(self.texto_barrena)
         self.acodiciona(self.texto_conexiones)
@@ -153,11 +165,11 @@ class TuberiaPerforacion(QWidget):
         self.acodiciona(self.btn_tabla)
         self.acodiciona(self.campo_gasto)
         self.tipo.currentIndexChanged.connect(self.cambio_tipo)
-        self.barrena.currentIndexChanged.connect(self.cambio_barrena)
+        # self.barrena.currentIndexChanged.connect(self.cambio_barrena)
         self.mas.clicked.connect(lambda *args: self.agrega())
         self.menos.clicked.connect(lambda *args: self.elimina())
         self.btn_tabla.clicked.connect(lambda *args: self.muestratabla())
-        #self.btn_bomba.clicked.connect(lambda *args: self.crea_bomba())
+        # self.btn_bomba.clicked.connect(lambda *args: self.crea_bomba())
         self.setLayout(self.layout_pantalla)
         self.setFont(QFont('Calibri (Cuerpo)', 12, QFont.Bold))
 
@@ -180,7 +192,10 @@ class TuberiaPerforacion(QWidget):
             QMessageBox.critical(self, "Error", "Selecciona una fila.")
 
     def agrega(self):
-        self.model.insertRow(self.model.rowCount())
+        if self.barrena is True:
+            self.model.insertRow(self.model.rowCount())
+        else:
+            QMessageBox.warning(self, "Aviso.", "Es necesario agregar una Barrena.")
 
     def muestratabla(self):
         dialog = DatosTuberiasSuperficiales(self)
@@ -188,19 +203,19 @@ class TuberiaPerforacion(QWidget):
 
     @staticmethod
     def acodiciona(btn):
-        btnancho = 30
+        btnancho = 25
         if isinstance(btn, QPushButton):
             btn.setIconSize(QSize(btnancho, btnancho))
             btn.setFixedSize(btnancho, btnancho)
             btn.setCursor(Qt.PointingHandCursor)
         if isinstance(btn, QComboBox):
-            btn.setFixedWidth(110)
+            btn.setFixedWidth(85)
             btn.setCursor(Qt.PointingHandCursor)
         if isinstance(btn, QLabel):
             btn.setScaledContents(True)
             btn.setFixedSize(250, 50)
         if isinstance(btn, QLineEdit):
-            btn.setFixedWidth(110)
+            btn.setFixedWidth(85)
             btn.setCursor(Qt.IBeamCursor)
             btn.setPlaceholderText("0")
 
@@ -237,7 +252,7 @@ class TuberiaPerforacion(QWidget):
             self.bomba = crea.get_bomba()
             dato = self.bomba.get_gasto()
             print(dato)
-            dato2 = int(dato * 10000)/10000
+            dato2 = int(dato * 10000) / 10000
             self.campo_gasto.setText(f"{dato2}")
             self.btn_bomba.setText("Cambiar")
             self.is_bomba = True
@@ -268,11 +283,41 @@ class TuberiaPerforacion(QWidget):
 
     @staticmethod
     def acondiciona_imagen(label):
-        ancho = 104
-        largo = 160
+        ancho = 116
+        largo = 180
         label.setScaledContents(True)
         label.setFixedSize(ancho, largo)
         label.setCursor(Qt.PointingHandCursor)
 
     def set_diametro_agujero(self, diametro):
         self.diametro_agujero = diametro
+
+    def add_barrena(self, source):
+        try:
+            ya = False
+            if self.barrena is True:
+                result = QMessageBox.question(self, "Confirmacion.", "Se sustituira la barrena agregada anteiormente."
+                                                                     " \n¿Deseas continuar?",
+                                              QMessageBox.Yes | QMessageBox.No)
+                if result == QMessageBox.No:
+                    ya = True
+            if ya is False:
+                crea_barrena = None
+                if source is self.barrena_triconica:
+                    crea_barrena = BarrenasTriconicas(self)
+                    crea_barrena.exec()
+                if source is self.barrena_pdc:
+                    crea_barrena = BarrenasPDC(self)
+                    crea_barrena.exec()
+                self.data_barrena = crea_barrena.get_data()
+                if self.data_barrena is not None:
+                    self.isclicked(source)
+                    rows = 0
+                    if self.barrena is False:
+                        self.model.insertRow(self.model.rowCount())
+                    self.barrena = True
+                    for row in self.data_barrena:
+                        self.model.setData(self.model.index(0, rows), str(row))
+                        rows += 1
+        except ValueError:
+            pass

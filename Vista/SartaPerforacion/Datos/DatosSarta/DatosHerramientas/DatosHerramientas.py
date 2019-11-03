@@ -1,13 +1,11 @@
-import sys
 import csv
+import sys
 
-from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
 
 class DatosHerramientas(QWidget):
-
     app = QApplication(sys.argv)
     app.setStyle('Fusion')
 

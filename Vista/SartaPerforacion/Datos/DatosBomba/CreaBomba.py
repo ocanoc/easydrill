@@ -1,12 +1,13 @@
-from PyQt5.QtWidgets import *
-from PyQt5.QtCore import *
-
 import sys
+
+from PyQt5.QtCore import *
+from PyQt5.QtWidgets import *
+
 from Modelo.Objetos.Hidraulica.Bomba import Bomba
 
 
 class CreeaBomba(QDialog):
-    def __init__(self,parent=None):
+    def __init__(self, parent=None):
         super(CreeaBomba, self).__init__(parent)
         self.title = 'Bomba'
         self.Bomba = None
@@ -35,7 +36,7 @@ class CreeaBomba(QDialog):
         self.layout_btn.addWidget(self.btn_aceptar)
         self.layout_btn.addWidget(self.btn_cancelar)
 
-        self.layout_ventana = QVBoxLayout ()
+        self.layout_ventana = QVBoxLayout()
         self.layout_ventana.addLayout(self.layout)
         self.layout_ventana.addLayout(self.layout_btn)
         self.setWindowTitle(self.title)

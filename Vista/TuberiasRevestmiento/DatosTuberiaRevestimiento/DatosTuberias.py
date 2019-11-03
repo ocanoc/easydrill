@@ -7,14 +7,11 @@ class DatosTuberia(QWidget):
     def __init__(self, parent=None):
         self.anterior = 0
         super(DatosTuberia, self).__init__(parent)
-        self.campo_longitud = QLineEdit()
-        self.campo_od = QLineEdit()
-        self.campo_id = QLineEdit()
-        self.campo_bl = QLineEdit()
-        self.acodiciona(self.campo_bl)
-        self.acodiciona(self.campo_longitud)
-        self.acodiciona(self.campo_od)
-        self.acodiciona(self.campo_id)
+        self.campo_longitud = None
+        self.campo_id = None
+        self.campo_bl = None
+        self.campo_od = None
+        self.acondiciona_lineedits()
 
         self.tipo_tuberia = QComboBox()
         self.tipo_tuberia.insertItem(0, "TR")
@@ -50,82 +47,63 @@ class DatosTuberia(QWidget):
         self.setFont(QFont('Calibri (Cuerpo)', 12, QFont.Bold))
 
     def selectionchange(self, i):
+        self.layout_izquierda.removeRow(1)
+        self.layout_derecha.removeRow(0)
         if i is 0:
             if self.anterior is 1:
-                self.layout_derecha.removeRow(2)
-            elif self.anterior is 2:
-                self.campo_longitud = QLineEdit()
-                self.campo_od = QLineEdit()
-                self.campo_id = QLineEdit()
-                self.acodiciona(self.campo_od)
-                self.acodiciona(self.campo_id)
+                self.layout_derecha.removeRow(1)
                 self.layout_derecha.removeRow(0)
-                self.layout_derecha.addRow("ID [pg]", self.campo_id)
-                self.layout_derecha.addRow("OD [pg]", self.campo_od)
+            self.acondiciona_lineedits()
+            self.layout_derecha.addRow("ID [pg]", self.campo_id)
+            self.layout_derecha.addRow("OD [pg]", self.campo_od)
             self.anterior = 0
         elif i is 1:
-            self.campo_bl = QLineEdit()
-            self.acodiciona(self.campo_bl)
-            if self.anterior is 2:
-                self.campo_od = QLineEdit()
-                self.campo_id = QLineEdit()
+            if self.anterior is 0:
                 self.layout_derecha.removeRow(0)
-                self.layout_derecha.addRow("ID [pg]", self.campo_id)
-                self.layout_derecha.addRow("OD [pg]", self.campo_od)
-                self.campo_longitud = QLineEdit()
-                self.acodiciona(self.campo_longitud)
-                self.acodiciona(self.campo_od)
-                self.acodiciona(self.campo_id)
-                self.layout_izquierda.removeRow(1)
-                self.layout_izquierda.addRow("Longitud [md]", self.campo_longitud)
+            self.acondiciona_lineedits()
+            self.layout_derecha.addRow("ID [pg]", self.campo_id)
+            self.layout_derecha.addRow("OD [pg]", self.campo_od)
             self.layout_derecha.addRow("B.L [md]", self.campo_bl)
             self.anterior = 1
         elif i is 2:
-            self.campo_od = QLineEdit()
-            self.campo_longitud = QLineEdit()
-            self.acodiciona(self.campo_longitud)
-            self.acodiciona(self.campo_od)
             if self.anterior is 0:
-                self.layout_derecha.removeRow(1)
                 self.layout_derecha.removeRow(0)
-                self.layout_izquierda.removeRow(1)
             if self.anterior is 1:
-                self.layout_derecha.removeRow(2)
                 self.layout_derecha.removeRow(1)
                 self.layout_derecha.removeRow(0)
-                self.layout_izquierda.removeRow(1)
-            self.layout_izquierda.addRow("Longitud [md]", self.campo_longitud)
+            self.acondiciona_lineedits()
             self.layout_derecha.addRow("OD [pg]", self.campo_od)
             self.anterior = 2
+        self.layout_izquierda.addRow("Longitud [m]", self.campo_longitud)
 
     def is_fill(self):
         try:
             if self.tipo_tuberia.currentIndex() is 0:
                 if float(self.campo_longitud.text()) > 0 and float(self.campo_id.text()) > 0 \
-                        and float(self.campo_od.text()):
+                        and float(self.campo_od.text()) > 0:
                     if float(self.campo_id.text()) < float(self.campo_od.text()):
                         return True
                     else:
-                        QMessageBox.critical(self, "Error", "Diametro interior igual o mayor que el exterior")
+                        QMessageBox.critical(self, "Error", "Diametro interior igual o mayor que diametro exterior.")
                         return False
             if self.tipo_tuberia.currentIndex() is 1:
                 if float(self.campo_longitud.text()) > 0 and float(self.campo_id.text()) > 0 \
-                        and float(self.campo_bl.text()) > 0 and float(self.campo_od.text()):
+                        and float(self.campo_bl.text()) > 0 and float(self.campo_od.text()) > 0:
                     if float(self.campo_id.text()) < float(self.campo_od.text()):
                         return True
                     else:
-                        QMessageBox.critical(self, "Error", "Diametro interior igual o mayor que el exterior")
+                        QMessageBox.critical(self, "Error", "Diametro interior igual o mayor que el diametro exterior.")
                         return False
             if self.tipo_tuberia.currentIndex() is 2:
                 if float(self.campo_longitud.text()) > 0 and float(self.campo_od.text()) > 0:
                     return True
-
         except ValueError:
-            QMessageBox.critical(self, "Error", "Datos erroneos o incompletos")
+            print(ValueError)
+            QMessageBox.critical(self, "Error", "Datos erroneos o incompletos.")
             return False
-        QMessageBox.critical(self, "Error", "Datos erroneos o incompletos")
+        QMessageBox.critical(self, "Error", "Datos erroneos o incompletos.")
         return False
-    
+
     def get_name(self):
         if self.tipo_tuberia.currentIndex() is 2:
             return "Agujero {} pg ".format(self.campo_od.text())
@@ -141,19 +119,21 @@ class DatosTuberia(QWidget):
         return float(self.campo_od.text())
 
     def get_datos(self):
-        datos = [float(self.campo_longitud.text())]
+        datos = []
         if self.tipo_tuberia.currentIndex() is 0:
+            datos.append("TR")
             datos.append(float(self.campo_id.text()))
             datos.append(float(self.campo_od.text()))
-            return datos
         if self.tipo_tuberia.currentIndex() is 1:
+            datos.append("Liner")
             datos.append(float(self.campo_id.text()))
             datos.append(float(self.campo_od.text()))
             datos.append(float(self.campo_bl.text()))
-            return datos
         if self.tipo_tuberia.currentIndex() is 2:
+            datos.append("Agujero")
             datos.append(float(self.campo_od.text()))
-            return datos
+        datos.append(float(self.campo_longitud.text()))
+        return datos
 
     def clean(self):
         self.campo_longitud.setText("0")
@@ -168,7 +148,7 @@ class DatosTuberia(QWidget):
         return self.tipo_tuberia.currentIndex()
 
     @staticmethod
-    def acodiciona(btn):
+    def acondiciona(btn):
         if isinstance(btn, QPushButton):
             btnancho = 30
             btn.setIconSize(QSize(btnancho, btnancho))
@@ -177,3 +157,13 @@ class DatosTuberia(QWidget):
         if isinstance(btn, QLineEdit):
             btn.setCursor(Qt.IBeamCursor)
             btn.setPlaceholderText("0")
+
+    def acondiciona_lineedits(self):
+        self.campo_longitud = QLineEdit()
+        self.campo_od = QLineEdit()
+        self.campo_id = QLineEdit()
+        self.campo_bl = QLineEdit()
+        self.acondiciona(self.campo_bl)
+        self.acondiciona(self.campo_longitud)
+        self.acondiciona(self.campo_od)
+        self.acondiciona(self.campo_id)
