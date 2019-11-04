@@ -4,8 +4,7 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
-from Vista.SartaPerforacion.Datos.DatosBarrena.BarrenasPDC.BarrenasPDC import BarrenasPDC
-from Vista.SartaPerforacion.Datos.DatosBarrena.BarrenasTriconicas.BarrenasTriconicas import BarrenasTriconicas
+from Vista.SartaPerforacion.Datos.DatosBarrena.DatosBarrena import CreaBarrena
 from Vista.SartaPerforacion.Datos.DatosBomba.CreaBomba import CreeaBomba
 from Vista.SartaPerforacion.Datos.DatosTuberiasSuperficiales.DatosTuberiasSuperficiales import \
     DatosTuberiasSuperficiales
@@ -27,6 +26,7 @@ class TuberiaPerforacion(QWidget):
     label_instrucciones_barrena = QLabel("Selecciona un tipo de barrena:")
 
     table = QTableView()
+    table.setEditTriggers(QAbstractItemView.NoEditTriggers)
     header = table.horizontalHeader()
     header.setMinimumSectionSize(65)
     header.setMaximumSectionSize(90)
@@ -110,14 +110,12 @@ class TuberiaPerforacion(QWidget):
     layout_izquierda.addSpacing(30)
     layout_izquierda.addWidget(label_instrucciones)
     layout_izquierda.addLayout(layout_equiposup)
-    layout_izquierda.addSpacing(40)
+    layout_izquierda.addSpacing(30)
     layout_izquierda.addWidget(texto_tp)
     layout_izquierda.addStretch(1)
 
     texto_barrena = QLabel()
     texto_barrena.setPixmap(QPixmap("Imagenes/TP/TextoBarrena.png"))
-
-    area_toberas = 0
 
     layout_barrenas = QHBoxLayout()
     layout_barrenas.addWidget(barrena_triconica)
@@ -148,6 +146,7 @@ class TuberiaPerforacion(QWidget):
     clicked = 0
     diametro_agujero = 0
     data_barrena = []
+    area_toberas = 0
     barrena = False
 
     def __init__(self, parent=None):
@@ -183,11 +182,10 @@ class TuberiaPerforacion(QWidget):
         self.campo_area_toberas.setText(self.barrena.get_selection(i))
 
     def elimina(self):
-        model = self.model
-        indices = self.table.selectionModel().selectedRows()
-        if indices:
-            for index in sorted(indices):
-                model.removeRow(index.row())
+        if self.table.selectionModel().hasSelection():
+            indexes = [QPersistentModelIndex(index) for index in self.table.selectionModel().selectedRows()]
+            for index in indexes:
+                self.model.removeRow(index.row())
         else:
             QMessageBox.critical(self, "Error", "Selecciona una fila.")
 
@@ -293,6 +291,11 @@ class TuberiaPerforacion(QWidget):
         self.diametro_agujero = diametro
 
     def add_barrena(self, source):
+        tipo = 0
+        if source is self.barrena_triconica:
+            tipo = 2
+        if source is self.barrena_pdc:
+            tipo = 1
         try:
             ya = False
             if self.barrena is True:
@@ -303,14 +306,12 @@ class TuberiaPerforacion(QWidget):
                     ya = True
             if ya is False:
                 crea_barrena = None
-                if source is self.barrena_triconica:
-                    crea_barrena = BarrenasTriconicas(self)
-                    crea_barrena.exec()
-                if source is self.barrena_pdc:
-                    crea_barrena = BarrenasPDC(self)
-                    crea_barrena.exec()
-                self.data_barrena = crea_barrena.get_data()
+                crea_barrena = CreaBarrena(self)
+                crea_barrena.set_tipo(tipo)
+                crea_barrena.exec_()
+                self.data_barrena, self.area_toberas = crea_barrena.get_data()
                 if self.data_barrena is not None:
+                    print(self.area_toberas)
                     self.isclicked(source)
                     rows = 0
                     if self.barrena is False:

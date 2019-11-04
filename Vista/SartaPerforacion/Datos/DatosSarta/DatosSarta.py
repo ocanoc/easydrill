@@ -8,6 +8,7 @@ from DatosTuberia.DatosTuberia import DatosTuberia
 
 
 class DatosSarta(QDialog):
+
     def __init__(self, parent=None):
         super(DatosSarta, self).__init__(parent)
         self.title = 'Sarta de perforacion'
