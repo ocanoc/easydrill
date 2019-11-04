@@ -1,10 +1,11 @@
 import sys
 
 from PyQt5.QtCore import *
+from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
 from DatosHerramientas.DatosHerramientas import DatosHerramientas
-from DatosTuberia.DatosTuberia import DatosTuberia
+from DatosTuberiaPerforacion.DatosTuberia import DatosTuberia
 
 
 class DatosSarta(QDialog):
@@ -13,7 +14,10 @@ class DatosSarta(QDialog):
         super(DatosSarta, self).__init__(parent)
         self.title = 'Sarta de perforacion'
         self.setFixedSize(480, 600)
-
+        self.setFont(QFont('Calibri (Cuerpo)', 10, QFont.Bold))
+        p = self.palette()
+        p.setColor(self.backgroundRole(), QColor(208, 206, 206))
+        self.setPalette(p)
         self.tabs = QTabWidget()
         self.Tuberia = DatosTuberia()
         self.Herramientas = DatosHerramientas()

@@ -1,53 +1,49 @@
 import csv
-import sys
 
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
 
 class DatosTuberia(QWidget):
-    app = QApplication(sys.argv)
-    app.setStyle('Fusion')
-
-    model = QStandardItemModel()
-    model.setHorizontalHeaderLabels(
-        ['Grado', 'OD\n [pg]', "ID\n [pg]", "Peso\nnominal\n[lb/ft]", "Peso\najustado\n[Kg]", "Conexión"])
-    table = QTableView()
-    table.setModel(model)
-    table.setAlternatingRowColors(True)
-    table.setFixedWidth(20)
-    table.setFixedSize(600, 470)
-    table.setStyleSheet("""
-                QHeaderView::section {
-                background-color: rgb(0, 80, 85);
-                color: white;
-                padding-left: 4px;
-                border: 1px solid #6c6c6c;
-                }
-
-                QHeaderView::section:checked
-                {
-                background-color: rgb(154, 154, 154);
-                }""")
-
-    header = table.horizontalHeader()
-    header.setMinimumSectionSize(20)
-    header.setDefaultSectionSize(70)
-
-    campo_long = QLineEdit()
-    campo_long.setFixedWidth(50)
-
-    forma = QFormLayout()
-    forma.addRow("Longitud (m)", campo_long)
-
-    layoutpantalla = QVBoxLayout()
-    layoutpantalla.addWidget(table)
-    layoutpantalla.addLayout(forma)
-
-    data = []
-
     def __init__(self, parent=None):
         super(DatosTuberia, self).__init__(parent)
+        self.model = QStandardItemModel()
+        self.model.setHorizontalHeaderLabels(
+            ['Grado', 'OD\n [pg]', "ID\n [pg]", "Peso\nnominal\n[lb/ft]", "Peso\najustado\n[Kg]", "Conexión"])
+        self.table = QTableView()
+        self.table.setEditTriggers(QAbstractItemView.NoEditTriggers)
+        self.table.setModel(self.model)
+        self.table.setAlternatingRowColors(True)
+        self.header = self.table.horizontalHeader()
+        self.header.setSectionResizeMode(QHeaderView.Stretch)
+        self.table.setHorizontalHeader(self.header)
+        self.table.setAlternatingRowColors(True)
+        self.table.setFixedWidth(20)
+        self.table.setFixedSize(440, 470)
+        self.table.setStyleSheet("""
+                        QHeaderView::section {
+                        background-color: rgb(0, 80, 85);
+                        color: white;
+                        padding-left: 4px;
+                        border: 1px solid #6c6c6c;
+                        }
+
+                        QHeaderView::section:checked
+                        {
+                        background-color: rgb(154, 154, 154);
+                        }""")
+
+        self.campo_long = QLineEdit()
+        self.campo_long.setFixedWidth(50)
+
+        self.forma = QFormLayout()
+        self.forma.addRow("Longitud (m)", self.campo_long)
+
+        self.layoutpantalla = QVBoxLayout()
+        self.layoutpantalla.addWidget(self.table)
+        self.layoutpantalla.addLayout(self.forma)
+
+        self.data = []
         self.setLayout(self.layoutpantalla)
         self.fill_table()
 

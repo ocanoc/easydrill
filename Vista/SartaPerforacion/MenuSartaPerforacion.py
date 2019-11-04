@@ -68,7 +68,7 @@ class TuberiaPerforacion(QWidget):
     layout_botones.addRow("", QLabel(""))
     layout_botones.addRow("Agregar elemento", mas)
     layout_botones.addRow("Eliminar elemento", menos)
-    layout_botones.addRow("Longitud Disponible [md]: ", label_long_disp)
+    layout_botones.addRow("Longitud disponible [md]: ", label_long_disp)
     layout_botones.setAlignment(Qt.AlignCenter)
     layout_botones.setSpacing(15)
 
@@ -300,7 +300,7 @@ class TuberiaPerforacion(QWidget):
             ya = False
             if self.barrena is True:
                 result = QMessageBox.question(self, "Confirmacion.", "Se sustituira la barrena agregada anteiormente."
-                                                                     " \n¿Deseas continuar?",
+                                                                     " \n¿Desea continuar?",
                                               QMessageBox.Yes | QMessageBox.No)
                 if result == QMessageBox.No:
                     ya = True

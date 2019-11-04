@@ -159,12 +159,14 @@ class Nuevo(QWidget):
 
     def eventFilter(self, source, event):
         if source is self.DatosFluidos.tipo_datos:
-            if event.type() == QEvent.MouseButtonPress:
+            if event.type() == QEvent.MouseButtonPress and self.isEnabled():
+                self.setEnabled(False)
                 if self.DatosFluidos.flag:
                     self.DatosFluidos.cambia_datos(False)
                 else:
                     self.DatosFluidos.cambia_datos(True)
-        if (source is self.Sarta_Perforacion.barrena_triconica or source is self.Sarta_Perforacion.barrena_pdc) \
+                self.setEnabled(True)
+        elif (source is self.Sarta_Perforacion.barrena_triconica or source is self.Sarta_Perforacion.barrena_pdc) \
                 and event.type() == QEvent.MouseButtonPress:
             if event.type() == QEvent.MouseButtonPress:
                 self.Sarta_Perforacion.add_barrena(source)
@@ -201,8 +203,6 @@ class Nuevo(QWidget):
                     QMessageBox.critical(self, "Error", "Este modelo reologico necesita el campo Gel.")
             elif self.DatosFluidos.check():
                 self.DatosFluidos.MenuFluidos.isclicked(source)
-            else:
-                QMessageBox.critical(self, "Error", "Datos erroneos o incompletos")
         if self.pos is 4:
             self.Sarta_Perforacion.isclicked(source)
 

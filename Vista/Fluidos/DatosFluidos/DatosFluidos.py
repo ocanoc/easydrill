@@ -116,6 +116,7 @@ class DatosFluidos(QWidget):
             self.frame_derecha.show()
             self.flag = flag
 
+
     def desactiva_todo(self):
         self.acondicionar(self.campo_densidad)
         self.acondicionar(self.campo_gel)
@@ -142,10 +143,11 @@ class DatosFluidos(QWidget):
                         and float(self.campo_l300.text()) > 0 \
                         and float(self.campo_densidad.text()) > 0:
                     return True
+            QMessageBox.critical(self, "Error", "Datos erroneos o incompletos")
         except ValueError:
+            print("aqui")
             QMessageBox.critical(self, "Error", "Datos erroneos o incompletos")
             return False
-        QMessageBox.critical(self, "Error", "Datos erroneos o incompletos")
         return False
 
     def check_gel(self):

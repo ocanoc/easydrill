@@ -24,7 +24,7 @@ class CreaBarrena(QDialog):
         self.btn_aceptar = QPushButton("Aceptar")
         self.btn_cancelar = QPushButton("Cancelar")
 
-        self.label_instrucciones = QLabel("Selecciona una barrena.")
+        self.label_instrucciones = QLabel("Seleccione una barrena.")
 
         self.btn_aceptar.clicked.connect(lambda *args: self.aceptar())
         self.btn_cancelar.clicked.connect(lambda *args: self.cancelar())
@@ -35,7 +35,7 @@ class CreaBarrena(QDialog):
         self.acodiciona(self.btn_cancelar)
 
         self.layout_toberas = QFormLayout()
-        self.layout_toberas.addRow("Area de toberas [pg<sup>2</sup>]", self.campo_area_toberas)
+        self.layout_toberas.addRow("Area de toberas [pg<sup>2</sup>]: ", self.campo_area_toberas)
         self.layout_btn = QHBoxLayout()
         self.layout_btn.addWidget(self.btn_aceptar)
         self.layout_btn.addWidget(self.btn_cancelar)
@@ -77,7 +77,7 @@ class CreaBarrena(QDialog):
         if self.aceptado is True:
             return self.data, self.area_toberas
         else:
-            return None
+            return None, 0
 
     def get_area_toberas(self):
         try:
@@ -85,10 +85,10 @@ class CreaBarrena(QDialog):
             if area > 0:
                 return area
             else:
-                QMessageBox.critical(self, "Error", "El area de flujo no puede ser negativo")
+                QMessageBox.critical(self, "Error", "El área de flujo no puede ser negativo.")
                 return 0
         except ValueError:
-            QMessageBox.critical(self, "Error", "Ingresa el area de toberas")
+            QMessageBox.critical(self, "Error", "Ingrese el área de toberas.")
         return 0
 
     @staticmethod

@@ -19,7 +19,7 @@ class SwitchButton(QtWidgets.QWidget):
         self.__circlemove = None
         self.__ellipsemove = None
         self.__enabled = True
-        self.__duration = 1
+        self.__duration = 150
         self.__value = False
         self.setFixedSize(width, 24)
         self.__background.resize(20, 20)

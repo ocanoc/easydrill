@@ -45,7 +45,7 @@
       <sourceFolder url="file://$MODULE_DIR$/Vista/SartaPerforacion/Datos/DatosBomba" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Vista/SartaPerforacion/Datos/DatosSarta/DatosCoples" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Vista/SartaPerforacion/Datos/DatosSarta/DatosHerramientas" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Vista/SartaPerforacion/Datos/DatosSarta/DatosTuberia" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Vista/SartaPerforacion/Datos/DatosSarta/DatosTuberiaPerforacion" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Vista/SartaPerforacion/Datos/DatosTuberiasSuperficiales" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Vista/SartaPerforacion/Datos/DatosBarrena/Datos" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/venv" />

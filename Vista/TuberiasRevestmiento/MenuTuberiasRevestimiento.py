@@ -32,12 +32,12 @@ class TuberiasRevestimiento(QWidget):
     menos.setIcon(QIcon("Imagenes/Iconos/menos.png"))
     menos.setToolTip("Elimina Etapa")
 
-    label_instrucciones = QLabel("Ingresa los siguientes datos:")
+    label_instrucciones = QLabel("Ingrese los siguientes datos:")
 
     label_long_disp = QLabel("0")
 
     layout_long_disp = QFormLayout()
-    layout_long_disp.addRow("Longitud Disponible [md]: ", label_long_disp)
+    layout_long_disp.addRow("Longitud disponible [md]: ", label_long_disp)
 
     layout_botones = QHBoxLayout()
     layout_botones.addSpacing(80)
