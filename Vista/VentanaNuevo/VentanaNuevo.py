@@ -1,5 +1,3 @@
-import sys
-
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
@@ -14,8 +12,6 @@ from TuberiasRevestmiento.MenuTuberiasRevestimiento import TuberiasRevestimiento
 # noinspection PyArgumentList
 class Nuevo(QWidget):
     seleccion = 0
-    app = QApplication(sys.argv)
-    app.setStyle('Fusion')
     pos = 0
     stop = False
 

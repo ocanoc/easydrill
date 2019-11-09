@@ -182,7 +182,7 @@ class TuberiaPerforacion(QWidget):
         self.campo_area_toberas.setText(self.barrena.get_selection(i))
 
     def elimina(self):
-        if self.table.selectionModel().hasSelection():
+        if self.table.selectionModel().selectedRows():
             indexes = [QPersistentModelIndex(index) for index in self.table.selectionModel().selectedRows()]
             for index in indexes:
                 self.model.removeRow(index.row())

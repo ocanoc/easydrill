@@ -6,17 +6,26 @@ from PyQt5.QtWidgets import *
 from win32api import GetSystemMetrics
 
 from Vista.VentanaNuevo.VentanaNuevo import Nuevo
+from Vista.VentanaTuberiaHerramientas.MenuEdicion import MenuEdicion
 
 
 class MenuInicio(QMainWindow):
     stop = True
+
     Nuevo = Nuevo()
     Nuevo.hide()
+
+    Edicion = MenuEdicion()
+    Edicion.hide()
+
     frame_menu = QFrame()
+
     layout_pantalla = QVBoxLayout()
     layout_pantalla.addWidget(Nuevo)
     layout_pantalla.addWidget(frame_menu)
+    layout_pantalla.addWidget(Edicion)
     layout_pantalla.addSpacing(10)
+
     btn_nuevo = QPushButton()
     btn_cargar = QPushButton()
     btn_admin = QPushButton()
@@ -72,20 +81,27 @@ class MenuInicio(QMainWindow):
         central_widget = QWidget()
         central_widget.setLayout(self.layout_pantalla)
         self.setCentralWidget(central_widget)
-        self.Nuevo.btn_cancelar.clicked.connect(lambda *args: self.cancelar())
         self.btn_nuevo.clicked.connect(lambda *args: self.nuevo())
         self.Nuevo.btn_aceptar.clicked.connect(lambda *args: self.cambiarfondo())
         self.Nuevo.btn_regresar.clicked.connect(lambda *args: self.cambiarfondo())
+        self.Nuevo.btn_cancelar.clicked.connect(lambda *args: self.cancelar())
         self.installEventFilter(self)
+        self.btn_admin.clicked.connect(lambda *args: self.tuberia_herramientas())
+        self.Edicion.btn_finalizar.clicked.connect(lambda *args: self.cancelar())
 
     def cancelar(self):
         self.Nuevo.hide()
         self.Nuevo.pos = 0
         self.cambiarfondo()
         self.frame_menu.show()
+        self.Edicion.hide()
 
     def nuevo(self):
         self.Nuevo.show()
+        self.frame_menu.hide()
+
+    def tuberia_herramientas(self):
+        self.Edicion.show()
         self.frame_menu.hide()
 
     def eventFilter(self, source, event):
