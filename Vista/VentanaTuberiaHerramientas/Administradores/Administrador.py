@@ -2,8 +2,10 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
+from VentanaTuberiaHerramientas.Administradores.Datos.Datos import Datos
 from VentanaTuberiaHerramientas.Administradores.Datos.DatosBarrenas import DatosBarrenas
 from VentanaTuberiaHerramientas.Administradores.Datos.DatosTP import DatosTP
+from VentanaTuberiaHerramientas.Administradores.VistaHerramientas.VistaHerramientas import VistaHerramientas
 
 
 class Administrador(QWidget):
@@ -42,18 +44,21 @@ class Administrador(QWidget):
         self.layout_botones = QHBoxLayout()
         self.layout_botones.addSpacing(20)
         self.layout_botones.addLayout(self.layout_botones1)
+        self.layout_botones.addSpacing(70)
         self.layout_botones.addLayout(self.layout_botones2)
+        self.layout_botones.addSpacing(70)
         self.layout_botones.addLayout(self.layout_botones3)
         self.layout_botones.addStretch(1)
 
         self.layout_widget = QVBoxLayout()
         self.layout_widget.addWidget(self.tabla, 1, Qt.AlignTop)
         self.layout_widget.addLayout(self.layout_botones, 1)
+        self.layout_widget.addStretch(1)
         self.setLayout(self.layout_widget)
 
         self.mas.clicked.connect(lambda *args: self.tabla.agregar())
         self.menos.clicked.connect(lambda *args: self.tabla.eliminar())
-        self.modificar.clicked.connect(lambda *args: self.tabla.modifcar())
+        self.modificar.clicked.connect(lambda *args: self.tabla.modificar())
 
     @staticmethod
     def acodiciona(btn):
@@ -78,8 +83,10 @@ class Administrador(QWidget):
         if tipo is 6:
             return QWidget()
         if tipo is 7:
-            return QWidget()
+            return Datos(7)
         if tipo is 8:
-            return QWidget()
+            return VistaHerramientas()
         if tipo is 9:
             return DatosBarrenas()
+        if tipo is 10:
+            return Datos(10)

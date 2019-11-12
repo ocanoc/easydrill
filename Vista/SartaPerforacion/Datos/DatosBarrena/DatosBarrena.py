@@ -16,10 +16,10 @@ class CreaBarrena(QDialog):
 
     def __init__(self, parent=None):
         super(CreaBarrena, self).__init__(parent)
-        self.setFixedSize(420, 500)
+        self.setFixedSize(600, 500)
         self.setFont(QFont('Calibri (Cuerpo)', 10, QFont.Bold))
         p = self.palette()
-        p.setColor(self.backgroundRole(), QColor(208, 206, 206))
+        p.setBrush(10, QBrush(QImage("Imagenes/Fondo/FondoSeleccionBarrena.png")))
         self.setPalette(p)
         self.btn_aceptar = QPushButton("Aceptar")
         self.btn_cancelar = QPushButton("Cancelar")
@@ -50,6 +50,7 @@ class CreaBarrena(QDialog):
             self.title = "Barrenas Triconicas"
         self.Datos = Datos()
         self.Datos.fill_table(tipo)
+        self.layout_ventana.addSpacing(10)
         self.layout_ventana.addWidget(self.label_instrucciones)
         self.layout_ventana.addWidget(self.Datos)
         self.layout_ventana.addLayout(self.layout_toberas)

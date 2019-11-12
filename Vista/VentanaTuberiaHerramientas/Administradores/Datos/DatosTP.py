@@ -43,7 +43,7 @@ class DatosTP(QWidget):
         self.fill_table()
 
     def fill_table(self):
-        with open('CSV/Tuberias.csv') as csv_file:
+        with open('CSV/TuberiasPerforacion.csv') as csv_file:
             csv_reader = csv.reader(csv_file, delimiter=',')
             line_count = 0
             rows = 0

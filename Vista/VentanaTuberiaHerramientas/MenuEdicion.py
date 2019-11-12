@@ -16,6 +16,7 @@ class MenuEdicion(QWidget):
         self.texto_encabezado.setPixmap(QPixmap("Imagenes/Titulos/TextoAdmin.png"))
 
         self.tab = QTabWidget()
+        self.tab.setFixedSize(950, 475)
         self.tab.setObjectName("Tab");
         self.tab.setIconSize(QSize(187, 90))
         self.tab.setStyleSheet("""
@@ -23,14 +24,14 @@ class MenuEdicion(QWidget):
             font:  24px;
             border: 3px  inset rgb(0, 80, 85);
             border-style: inset inset inset none ;
-            border-bottom-right-radius: 10px 10px;
-            border-top-right-radius: 10px 10px;
+            border-bottom-right-radius: 5px 5px;
+            border-top-right-radius: 5px 5px;
             background: rgb(208, 206, 206);
             } 
             
             QTabBar::tab {
-              border-bottom-left-radius: 10px 10px;
-              border-top-left-radius: 10px 10px;
+              border-bottom-left-radius: 5px 5px;
+              border-top-left-radius: 5px 5px;
               background: rgb(154, 154, 154);
               color: white;
               padding: 10px;
@@ -53,6 +54,7 @@ class MenuEdicion(QWidget):
         self.tab.addTab(Administrador(7), QIcon("Imagenes/TextosTuberias/TextoPorta.png"), "")
         self.tab.addTab(Administrador(8), QIcon("Imagenes/TextosTuberias/TextoMartillos.png"), "")
         self.tab.addTab(Administrador(9), QIcon("Imagenes/TextosTuberias/TextoBarrenas.png"), "")
+        self.tab.addTab(Administrador(10), QIcon("Imagenes/TextosTuberias/TextoMotor.png"), "")
 
         self.btn_finalizar = QPushButton("Finalizar")
         self.acodiciona(self.btn_finalizar)

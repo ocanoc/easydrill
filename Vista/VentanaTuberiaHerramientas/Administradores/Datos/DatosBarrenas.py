@@ -3,7 +3,7 @@ import csv
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
-from Vista.VentanaTuberiaHerramientas.Administradores.Datos.Agregador.Agregador import Agregar
+from VentanaTuberiaHerramientas.Administradores.Agregador.Agregador import Agregar
 
 
 class DatosBarrenas(QWidget):
@@ -48,41 +48,35 @@ class DatosBarrenas(QWidget):
         self.fill_table()
 
     def fill_table(self):
-        with open('CSV/Pruebas/BarrenasTriconicas.csv') as self.csv_triconicas:
+        with open('CSV/BarrenasTriconicas.csv') as self.csv_triconicas:
             triconicas = csv.reader(self.csv_triconicas, delimiter=',')
             line_count = 0
             rows = 0
             for row in triconicas:
-                if line_count == 0:
-                    line_count += 1
-                else:
-                    self.data_triconicas.append(row)
-                    self.model_triconicas.insertRow(self.model_triconicas.rowCount())
-                    self.agrega_fila(self.model_triconicas, rows, row)
-                    rows += 1
+                self.data_triconicas.append(row)
+                self.model_triconicas.insertRow(self.model_triconicas.rowCount())
+                self.agrega_fila(self.model_triconicas, rows, row)
+                rows += 1
 
         with open('CSV/BarrenasPDC.csv') as self.csv_pdc:
             pdc = csv.reader(self.csv_pdc, delimiter=',')
             line_count = 0
             rows = 0
             for row in pdc:
-                if line_count == 0:
-                    line_count += 1
-                else:
-                    self.data_pdc.append(row)
-                    self.model_pdc.insertRow(self.model_pdc.rowCount())
-                    self.agrega_fila(self.model_pdc, rows, row)
-                    rows += 1
+                self.data_pdc.append(row)
+                self.model_pdc.insertRow(self.model_pdc.rowCount())
+                self.agrega_fila(self.model_pdc, rows, row)
+                rows += 1
 
     def write_triconicas(self):
-        with open('CSV/Pruebas/BarrenasTriconicas.csv', 'w', newline="") as file:
+        with open('CSV/BarrenasTriconicas.csv', 'w', newline="") as file:
             writer = csv.writer(file)
             for x in self.data_triconicas:
                 writer.writerow(x)
             file.close()
 
     def write_pdc(self):
-        with open('CSV/Pruebas/BarrenasPDC.csv', 'w', newline="") as file:
+        with open('CSV/BarrenasPDC.csv', 'w', newline="") as file:
             writer = csv.writer(file)
             for x in self.data_pdc:
                 writer.writerow(x)
@@ -111,7 +105,7 @@ class DatosBarrenas(QWidget):
         header.setSectionResizeMode(QHeaderView.Stretch)
         obj.setHorizontalHeader(header)
         obj.setAlternatingRowColors(True)
-        obj.setFixedSize(600, 170)
+        obj.setFixedSize(800, 170)
         obj.setStyleSheet("""
                        QTableView {
                         font-size: 13px;
@@ -165,7 +159,7 @@ class DatosBarrenas(QWidget):
                     self.table_pdc.clearSelection()
                     self.write_pdc()
 
-    def modifcar(self):
+    def modificar(self):
         row = self.get_fila()
         new_data = []
         if row is not None:

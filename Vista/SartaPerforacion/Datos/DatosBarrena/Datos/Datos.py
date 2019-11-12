@@ -11,30 +11,9 @@ class Datos(QWidget):
 
     def __init__(self, parent=None):
         super(Datos, self).__init__(parent)
-        self.model = QStandardItemModel()
-        self.model.setHorizontalHeaderLabels(
-            ["Codigo\nIADC", 'OD\n [pg]', "Conexion", "Peso\n[lb]"])
+        self.list = []
+        self.model_table = QStandardItemModel()
         self.table = QTableView()
-        self.table.setEditTriggers(QAbstractItemView.NoEditTriggers)
-        self.table.setModel(self.model)
-        self.table.setAlternatingRowColors(True)
-        self.header = self.table.horizontalHeader()
-        self.header.setSectionResizeMode(QHeaderView.Stretch)
-        self.table.setHorizontalHeader(self.header)
-        self.table.setFixedWidth(20)
-        self.table.setFixedSize(385, 400)
-        self.table.setStyleSheet("""
-                          QHeaderView::section {
-                          background-color: rgb(0, 80, 85);
-                          color: white;
-                          padding-left: 4px;
-                          border: 1px solid #6c6c6c;
-                          }
-
-                          QHeaderView::section:checked
-                          {
-                          background-color: rgb(154, 154, 154);
-                          }""")
         self.data = []
         self.layoutpantalla = QVBoxLayout()
         self.layoutpantalla.addWidget(self.table)
@@ -44,24 +23,25 @@ class Datos(QWidget):
     def fill_table(self, tipo):
         file = None
         if tipo is 1:
-            file = 'CSV/Barrenas.csv'
+            self.list = ['Código \n IADC', 'OD\n [pg]', "Conexión", "Tipo", "Longitud\n[pg]", "Boquillas",
+                         "Peso\n[Kg]"]
+            file = 'CSV/BarrenasTriconicas.csv'
         if tipo is 2:
-            file = 'CSV/Barrenas.csv'
+            self.list = ['Código \n IADC', 'OD\n [pg]', "Conexión", "Tipo", "Longitud\n[pg]", "Boquillas",
+                         "Puertos \nFijos", "Peso\n[Kg]"]
+            file = 'CSV/BarrenasPDC.csv'
+        self.model_table.setHorizontalHeaderLabels(self.list)
+        self.table.setModel(self.model_table)
+        self.acondiciona(self.table)
         with open(file) as csv_file:
             csv_reader = csv.reader(csv_file, delimiter=',')
-            line_count = 0
             rows = 0
             for row in csv_reader:
-                if line_count == 0:
-                    line_count += 1
-                else:
-                    self.data.append(row)
-                    self.model.insertRow(self.model.rowCount())
-                    self.model.setData(self.model.index(rows, 0), str(row[0]))
-                    self.model.setData(self.model.index(rows, 1), str(row[1]))
-                    self.model.setData(self.model.index(rows, 2), str(row[3]))
-                    rows += 1
-        csv_file.close()
+                self.data.append(row)
+                self.model_table.insertRow(self.model_table.rowCount())
+                self.agrega_fila(self.model_table, rows, row)
+                rows += 1
+            csv_file.close()
 
     def get_data(self):
         data = self.get_row()
@@ -74,3 +54,36 @@ class Datos(QWidget):
                 return self.data[index.row()]
         else:
             QMessageBox.critical(self, "Error", "Selecciona una fila.")
+
+    def acondiciona(self, obj):
+        obj.setSelectionMode(QAbstractItemView.SingleSelection)
+        obj.setSelectionBehavior(QAbstractItemView.SelectRows)
+        obj.setEditTriggers(QAbstractItemView.NoEditTriggers)
+        obj.setAlternatingRowColors(True)
+        header = obj.horizontalHeader()
+        header.setSectionResizeMode(QHeaderView.Stretch)
+        obj.setHorizontalHeader(header)
+        obj.setAlternatingRowColors(True)
+        obj.setFixedSize(560, 375)
+        obj.setStyleSheet("""
+                                          QTableView {
+                                           font-size: 13px;
+                                           }
+                                           QHeaderView::section {
+                                           background-color: rgb(0, 80, 85);
+                                           color: white;
+                                           padding-left: 4px;
+                                           font-size: 13px;
+                                           border: 1px solid #6c6c6c;
+                                           }
+                                           QHeaderView::section:checked
+                                           {
+                                           font-size: 13px;
+                                           color: white;
+                                           background-color: rgb(154, 154, 154);
+                                           }""")
+
+    @staticmethod
+    def agrega_fila(model, pos, data):
+        for x in range(0, model.columnCount()):
+            model.setData(model.index(pos, x), str(data[x]))
