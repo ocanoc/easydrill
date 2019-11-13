@@ -71,12 +71,20 @@ class Datos(QWidget):
                          "Peso\n Nominal\n[Kg]"]
             self.file = 'CSV/Martillos.csv'
             self.datos = 8
-        if tipo is 10:
-            self.list = ["Lóbulos", "Etapas", "Tipo", "Conexión\nTop", "Conexión\nBit", 'OD\n [pg]', 'ID\n [pg]',
-                         "Longitud\n[m]"]
-            self.file = 'CSV/Motores.csv'
+
+        if tipo is 3:
+            self.list = ['OD\n [pg]', 'ID\n [pg]', "Geometria", "Conexión", "Longitud\n[in]", "Peso\n[lbs/ft]"]
+            self.file = 'CSV/HW.csv'
             self.datos = tipo
-            self.label_title.setText("Motores de fondo.")
+            self.label_title.setText("Tubería extra pesada.")
+            self.layout_pantalla.addWidget(self.label_title, 1, Qt.AlignLeft)
+            self.table_height = 380
+
+        if tipo is 4:
+            self.list = ['OD\n [pg]', 'ID\n [pg]', "Geometria", "Conexión", "Longitud\n[m]", "Peso\n[lb/ft]"]
+            self.file = 'CSV/DC.csv'
+            self.datos = tipo
+            self.label_title.setText("Tubería extra pesada.")
             self.layout_pantalla.addWidget(self.label_title, 1, Qt.AlignLeft)
             self.table_height = 380
 
@@ -88,6 +96,14 @@ class Datos(QWidget):
             self.layout_pantalla.addWidget(self.label_title, 1, Qt.AlignLeft)
             self.table_height = 380
 
+        if tipo is 10:
+            self.list = ["Lóbulos", "Etapas", "Tipo", "Conexión\nTop", "Conexión\nBit", 'OD\n [pg]', 'ID\n [pg]',
+                         "Longitud\n[m]"]
+            self.file = 'CSV/Motores.csv'
+            self.datos = tipo
+            self.label_title.setText("Motores de fondo.")
+            self.layout_pantalla.addWidget(self.label_title, 1, Qt.AlignLeft)
+            self.table_height = 380
         self.model_table.setHorizontalHeaderLabels(self.list)
         self.table.setModel(self.model_table)
         self.acondiciona(self.table)
@@ -147,7 +163,7 @@ class Datos(QWidget):
                 self.table.clearSelection()
                 self.write()
 
-    def modifcar(self):
+    def modificar(self):
         row = self.get_fila()
         if row is not None:
             new_data = self.data[row.row()].copy()

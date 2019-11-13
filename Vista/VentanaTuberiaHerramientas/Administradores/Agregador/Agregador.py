@@ -11,7 +11,8 @@ class Agregar(QDialog):
         super(Agregar, self).__init__(parent)
         self.source = source
         self.setFont(QFont('Calibri (Cuerpo)', 11, QFont.Bold))
-
+        self.setWindowIcon(QIcon("Imagenes/Iconos/Gota.png"))
+        self.setWindowTitle("Easy Drill")
         self.label_instrucciones = QLabel("Ingresa los siguientes datos:")
 
         self.btn_aceptar = QPushButton("Aceptar")
@@ -33,8 +34,7 @@ class Agregar(QDialog):
         self.layout_campos = QFormLayout()
         self.layout_campos_2 = QFormLayout()
 
-
-        self.setFixedSize(550, 273)
+        self.setFixedSize(580, 300)
         self.create_ui(source)
 
         self.layout_forms = QHBoxLayout()
@@ -47,10 +47,11 @@ class Agregar(QDialog):
 
         self.layout_pantalla = QVBoxLayout()
         self.layout_pantalla.addWidget(self.label_instrucciones)
-        self.layout_pantalla.addSpacing(5)
+        self.layout_pantalla.addSpacing(10)
         self.layout_pantalla.addLayout(self.layout_forms)
         self.layout_pantalla.addSpacing(15)
         self.layout_pantalla.addLayout(self.layout_btn, 1)
+        self.layout_pantalla.setAlignment(self.layout_btn, Qt.AlignBottom)
         self.layout_pantalla.addStretch(1)
 
         self.setLayout(self.layout_pantalla)
@@ -58,13 +59,50 @@ class Agregar(QDialog):
         self.datos = []
 
     def create_ui(self, source):
+        if source is 3:
+            print("here")
+            p = self.palette()
+            p.setBrush(10, QBrush(QImage("Imagenes/Fondo/FondoDatosHW.png")))
+            self.setPalette(p)
+            self.setFixedSize(580, 200)
+            self.layout_campos.setSpacing(10)
+            self.layout_campos_2.setSpacing(10)
+            self.tipo_geometria = QComboBox()
+            self.tipo_geometria.addItems(["CONVENCIONAL", "ESPIRAL", "TRI-ESPIRAL"])
+
+            self.layout_campos.addRow("OD [pg]:", QLineEdit())
+            self.layout_campos.addRow("ID [pg]:", QLineEdit())
+            self.layout_campos.addRow("Geometria", self.tipo_geometria)
+
+            self.layout_campos_2.addRow("Conexión:", QLineEdit())
+            self.layout_campos_2.addRow("Longitud [pg]:", QLineEdit())
+            self.layout_campos_2.addRow("Peso [lb/ft]:", QLineEdit())
+
+        if source is 4:
+            p = self.palette()
+            p.setBrush(10, QBrush(QImage("Imagenes/Fondo/FondoDatosDC.png")))
+            self.setPalette(p)
+            self.setFixedSize(580, 200)
+            self.layout_campos.setSpacing(10)
+            self.layout_campos_2.setSpacing(10)
+            self.tipo_geometria = QComboBox()
+            self.tipo_geometria.addItems(["LISO", "ESPIRAL", "NO-MAGNETICO"])
+
+            self.layout_campos.addRow("OD [pg]:", QLineEdit())
+            self.layout_campos.addRow("ID [pg]:", QLineEdit())
+            self.layout_campos.addRow("Geometria", self.tipo_geometria)
+
+            self.layout_campos_2.addRow("Conexión:", QLineEdit())
+            self.layout_campos_2.addRow("Longitud [pg]:", QLineEdit())
+            self.layout_campos_2.addRow("Peso [lb/ft]:", QLineEdit())
+
         if source is 9:
             p = self.palette()
             p.setBrush(10, QBrush(QImage("Imagenes/Fondo/FondoDatosBNA.png")))
             self.setPalette(p)
 
-            self.layout_campos.setSpacing(10)
-            self.layout_campos_2.setSpacing(10)
+            self.layout_campos.setSpacing(17)
+            self.layout_campos_2.setSpacing(17)
 
             self.tipo_barrena = QComboBox()
             self.tipo_barrena.addItems(["Triconicas", "PDC"])
@@ -77,16 +115,17 @@ class Agregar(QDialog):
             self.layout_campos.addRow("Código IADC:", QLineEdit())
             self.layout_campos.addRow("OD [pg]:", QLineEdit())
             self.layout_campos.addRow("Conexión:", QLineEdit())
-            self.layout_campos.addRow("Peso [kg]:", QLineEdit())
+            self.layout_campos.addRow("Tipo Conexión :", self.tipo_conexion)
 
-            self.layout_campos_2.addRow("Tipo Conexión :", self.tipo_conexion)
             self.layout_campos_2.addRow("Longitud [pg]:", QLineEdit())
+            self.layout_campos_2.addRow("Peso [kg]:", QLineEdit())
             self.layout_campos_2.addRow("Boquillas:", QLineEdit())
 
         if source is 7:
             p = self.palette()
             p.setBrush(10, QBrush(QImage("Imagenes/Fondo/FondoDatosPortaBarrena.png")))
             self.setPalette(p)
+            self.setFixedSize(580, 275)
             self.layout_campos.setSpacing(23)
             self.layout_campos_2.setSpacing(23)
             self.tipo_conexion_top = QComboBox()
@@ -106,6 +145,7 @@ class Agregar(QDialog):
         if source is 8:
             p = self.palette()
             p.setBrush(10, QBrush(QImage("Imagenes/Fondo/FondoDatosMartillo.png")))
+            self.setFixedSize(580, 265)
             self.setPalette(p)
             self.layout_campos.setSpacing(23)
             self.layout_campos_2.setSpacing(23)
@@ -125,8 +165,9 @@ class Agregar(QDialog):
             p = self.palette()
             p.setBrush(10, QBrush(QImage("Imagenes/Fondo/FondoDatosMotor.png")))
             self.setPalette(p)
-            self.layout_campos.setSpacing(23)
-            self.layout_campos_2.setSpacing(23)
+            self.setFixedSize(580, 265)
+            self.layout_campos.setSpacing(20)
+            self.layout_campos_2.setSpacing(20)
             self.tipo_conexion_top = QComboBox()
             self.tipo_conexion_top.addItems(["PIN", "BOX"])
 
@@ -143,6 +184,7 @@ class Agregar(QDialog):
         if source is 16:
             p = self.palette()
             p.setBrush(10, QBrush(QImage("Imagenes/Fondo/FondoDatosMartillo.png")))
+            self.setFixedSize(580, 265)
             self.setPalette(p)
             self.layout_campos.setSpacing(23)
             self.layout_campos_2.setSpacing(23)
@@ -219,21 +261,28 @@ class Agregar(QDialog):
         return self.tipo_barrena.currentIndex()
 
     def collect_data(self):
+
+        if self.source is 3 or self.source is 4:
+            self.datos.append(self.layout_campos.itemAt(1).widget().text())
+            self.datos.append((self.layout_campos.itemAt(3).widget().text()))
+            self.datos.append(self.layout_campos.itemAt(5).widget().currentText())
+
+            self.datos.append(self.layout_campos_2.itemAt(1).widget().text())
+            self.datos.append(self.layout_campos_2.itemAt(3).widget().text())
+            self.datos.append(self.layout_campos_2.itemAt(5).widget().text())
+
         if self.source is 9:
             self.datos.append(self.layout_campos.itemAt(3).widget().text())
-            self.datos.append((self.layout_campos.itemAt(5).widget().text()))
+            self.datos.append(self.layout_campos.itemAt(5).widget().text())
             self.datos.append(self.layout_campos.itemAt(7).widget().text())
+            self.datos.append(self.layout_campos.itemAt(9).widget().currentText())
 
-            if self.tipo_conexion.currentIndex() is 0:
-                self.datos.append("PIN")
-            else:
-                self.datos.append("BOX")
-            self.datos.append(float(self.layout_campos_2.itemAt(3).widget().text()))
-            self.datos.append(int(self.layout_campos_2.itemAt(5).widget().text()))
+            self.datos.append(self.layout_campos_2.itemAt(1).widget().text())
+            self.datos.append(self.layout_campos_2.itemAt(3).widget().text())
+            self.datos.append(self.layout_campos_2.itemAt(5).widget().text())
             if self.tipo_barrena.currentIndex() is 1:
                 self.datos.append(int(self.layout_campos_2.itemAt(7).widget().text()))
 
-            self.datos.append(float(self.layout_campos.itemAt(9).widget().text()))
 
         if self.source is 7:
             self.datos.append(self.layout_campos.itemAt(1).widget().text())
@@ -278,25 +327,36 @@ class Agregar(QDialog):
             self.datos.append(self.layout_campos_2.itemAt(7).widget().text())
 
     def is_modificador(self, data):
+        if self.source is 3 or self.source is 4:
+            self.layout_campos.itemAt(1).widget().setText(data[0])
+            self.layout_campos.itemAt(3).widget().setText(str(data[1]))
+            if data[2] == 'CONVENCIONAL':
+                self.layout_campos.itemAt(5).widget().setCurrentIndex(0)
+            elif data[2] == 'ESPIRAL':
+                self.layout_campos.itemAt(5).widget().setCurrentIndex(1)
+            else:
+                self.layout_campos.itemAt(5).widget().setCurrentIndex(2)
+
+            self.layout_campos_2.itemAt(1).widget().setText(data[3])
+            self.layout_campos_2.itemAt(3).widget().setText(data[4])
+            self.layout_campos_2.itemAt(5).widget().setText(data[5])
+
         if self.source is 9:
             self.tipo_barrena.setCurrentIndex(int(data[0]))
             self.tipo_barrena.setEnabled(False)
             self.layout_campos.itemAt(3).widget().setText(data[1])
             self.layout_campos.itemAt(5).widget().setText(str(data[2]))
             self.layout_campos.itemAt(7).widget().setText(data[3])
-
             if data[4] == "PIN":
                 self.tipo_conexion.setCurrentIndex(0)
             else:
                 self.tipo_conexion.setCurrentIndex(1)
 
-            self.layout_campos_2.itemAt(3).widget().setText(str(data[5]))
-            self.layout_campos_2.itemAt(5).widget().setText(str(data[6]))
+            self.layout_campos_2.itemAt(1).widget().setText(str(data[5]))
+            self.layout_campos_2.itemAt(3).widget().setText(str(data[6]))
+            self.layout_campos_2.itemAt(5).widget().setText(data[7])
             if self.tipo_barrena.currentIndex() is 1:
-                self.layout_campos_2.addRow("Puertos Fijos", QLineEdit())
-                self.layout_campos_2.itemAt(7).widget().setText(data[7])
-                self.layout_campos.itemAt(9).widget().setText(str(data[8]))
-            self.layout_campos.itemAt(9).widget().setText(str(data[7]))
+                self.layout_campos_2.itemAt(7).widget().setText(str(data[8]))
 
         if self.source is 7:
             self.layout_campos.itemAt(1).widget().setText(data[0])
@@ -309,9 +369,9 @@ class Agregar(QDialog):
             self.layout_campos.itemAt(5).widget().setText(data[2])
 
             if data[3] == "PIN":
-                self.layout_campos_2.itemAt(7).widget().setCurrentIndex(0)
+                self.layout_campos.itemAt(7).widget().setCurrentIndex(0)
             else:
-                self.layout_campos_2.itemAt(7).widget().setCurrentIndex(1)
+                self.layout_campos.itemAt(7).widget().setCurrentIndex(1)
 
             self.layout_campos_2.itemAt(1).widget().setText(data[4])
             self.layout_campos_2.itemAt(3).widget().setText(data[5])
@@ -361,9 +421,6 @@ class Agregar(QDialog):
                 self.layout_campos_2.itemAt(3).widget().setCurrentIndex(1)
             self.layout_campos_2.itemAt(5).widget().setText(data[6])
             self.layout_campos_2.itemAt(7).widget().setText(data[7])
-
-
-
 
 
 if __name__ == "__main__":

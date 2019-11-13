@@ -25,8 +25,8 @@ class DatosBarrenas(QWidget):
 
         self.model_pdc = QStandardItemModel()
         self.model_pdc.setHorizontalHeaderLabels(
-            ['Código \n IADC', 'OD\n [pg]', "Conexión", "Tipo", "Longitud\n[pg]", "Boquillas",
-             "Puertos \nFijos", "Peso\n[Kg]"])
+            ['Código \n IADC', 'OD\n [pg]', "Conexión", "Tipo", "Longitud\n[pg]", "Peso\n[Kg]", "Boquillas",
+             "Puertos \nFijos"])
         self.table_pdc = QTableView()
         self.table_pdc.setModel(self.model_pdc)
         self.acondiciona(self.table_pdc)
@@ -168,7 +168,7 @@ class DatosBarrenas(QWidget):
                 new_data.insert(0, 0)
             elif self.last_clicked is 2:
                 new_data = self.data_pdc[row.row()].copy()
-                new_data.insert(0, 0)
+                new_data.insert(0, 1)
             insert = Agregar(9)
             insert.is_modificador(new_data)
             if insert.exec_():

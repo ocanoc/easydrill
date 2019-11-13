@@ -1,0 +1,81 @@
+3 1/2,2 1/4  ,CONVENCIONAL,NC38         ,9.45,23.29
+3 1/2,2 1/4  ,CONVENCIONAL,NC38         ,9.45,23.29
+3 1/2,2 1/4  ,ESPIRAL     ,NC38         ,9.45,29.72
+3 1/2,2 1/4  ,CONVENCIONAL,NC38         ,9.45,23.73
+3 1/2,2 1/4  ,ESPIRAL     ,NC38         ,9.45,30.16
+3 1/2,2 1/4  ,TRI-ESPIRAL ,HT38         ,9.45,25.36
+3 1/2,2 1/4  ,CONVENCIONAL,HT38         ,9.45,30.39
+4    ,2  9/16,TRI-ESPIRAL ,XT38         ,9.45,29.38
+4    ,2  9/16,CONVENCIONAL,TT390        ,9.45,28.81
+4    ,2  9/16,CONVENCIONAL,XT39         ,9.45,28.24
+4    ,2  9/16,TRI-ESPIRAL ,XT39         ,9.45,29.99
+4    ,2  9/16,TRI-ESPIRAL ,XT39         ,9.45,29.82
+4    ,2  9/16,ESPIRAL     ,XT39         ,9.45,29.26
+4    ,2  9/16,CONVENCIONAL,XTM39        ,9.45,28.69
+4    ,2  9/16,ESPIRAL     ,XT39         ,9.45,28.69
+4    ,2  9/16,CONVENCIONAL,HT40         ,9.45,28.69
+4    ,2  9/16,TRI-ESPIRAL ,HT40         ,9.45,30.48
+4    ,2  9/16,ESPIRAL     ,WT38         ,9.45,28.69
+4    ,2  9/16,ESPIRAL     ,XTM39        ,9.45,28.69
+4    ,2  9/16,CONVENCIONAL,XTM39        ,9.45,28.69
+4 1/2,2 3/4  ,CONVENCIONAL,GPDS40       ,9.45,38.03
+4 1/2,2 3/4  ,CONVENCIONAL,Delta425     ,9.45,37.23
+4 1/2,2 3/4  ,CONVENCIONAL,XTM40        ,9.45,36.85
+4 1/2,2 3/4  ,TRI-ESPIRAL ,TT-485       ,9.45,43.31
+4 1/2,2 11/16,TRI-ESPIRAL ,XTM40        ,9.45,39.53
+5    ,3      ,TRI-ESPIRAL ,XT50         ,9.45,51.66
+5    ,3      ,ESPIRAL     ,4 1/2 IF     ,9.45,57.93
+5    ,3      ,ESPIRAL     ,NC50         ,9.45,57.93
+5    ,3      ,CONVENCIONAL,XT50         ,9.45,49.77
+5    ,3      ,ESPIRAL     ,4 1/2 IF     ,9.45,57.93
+5    ,3      ,ESPIRAL     ,NC50         ,9.45,57.93
+5    ,3      ,CONVENCIONAL,4 1/2 IF     ,9.45,49.77
+5    ,3      ,CONVENCIONAL,NC50         ,9.45,49.77
+5    ,3      ,ESPIRAL     ,4 1/2 IF     ,9.45,58.55
+5    ,3      ,ESPIRAL     ,NC50         ,9.45,58.55
+5    ,3      ,TRI-ESPIRAL ,4 1/2 IF     ,9.45,52.34
+5    ,3      ,TRI-ESPIRAL ,NC50         ,9.45,52.34
+5 1/2,3 1/4  ,CONVENCIONAL,XT54         ,9.45,57.57
+5 1/2,3 1/4  ,CONVENCIONAL,TT550        ,9.45,57.57
+5 1/2,3 1/4  ,CONVENCIONAL,Delta 544    ,9.45,58.41
+5 1/2,3 1/4  ,CONVENCIONAL,HT55         ,9.45,60.13
+5 1/2,3 1/4  ,CONVENCIONAL,XT57         ,9.45,59.51
+5 1/2,3 1/4  ,CONVENCIONAL,HT55         ,9.45,60.87
+5 1/2,3 1/4  ,CONVENCIONAL,HT55         ,9.45,60.87
+5 1/2,3 1/4  ,CONVENCIONAL,5 1/2 FH     ,9.45,62.27
+5 1/2,3 1/2  ,CONVENCIONAL,5 1/2 FH DSTJ,9.45,55.62
+5 1/2,4      ,ESPIRAL     ,HT55         ,9.45,55.24
+5 7/8,4      ,CONVENCIONAL,XT57         ,9.45,55.14
+5 7/8,4      ,TRI-ESPIRAL ,XT57         ,9.45,57.42
+5 7/8,4      ,TRI-ESPIRAL ,TT-585       ,9.45,56.93
+6 5/8,4 1/2  ,CONVENCIONAL,6 5/8 FH     ,9.45,73.59
+6 5/8,4 1/2  ,CONVENCIONAL,6 5/8 FH     ,9.45,73.59
+2 7/8,1 1/2  ,CONVENCIONAL,NC26         ,9.45,17.26
+2 7/8,1 1/2  ,CONVENCIONAL,2 3/8 IF     ,9.45,17.26
+3 1/2,2 1/4  ,CONVENCIONAL,3 1/2 IF     ,9.45,26.81
+3 1/2,2 1/4  ,CONVENCIONAL,DS38         ,9.45,26.81
+3 1/2,2 1/4  ,CONVENCIONAL,DT38         ,9.45,26.81
+4    ,2  9/16,CONVENCIONAL,NC40         ,9.45,30.71
+4    ,2  9/16,CONVENCIONAL,4 FH         ,9.45,30.71
+4 1/2,2 13/16,CONVENCIONAL,NC46         ,9.45,42.66
+4 1/2,2 13/16,CONVENCIONAL,4 IF         ,9.45,42.66
+4 1/2,2 13/16,CONVENCIONAL,DS46         ,9.45,42.66
+5    ,3      ,CONVENCIONAL,DS50         ,9.45,51.64
+5    ,3      ,CONVENCIONAL,DT50         ,9.45,51.64
+5 1/2,3 1/4  ,CONVENCIONAL,DS55         ,9.45,63.14
+5 1/2,3 1/4  ,CONVENCIONAL,DT55         ,9.45,63.14
+6 5/8,4 1/2  ,ESPIRAL     ,6 5/8 FH     ,9.45,74.44
+5 1/2,3 1/4  ,ESPIRAL     ,DS55         ,9.45,65.06
+5 1/2,3 1/4  ,ESPIRAL     ,DT55         ,9.45,65.06
+5 1/2,3 1/4  ,ESPIRAL     ,5 1/2 FH     ,9.45,65.06
+5    ,3      ,ESPIRAL     ,DS46         ,9.45,61.71
+5    ,3      ,ESPIRAL     ,NC46         ,9.45,61.71
+4 1/2,2 13/16,ESPIRAL     ,NC46         ,9.45,45.31
+4 1/2,2 13/16,ESPIRAL     ,4 IF         ,9.45,45.31
+4 1/2,2 13/16,ESPIRAL     ,DS46         ,9.45,45.31
+4    ,2  9/16,ESPIRAL     ,NC40         ,9.45,33.49
+4    ,2  9/16,ESPIRAL     ,4 FH         ,9.45,33.49
+3 1/2,2 1/8  ,ESPIRAL     ,NC38         ,9.45,30
+3 1/2,2 1/8  ,ESPIRAL     ,3 1/2 IF     ,9.45,30
+3 1/2,2 1/4  ,ESPIRAL     ,DS38         ,9.45,27.83
+3 1/2,2 1/4  ,ESPIRAL     ,DT38         ,9.45,27.83

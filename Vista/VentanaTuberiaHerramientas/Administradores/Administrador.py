@@ -9,8 +9,8 @@ from VentanaTuberiaHerramientas.Administradores.VistaHerramientas.VistaHerramien
 
 
 class Administrador(QWidget):
-    def __init__(self, tipo):
-        super(Administrador, self).__init__()
+    def __init__(self, tipo, parent=None):
+        super(Administrador, self).__init__(parent)
 
         self.setStyleSheet("""
           font-family: Calibri, Candara, Segoe, 
@@ -73,9 +73,9 @@ class Administrador(QWidget):
         if tipo is 1:
             return DatosTP()
         if tipo is 2:
-            return QWidget()
+            return Datos(3)
         if tipo is 3:
-            return QWidget()
+            return Datos(4)
         if tipo is 4:
             return QWidget()
         if tipo is 5:
