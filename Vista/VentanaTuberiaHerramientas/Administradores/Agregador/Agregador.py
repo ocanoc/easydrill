@@ -60,7 +60,6 @@ class Agregar(QDialog):
 
     def create_ui(self, source):
         if source is 3:
-            print("here")
             p = self.palette()
             p.setBrush(10, QBrush(QImage("Imagenes/Fondo/FondoDatosHW.png")))
             self.setPalette(p)
@@ -95,6 +94,45 @@ class Agregar(QDialog):
             self.layout_campos_2.addRow("Conexión:", QLineEdit())
             self.layout_campos_2.addRow("Longitud [pg]:", QLineEdit())
             self.layout_campos_2.addRow("Peso [lb/ft]:", QLineEdit())
+
+        if source is 5:
+            p = self.palette()
+            p.setBrush(10, QBrush(QImage("Imagenes/Fondo/FondoDatosEstabilizador.png")))
+            self.setPalette(p)
+            self.setFixedSize(700, 250)
+            self.layout_campos.setSpacing(17)
+            self.layout_campos_2.setSpacing(17)
+            self.tipo_estabilizador = QComboBox()
+            self.tipo_estabilizador.addItems(["ROTATIVO RECTO CORTO", "ROTATIVO RECTO LARGO", "ROTATIVO ESPIRAL CORTO",
+                                              "MANGA REEMPLAZABLE", "NO GIRATORIO"])
+            self.posicion = QComboBox()
+            self.posicion.addItems(["NEAR BIT", "DRILL STRING"])
+
+            self.layout_campos.addRow("Tipo estabilizador", self.tipo_estabilizador)
+            self.layout_campos.addRow("Posición", self.posicion)
+            self.layout_campos.addRow("Conexión Top:", QLineEdit())
+            self.layout_campos.addRow("Conexión Bit:", QLineEdit())
+
+            self.layout_campos_2.addRow("OD [pg]:", QLineEdit())
+            self.layout_campos_2.addRow("ID [pg]:", QLineEdit())
+            self.layout_campos_2.addRow("Longitud [m]:", QLineEdit())
+
+        if source is 6:
+            p = self.palette()
+            p.setBrush(10, QBrush(QImage("Imagenes/Fondo/FondoDatosTP.png")))
+            self.setPalette(p)
+            self.setFixedSize(500, 250)
+            self.layout_campos.setSpacing(17)
+            self.layout_campos_2.setSpacing(17)
+            self.tipo = QComboBox()
+            self.tipo.addItems(["EU", "IU"])
+
+            self.layout_campos.addRow("Grado:", QLineEdit())
+            self.layout_campos.addRow("Tipo", self.tipo)
+            self.layout_campos.addRow("OD [pg]:", QLineEdit())
+            self.layout_campos.addRow("ID [pg]:", QLineEdit())
+
+            self.layout_campos_2.addRow("Peso nominal [m]:", QLineEdit())
 
         if source is 9:
             p = self.palette()
@@ -283,6 +321,23 @@ class Agregar(QDialog):
             if self.tipo_barrena.currentIndex() is 1:
                 self.datos.append(int(self.layout_campos_2.itemAt(7).widget().text()))
 
+        if self.source is 5:
+            self.datos.append(self.layout_campos.itemAt(1).widget().currentText())
+            self.datos.append(self.layout_campos.itemAt(3).widget().currentText())
+            self.datos.append(self.layout_campos.itemAt(5).widget().text())
+            self.datos.append(self.layout_campos.itemAt(7).widget().text())
+
+            self.datos.append(self.layout_campos_2.itemAt(1).widget().text())
+            self.datos.append(self.layout_campos_2.itemAt(3).widget().text())
+            self.datos.append(self.layout_campos_2.itemAt(5).widget().text())
+
+        if self.source is 6:
+            self.datos.append((self.layout_campos.itemAt(1).widget().text()))
+            self.datos.append(self.layout_campos.itemAt(3).widget().currentText())
+            self.datos.append(self.layout_campos.itemAt(5).widget().text())
+            self.datos.append(self.layout_campos.itemAt(7).widget().text())
+
+            self.datos.append(self.layout_campos_2.itemAt(1).widget().text())
 
         if self.source is 7:
             self.datos.append(self.layout_campos.itemAt(1).widget().text())
@@ -340,6 +395,43 @@ class Agregar(QDialog):
             self.layout_campos_2.itemAt(1).widget().setText(data[3])
             self.layout_campos_2.itemAt(3).widget().setText(data[4])
             self.layout_campos_2.itemAt(5).widget().setText(data[5])
+
+        if self.source is 5:
+            if data[0] == '"ROTATIVO RECTO CORTO",':
+                self.layout_campos.itemAt(1).widget().setCurrentIndex(0)
+            elif data[0] == 'ROTATIVO RECTO LARGO':
+                self.layout_campos.itemAt(1).widget().setCurrentIndex(1)
+            elif data[0] == 'ROTATIVO ESPIRAL CORTO':
+                self.layout_campos.itemAt(1).widget().setCurrentIndex(2)
+            elif data[0] == '"MANGA REEMPLAZABLE"':
+                self.layout_campos.itemAt(1).widget().setCurrentIndex(3)
+            else:
+                self.layout_campos.itemAt(1).widget().setCurrentIndex(4)
+
+            if data[1] == '"NEAR BIT"':
+                self.layout_campos.itemAt(3).widget().setCurrentIndex(0)
+            else:
+                self.layout_campos.itemAt(3).widget().setCurrentIndex(1)
+            self.layout_campos.itemAt(1).widget().setText(data[2])
+            self.layout_campos.itemAt(1).widget().setText(data[3])
+
+            self.layout_campos_2.itemAt(1).widget().setText(data[4])
+            self.layout_campos_2.itemAt(3).widget().setText(data[5])
+            self.layout_campos_2.itemAt(5).widget().setText(data[6])
+
+        if self.source is 6:
+            self.layout_campos.itemAt(1).widget().setText(data[0])
+
+            if data[1] == 'EU':
+                self.layout_campos.itemAt(3).widget().setCurrentIndex(0)
+            else:
+                self.layout_campos.itemAt(3).widget().setCurrentIndex(1)
+
+            self.layout_campos.itemAt(5).widget().setText(data[2])
+            self.layout_campos.itemAt(7).widget().setText(data[3])
+
+            self.layout_campos_2.itemAt(1).widget().setText(data[4])
+
 
         if self.source is 9:
             self.tipo_barrena.setCurrentIndex(int(data[0]))

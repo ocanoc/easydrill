@@ -4,7 +4,6 @@ from PyQt5.QtWidgets import *
 
 from VentanaTuberiaHerramientas.Administradores.Datos.Datos import Datos
 from VentanaTuberiaHerramientas.Administradores.Datos.DatosBarrenas import DatosBarrenas
-from VentanaTuberiaHerramientas.Administradores.Datos.DatosTP import DatosTP
 from VentanaTuberiaHerramientas.Administradores.VistaHerramientas.VistaHerramientas import VistaHerramientas
 
 
@@ -71,7 +70,7 @@ class Administrador(QWidget):
     @staticmethod
     def set_table(tipo):
         if tipo is 1:
-            return DatosTP()
+            return Datos(6)
         if tipo is 2:
             return Datos(3)
         if tipo is 3:
@@ -79,7 +78,7 @@ class Administrador(QWidget):
         if tipo is 4:
             return QWidget()
         if tipo is 5:
-            return QWidget()
+            return Datos(5)
         if tipo is 6:
             return QWidget()
         if tipo is 7:

@@ -66,11 +66,6 @@ class Datos(QWidget):
                          "Peso\n[Kg]"]
             self.file = 'CSV/Amortiguadores.csv'
             self.datos = 16
-        if tipo is 2:
-            self.list = ['Grado', 'OD\n [pg]', 'ID\n [pg]', "Conexión\nTop", "Conexión \nBit", "Longitud\n[m]",
-                         "Peso\n Nominal\n[Kg]"]
-            self.file = 'CSV/Martillos.csv'
-            self.datos = 8
 
         if tipo is 3:
             self.list = ['OD\n [pg]', 'ID\n [pg]', "Geometria", "Conexión", "Longitud\n[in]", "Peso\n[lbs/ft]"]
@@ -84,7 +79,24 @@ class Datos(QWidget):
             self.list = ['OD\n [pg]', 'ID\n [pg]', "Geometria", "Conexión", "Longitud\n[m]", "Peso\n[lb/ft]"]
             self.file = 'CSV/DC.csv'
             self.datos = tipo
-            self.label_title.setText("Tubería extra pesada.")
+            self.label_title.setText("Lastrabarrenas.")
+            self.layout_pantalla.addWidget(self.label_title, 1, Qt.AlignLeft)
+            self.table_height = 380
+
+        if tipo is 5:
+            self.list = ["Tipo", "Posición", "Conexión\nTop", "Conexión \nBit", 'OD\n [pg]', 'ID\n [pg]',
+                         "Longitud\n[m]"]
+            self.file = 'CSV/Estabilizadores.csv'
+            self.datos = tipo
+            self.label_title.setText("Estabilizadores.")
+            self.layout_pantalla.addWidget(self.label_title, 1, Qt.AlignLeft)
+            self.table_height = 380
+
+        if tipo is 6:
+            self.list = ["Grado", "Tipo", 'OD\n [pg]', 'ID\n [pg]', "Peso\nNominal\n[lb/ft]"]
+            self.file = 'CSV/TuberiaPerforacion.csv'
+            self.datos = tipo
+            self.label_title.setText("Tuberia de perforación.")
             self.layout_pantalla.addWidget(self.label_title, 1, Qt.AlignLeft)
             self.table_height = 380
 
