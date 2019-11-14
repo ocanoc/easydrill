@@ -188,7 +188,7 @@ class Agregar(QDialog):
             self.layout_campos.setSpacing(23)
             self.layout_campos_2.setSpacing(23)
             self.tipo_martillo = QComboBox()
-            self.tipo_martillo.addItems(["HIDRÁULICO", "MECÁNICO"])
+            self.tipo_martillo.addItems(["HIDRAULICO", "MECANICO"])
 
             self.layout_campos.addRow("Tipo martillo:", self.tipo_martillo)
             self.layout_campos.addRow("OD [pg]:", QLineEdit())
