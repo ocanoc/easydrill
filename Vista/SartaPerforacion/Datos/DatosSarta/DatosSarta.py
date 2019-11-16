@@ -4,34 +4,40 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
-from DatosHerramientas.DatosHerramientas import DatosHerramientas
-from DatosTuberiaPerforacion.DatosTuberia import DatosTuberia
+from Vista.VentanaTuberiaHerramientas.Administradores.Datos.Datos import Datos
+from Vista.VentanaTuberiaHerramientas.Administradores.VistaHerramientas.VistaHerramientas import VistaHerramientas
 
 
 class DatosSarta(QDialog):
 
     def __init__(self, parent=None):
         super(DatosSarta, self).__init__(parent)
-        self.title = 'Sarta de perforacion'
-        self.setFixedSize(480, 600)
-        self.setFont(QFont('Calibri (Cuerpo)', 10, QFont.Bold))
+        self.title = 'Elementos de la sarta de perforacion.'
+        self.setWindowIcon(QIcon("Imagenes/Iconos/Gota.png"))
+        self.setFixedSize(830, 570)
+        self.setFont(QFont('Calibri (Cuerpo)', 12, QFont.Bold))
         p = self.palette()
-        p.setColor(self.backgroundRole(), QColor(208, 206, 206))
+        p.setBrush(10, QBrush(QImage("Imagenes/Fondo/FondoAgregador.png")))
         self.setPalette(p)
-        self.tabs = QTabWidget()
-        self.Tuberia = DatosTuberia()
-        self.Herramientas = DatosHerramientas()
-        # self.Coples = QWidget()
 
-        self.tabs.resize(250, 200)
-        self.tabs.addTab(self.Tuberia, "Tuberias")
-        self.tabs.addTab(self.Herramientas, "Herramientas")
-        # self.tabs.addTab(self.Coples, "Coples")
+        self.label_title = QLabel("Selecciona un elemento.")
+        self.tab = QTabWidget()
+        self.tab.setIconSize(QSize(115, 50))
+        self.tab.setFixedSize(800, 480)
+        self.tab.addTab(Datos(6), QIcon("Imagenes/TextosTuberias/TextoTP.png"), "")
+        self.tab.addTab(Datos(3), QIcon("Imagenes/TextosTuberias/TextoHW.png"), "")
+        self.tab.addTab(Datos(4), QIcon("Imagenes/TextosTuberias/TextoDC.png"), "")
+        self.tab.addTab(QWidget(), QIcon("Imagenes/TextosTuberias/TextoConexiones.png"), "")
+        self.tab.addTab(Datos(5), QIcon("Imagenes/TextosTuberias/TextoEstabilizadores.png"), "")
+        self.tab.addTab(Datos(11), QIcon("Imagenes/TextosTuberias/TextoHerramientas.png"), "")
+        self.tab.addTab(QWidget(), QIcon("Imagenes/TextosTuberias/TextoPorta.png"), "")
+        self.tab.addTab(VistaHerramientas(), QIcon("Imagenes/TextosTuberias/TextoMartillos.png"), "")
+        self.tab.addTab(Datos(10), QIcon("Imagenes/TextosTuberias/TextoMotor.png"), "")
 
         self.btn_aceptar = QPushButton("Aceptar")
         self.btn_cancelar = QPushButton("Cancelar")
 
-        self.btn_aceptar.clicked.connect(lambda *args: self.aceptar(self.tabs.currentWidget()))
+        self.btn_aceptar.clicked.connect(lambda *args: self.aceptar(self.tab.currentWidget()))
         self.btn_cancelar.clicked.connect(lambda *args: self.cancelar())
 
         self.acodiciona(self.btn_aceptar)
@@ -44,7 +50,9 @@ class DatosSarta(QDialog):
         self.setWindowTitle(self.title)
 
         self.layout_ventana = QVBoxLayout()
-        self.layout_ventana.addWidget(self.tabs)
+        self.layout_ventana.addSpacing(15)
+        self.layout_ventana.addWidget(self.label_title, 1, Qt.AlignLeft)
+        self.layout_ventana.addWidget(self.tab)
         self.layout_ventana.addLayout(self.layout_btn)
         self.setWindowTitle(self.title)
         self.setLayout(self.layout_ventana)

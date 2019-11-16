@@ -93,7 +93,7 @@ class Datos(QWidget):
             self.table_height = 380
 
         if tipo is 6:
-            self.list = ["Grado", "Tipo", 'OD\n [pg]', 'ID\n [pg]', "Peso\nNominal\n[lb/ft]"]
+            self.list = ["Grado", "Upset\nTipo", 'OD\n [pg]', 'ID\n [pg]', "Conexión", "Peso\nNominal\n[lb/ft]"]
             self.file = 'CSV/TuberiaPerforacion.csv'
             self.datos = tipo
             self.label_title.setText("Tuberia de perforación.")
@@ -114,6 +114,15 @@ class Datos(QWidget):
             self.file = 'CSV/Motores.csv'
             self.datos = tipo
             self.label_title.setText("Motores de fondo.")
+            self.layout_pantalla.addWidget(self.label_title, 1, Qt.AlignLeft)
+            self.table_height = 380
+
+        if tipo is 11:
+            self.list = ["Registro", 'OD\n [pg]', 'ID\n [pg]', "Conexión\nTop", "Tipo", "Conexión\nBit", "Tipo",
+                         "Longitud\n[m]", "Peso\n[kg/m]"]
+            self.file = 'CSV/HhtasRegistros.csv'
+            self.datos = tipo
+            self.label_title.setText("Herramientas de Registros.")
             self.layout_pantalla.addWidget(self.label_title, 1, Qt.AlignLeft)
             self.table_height = 380
         self.model_table.setHorizontalHeaderLabels(self.list)
@@ -141,12 +150,12 @@ class Datos(QWidget):
             file.close()
 
     def get_data(self):
-        if self.get_long():
-            data = self.get_row()
-            return data
+        print("here")
+        data = self.get_row()
+        return data
 
     def get_row(self):
-        indices = self.table_triconicas.selectionModel().selectedRows()
+        indices = self.table.selectionModel().selectedRows()
         if indices:
             for index in sorted(indices):
                 return self.data[index.row()]

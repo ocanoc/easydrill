@@ -67,3 +67,11 @@ class VistaHerramientas(QWidget):
             self.martillos.modifcar()
         elif self.tipo_herramienta.currentIndex() is 2:
             self.amortiguadores.modifcar()
+
+    def get_data(self):
+        if self.tipo_herramienta.currentIndex() is 0:
+            QMessageBox.critical(self, "Error", "Selecciona un tipo de herramienta.")
+        elif self.tipo_herramienta.currentIndex() is 1:
+            return self.martillos.get_data()
+        elif self.tipo_herramienta.currentIndex() is 2:
+            return self.amortiguadores.get_data()
