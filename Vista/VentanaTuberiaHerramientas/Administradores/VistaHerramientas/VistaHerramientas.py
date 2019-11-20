@@ -34,12 +34,10 @@ class VistaHerramientas(QWidget):
             self.martillos.hide()
             self.amortiguadores.hide()
         if self.tipo_herramienta.currentIndex() is 1:
-            print("aqui")
             self.empty.hide()
             self.martillos.show()
             self.amortiguadores.hide()
         if self.tipo_herramienta.currentIndex() is 2:
-            print("aqui2")
             self.empty.hide()
             self.martillos.hide()
             self.amortiguadores.show()
@@ -64,9 +62,9 @@ class VistaHerramientas(QWidget):
         if self.tipo_herramienta.currentIndex() is 0:
             QMessageBox.critical(self, "Error", "Selecciona un tipo de herramienta.")
         elif self.tipo_herramienta.currentIndex() is 1:
-            self.martillos.modifcar()
+            self.martillos.modificar()
         elif self.tipo_herramienta.currentIndex() is 2:
-            self.amortiguadores.modifcar()
+            self.amortiguadores.modificar()
 
     def get_data(self):
         if self.tipo_herramienta.currentIndex() is 0:

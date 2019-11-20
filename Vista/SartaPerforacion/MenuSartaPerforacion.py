@@ -4,13 +4,14 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
+from DatosSarta import DatosSarta
 from Vista.SartaPerforacion.Datos.DatosBarrena.DatosBarrena import CreaBarrena
 from Vista.SartaPerforacion.Datos.DatosBomba.CreaBomba import CreeaBomba
 from Vista.SartaPerforacion.Datos.DatosTuberiasSuperficiales.DatosTuberiasSuperficiales import \
     DatosTuberiasSuperficiales
 
 
-class TuberiaPerforacion(QWidget):
+class SartaPerforacion(QWidget):
     app = QApplication(sys.argv)
     app.setStyle('Fusion')
 
@@ -26,6 +27,8 @@ class TuberiaPerforacion(QWidget):
     label_instrucciones_barrena = QLabel("Selecciona un tipo de barrena:")
 
     table = QTableView()
+    table.setSelectionMode(QAbstractItemView.SingleSelection)
+    table.setSelectionBehavior(QAbstractItemView.SelectRows)
     table.setEditTriggers(QAbstractItemView.NoEditTriggers)
     header = table.horizontalHeader()
     header.setMinimumSectionSize(65)
@@ -35,6 +38,7 @@ class TuberiaPerforacion(QWidget):
     table.setHorizontalHeader(header)
     table.setModel(model)
     table.setAlternatingRowColors(True)
+
     table.setStyleSheet("""
         QHeaderView::section {
         background-color: rgb(0, 80, 85);
@@ -85,9 +89,9 @@ class TuberiaPerforacion(QWidget):
     texto_conexiones.setPixmap(QPixmap("Imagenes/TP/TextoSuperficial.png"))
 
     tipo = QComboBox()
-    tipo.addItems(["Tipo 1", "Tipo 2", "Tipo 3", "Tipo 4"])
+    tipo.addItems(["Selecciona", "Tipo 1", "Tipo 2", "Tipo 3", "Tipo 4"])
 
-    longitud_equivalente = QLabel("133.2")
+    longitud_equivalente = QLabel("N/A")
 
     btn_bomba = QPushButton("Agregar")
 
@@ -148,9 +152,11 @@ class TuberiaPerforacion(QWidget):
     data_barrena = []
     area_toberas = 0
     barrena = False
+    last_opc = 0
+    last_long_equi = "N/A"
 
     def __init__(self, parent=None):
-        super(TuberiaPerforacion, self).__init__(parent)
+        super(SartaPerforacion, self).__init__(parent)
         self.acodiciona(self.mas)
         self.acodiciona(self.menos)
         self.acondiciona_imagen(self.barrena_triconica)
@@ -163,7 +169,7 @@ class TuberiaPerforacion(QWidget):
         self.acodiciona(self.texto_tp)
         self.acodiciona(self.btn_tabla)
         self.acodiciona(self.campo_gasto)
-        self.tipo.currentIndexChanged.connect(self.cambio_tipo)
+        self.tipo.activated.connect(self.cambio_tipo)
         # self.barrena.currentIndexChanged.connect(self.cambio_barrena)
         self.mas.clicked.connect(lambda *args: self.agrega())
         self.menos.clicked.connect(lambda *args: self.elimina())
@@ -174,9 +180,50 @@ class TuberiaPerforacion(QWidget):
 
     def cambio_tipo(self, i):
         if i is 0:
+            self.longitud_equivalente.setText("N/A")
+            self.last_opc = self.tipo.currentIndex()
+            self.last_long_equi = "N/A"
+
+        elif i is 1:
             self.longitud_equivalente.setText("133.2")
+            self.last_opc = self.tipo.currentIndex()
+            self.last_long_equi = "133.2"
+
         else:
-            self.get_opc()
+            self.get_opc(i)
+
+    def get_opc(self, i):
+        print(i)
+        items = ("1", "1")
+        if i is 2:
+            items = ("2.764", "3.826")
+        elif i is 3:
+            items = ("3.826", "4.276")
+        elif i is 4:
+            items = ("3.826", "4.276")
+
+        item, okPressed = QInputDialog.getItem(self, "Diametro", "OD [in]:", items, 0, False)
+        if okPressed and item:
+            if item == "2.764":
+                self.longitud_equivalente.setText("49.1")
+                self.last_opc = self.tipo.currentIndex()
+            elif item == "3.826":
+                if i is 2:
+                    self.longitud_equivalente.setText("232")
+                if i is 3:
+                    self.longitud_equivalente.setText("146")
+                if i is 4:
+                    self.longitud_equivalente.setText("103.7")
+            elif item == "4.276":
+                if i is 3:
+                    self.longitud_equivalente.setText("146")
+                if i is 4:
+                    self.longitud_equivalente.setText("103.7")
+            self.last_long_equi = self.longitud_equivalente.text()
+            self.last_opc = self.tipo.currentIndex()
+        else:
+            self.tipo.setCurrentIndex(self.last_opc)
+            self.longitud_equivalente.setText(self.last_long_equi)
 
     def cambio_barrena(self, i):
         self.campo_area_toberas.setText(self.barrena.get_selection(i))
@@ -190,8 +237,12 @@ class TuberiaPerforacion(QWidget):
             QMessageBox.critical(self, "Error", "Selecciona una fila.")
 
     def agrega(self):
+        self.barrena = True
         if self.barrena is True:
             self.model.insertRow(self.model.rowCount())
+            data = DatosSarta()
+            if data.exec_():
+                print("agregar")
         else:
             QMessageBox.warning(self, "Aviso.", "Es necesario agregar una Barrena.")
 
@@ -207,7 +258,7 @@ class TuberiaPerforacion(QWidget):
             btn.setFixedSize(btnancho, btnancho)
             btn.setCursor(Qt.PointingHandCursor)
         if isinstance(btn, QComboBox):
-            btn.setFixedWidth(85)
+            btn.setFixedWidth(117)
             btn.setCursor(Qt.PointingHandCursor)
         if isinstance(btn, QLabel):
             btn.setScaledContents(True)
@@ -216,32 +267,6 @@ class TuberiaPerforacion(QWidget):
             btn.setFixedWidth(85)
             btn.setCursor(Qt.IBeamCursor)
             btn.setPlaceholderText("0")
-
-    def get_opc(self):
-        print(self.tipo.currentIndex())
-        items = ("3.826", "4.276")
-        if self.tipo.currentIndex() is 1:
-            items = ("2.764", "3.826")
-            item, okPressed = QInputDialog.getItem(self, "Diametro de la tuberia", "OD [in]:", items, 0, False)
-            if okPressed and item:
-                if float(item) is 2.764:
-                    self.longitud_equivalente.setText("49.1")
-                else:
-                    self.longitud_equivalente.setText("232")
-        if self.tipo.currentIndex() is 2:
-            item, okPressed = QInputDialog.getItem(self, "Diametro de la tuberia", "OD [in]:", items, 0, False)
-            if okPressed and item:
-                if float(item) is 3.826:
-                    self.longitud_equivalente.setText("146")
-                else:
-                    self.longitud_equivalente.setText("248")
-        if self.tipo.currentIndex() is 3:
-            item, okPressed = QInputDialog.getItem(self, "Diametro de la tuberia", "OD [in]:", items, 0, False)
-            if okPressed and item:
-                if float(item) is 3.826:
-                    self.longitud_equivalente.setText("103.7")
-                else:
-                    self.longitud_equivalente.setText("176.5")
 
     def crea_bomba(self):
         crea = CreeaBomba(self)

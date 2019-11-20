@@ -12,7 +12,7 @@ class MenuEdicion(QWidget):
 
         self.texto_encabezado = QLabel()
         self.texto_encabezado.setScaledContents(True)
-        self.texto_encabezado.setFixedSize(350, 50)
+        self.texto_encabezado.setFixedSize(250, 50)
         self.texto_encabezado.setPixmap(QPixmap("Imagenes/Titulos/TextoAdmin.png"))
 
         self.tab = QTabWidget()

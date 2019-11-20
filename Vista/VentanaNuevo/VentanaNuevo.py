@@ -4,7 +4,7 @@ from PyQt5.QtWidgets import *
 
 from DatosTrayectoria.DatosTrayectoria import DatosTrayectoria
 from Fluidos.DatosFluidos.DatosFluidos import DatosFluidos
-from MenuSartaPerforacion import TuberiaPerforacion
+from MenuSartaPerforacion import SartaPerforacion
 from TrayectoriaDireccional.MenuTrayectoria import Trayectoria
 from TuberiasRevestmiento.MenuTuberiasRevestimiento import TuberiasRevestimiento
 
@@ -31,7 +31,7 @@ class Nuevo(QWidget):
     Tuberiras_revetimietno = TuberiasRevestimiento()
     Tuberiras_revetimietno.hide()
 
-    Sarta_Perforacion = TuberiaPerforacion()
+    Sarta_Perforacion = SartaPerforacion()
     Sarta_Perforacion.hide()
 
     layout_btn = QHBoxLayout()

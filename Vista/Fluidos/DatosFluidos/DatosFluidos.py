@@ -29,9 +29,9 @@ class DatosFluidos(QWidget):
     layout_izquierda.addRow("""Densidad<div class="fraction">
                             [<span class="fup">gr</span>
                             <span class="bar">/</span>
-                            <span class="fdn">cm<sup>2</sup></span>
+                            <span class="fdn">cm<sup>3</sup></span>
                             ]</div>""", campo_densidad)
-    layout_izquierda.addRow("""θ<sub>0</sub> [ llbf / 100ft<sup>2</sup> ]""", campo_gel)
+    layout_izquierda.addRow("""Gel<sub>0</sub> [ lbf / 100ft<sup>2</sup> ]""", campo_gel)
 
     layout_centro = QFormLayout()
     layout_centro.addRow("""L<sub>300</sub>

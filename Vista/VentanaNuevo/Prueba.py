@@ -4,7 +4,7 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
-from VentanaTuberiaHerramientas.MenuEdicion import MenuEdicion
+from SartaPerforacion.MenuSartaPerforacion import SartaPerforacion
 
 
 class Prueba(QDialog):
@@ -20,7 +20,8 @@ class Prueba(QDialog):
         p.setColor(self.backgroundRole(), QColor(208, 206, 206))
         self.setPalette(p)
         self.layot = QHBoxLayout()
-        self.layot.addWidget(MenuEdicion())
+        # self.layot.addWidget(MenuEdicion())
+        self.layot.addWidget(SartaPerforacion())
         self.setLayout(self.layot)
 
     def termianr(self):

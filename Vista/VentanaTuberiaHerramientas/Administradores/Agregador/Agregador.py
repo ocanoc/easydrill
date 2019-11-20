@@ -62,6 +62,7 @@ class Agregar(QDialog):
         p = self.palette()
         self.layout_campos.setSpacing(17)
         self.layout_campos_2.setSpacing(17)
+
         if source is 3:
             p.setBrush(10, QBrush(QImage("Imagenes/Fondo/FondoDatosHW.png")))
             self.setFixedSize(580, 200)
@@ -73,7 +74,6 @@ class Agregar(QDialog):
             self.layout_campos.addRow("Geometria", self.tipo_geometria)
 
             self.layout_campos_2.addRow("Conexión:", QLineEdit())
-            self.layout_campos_2.addRow("Longitud [pg]:", QLineEdit())
             self.layout_campos_2.addRow("Peso [lb/ft]:", QLineEdit())
 
         if source is 4:
@@ -87,7 +87,6 @@ class Agregar(QDialog):
             self.layout_campos.addRow("Geometria", self.tipo_geometria)
 
             self.layout_campos_2.addRow("Conexión:", QLineEdit())
-            self.layout_campos_2.addRow("Longitud [pg]:", QLineEdit())
             self.layout_campos_2.addRow("Peso [lb/ft]:", QLineEdit())
 
         if source is 5:
@@ -302,7 +301,6 @@ class Agregar(QDialog):
 
             self.datos.append(self.layout_campos_2.itemAt(1).widget().text())
             self.datos.append(self.layout_campos_2.itemAt(3).widget().text())
-            self.datos.append(self.layout_campos_2.itemAt(5).widget().text())
 
         if self.source is 5:
             self.datos.append(self.layout_campos.itemAt(1).widget().currentText())
@@ -378,7 +376,7 @@ class Agregar(QDialog):
             self.datos.append(self.layout_campos_2.itemAt(7).widget().text())
 
     def is_modificador(self, data):
-        if self.source is 3 or self.source is 4:
+        if self.source is 3:
             self.layout_campos.itemAt(1).widget().setText(data[0])
             self.layout_campos.itemAt(3).widget().setText(str(data[1]))
             if data[2] == 'CONVENCIONAL':
@@ -390,7 +388,20 @@ class Agregar(QDialog):
 
             self.layout_campos_2.itemAt(1).widget().setText(data[3])
             self.layout_campos_2.itemAt(3).widget().setText(data[4])
-            self.layout_campos_2.itemAt(5).widget().setText(data[5])
+
+        if self.source is 4:
+            self.get_text(data[2])
+            self.layout_campos.itemAt(1).widget().setText(data[0])
+            self.layout_campos.itemAt(3).widget().setText(str(data[1]))
+            if data[2] == 'LISO':
+                self.layout_campos.itemAt(5).widget().setCurrentIndex(0)
+            elif data[2] == 'ESPIRAL':
+                self.layout_campos.itemAt(5).widget().setCurrentIndex(1)
+            else:
+                self.layout_campos.itemAt(5).widget().setCurrentIndex(2)
+
+            self.layout_campos_2.itemAt(1).widget().setText(data[3])
+            self.layout_campos_2.itemAt(3).widget().setText(data[4])
 
         if self.source is 5:
             if data[0] == '"ROTATIVO RECTO CORTO",':
@@ -466,7 +477,7 @@ class Agregar(QDialog):
             self.layout_campos_2.itemAt(5).widget().setText(data[6])
 
         if self.source is 8:
-            if data[0] == 'HIDRÁULICO':
+            if data[0] == 'HIDRAULICO':
                 self.layout_campos.itemAt(1).widget().setCurrentIndex(0)
             else:
                 self.layout_campos.itemAt(1).widget().setCurrentIndex(1)
@@ -518,7 +529,6 @@ class Agregar(QDialog):
             self.layout_campos_2.itemAt(5).widget().setText(data[7])
             self.layout_campos_2.itemAt(7).widget().setText(data[8])
 
-
         if self.source is 16:
             self.layout_campos.itemAt(1).widget().setText(data[0])
             self.layout_campos.itemAt(3).widget().setText(str(data[1]))
@@ -535,6 +545,12 @@ class Agregar(QDialog):
                 self.layout_campos_2.itemAt(3).widget().setCurrentIndex(1)
             self.layout_campos_2.itemAt(5).widget().setText(data[6])
             self.layout_campos_2.itemAt(7).widget().setText(data[7])
+
+    @staticmethod
+    def get_text(str):
+        separador = " "
+        text = str.split(separador)
+        print(text)
 
 
 if __name__ == "__main__":

@@ -68,7 +68,7 @@ class Datos(QWidget):
             self.datos = 16
 
         if tipo is 3:
-            self.list = ['OD\n [pg]', 'ID\n [pg]', "Geometria", "Conexión", "Longitud\n[in]", "Peso\n[lbs/ft]"]
+            self.list = ['OD\n [pg]', 'ID\n [pg]', "Geometria", "Conexión", "Peso\n Nominal\n[lbs/ft]"]
             self.file = 'CSV/HW.csv'
             self.datos = tipo
             self.label_title.setText("Tubería extra pesada.")
@@ -76,7 +76,7 @@ class Datos(QWidget):
             self.table_height = 380
 
         if tipo is 4:
-            self.list = ['OD\n [pg]', 'ID\n [pg]', "Geometria", "Conexión", "Longitud\n[m]", "Peso\n[lb/ft]"]
+            self.list = ['OD\n [pg]', 'ID\n [pg]', "Geometria", "Conexión", "Longitud\n[m]", "Peso\nNominal\n[lb/ft]"]
             self.file = 'CSV/DC.csv'
             self.datos = tipo
             self.label_title.setText("Lastrabarrenas.")
@@ -150,7 +150,6 @@ class Datos(QWidget):
             file.close()
 
     def get_data(self):
-        print("here")
         data = self.get_row()
         return data
 
@@ -161,6 +160,7 @@ class Datos(QWidget):
                 return self.data[index.row()]
         else:
             QMessageBox.critical(self, "Error", "Selecciona una fila.")
+            return None
 
     def agregar(self):
         nuevo = Agregar(self.datos)
@@ -205,6 +205,10 @@ class Datos(QWidget):
         else:
             QMessageBox.critical(self, "Error", "Selecciona una fila.")
             return None
+
+    def set_table_height(self, height, widht):
+        self.table.setFixedSize(widht, height)
+
 
     @staticmethod
     def agrega_fila(model, pos, data):
