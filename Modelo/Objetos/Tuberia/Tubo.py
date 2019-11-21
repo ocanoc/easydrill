@@ -58,7 +58,7 @@ Longitud PD             \t{}
 Fin PD                  \t{}
 Inicio PV               \t{}
 Longitud PV             \t{}
-Fin PV                  \t{}""".format(self.dExt, self.dInt, self.inicioPD, self.longMD, self.finPD, self.inicioPV,
+Fin PV                  \t{}""".format(self.dExt, self.dInt, self.inicioPD, self.longMD, self.longMV, self.inicioPV,
                                        self.longMV, self.finPV)
 
     def get_inicio_pd(self):
@@ -84,6 +84,20 @@ Fin PV                  \t{}""".format(self.dExt, self.dInt, self.inicioPD, self
 
     def get_long(self):
         return self.longMD
+
+    def set_fin_pv(self, data):
+        self.finPV = data
+
+    def set_lv(self):
+        print(self.inicioPV)
+        print(self.finPV)
+        self.longMV = self.finPV - self.inicioPV
+        print("Holi", self.longMV)
+
+    def set_inicio_pv(self, data):
+        print(data)
+        self.inicioPV = data
+
 
 def get_long_pv(long_pd, x):
     return long_pd * (math.cos(math.radians(x.get_angulo())))

@@ -30,7 +30,8 @@ print(Tuberia_tres)
 for x in lista_secciones:
     print(x, "\n")
 
-
+for x in internas:
+    print(x, "\n")
 
 """
 
@@ -47,8 +48,3 @@ internas = [Tuberia_uno, Tuberia_dos, Tuberia_tres]
 ControladorTuberia.profundidad_vertical(internas, dir)
 externas = [TR1, TR2, TR3, Agujero]
 lista_secciones = ControladorSecciones.creasecciones(externas, internas, dir)
-
-
-
-
-
