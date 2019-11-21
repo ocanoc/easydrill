@@ -5,13 +5,13 @@ class LeyDePotencias:
     @staticmethod
     def set_ley_potencias(tuberia_interna, secciones, fluido, bomba):
         for x in tuberia_interna:
-            x.setdp(LeyDePotencias.interior(fluido, fluido.get_lec_fan_300(), fluido.get_lec_fan_600(),
-                                            bomba.get_gasto(), x.get_dint(), fluido.get_dl(), x.get_long(),
-                                            fluido.get_vp(), fluido.get_pc()))
+            x.set_dp(LeyDePotencias.interior(fluido, fluido.get_lec_fan_300(), fluido.get_lec_fan_600(),
+                                             bomba.get_gasto(), x.get_dint(), fluido.get_dl(), x.get_long(),
+                                             fluido.get_vp(), fluido.get_pc()))
         for x in secciones:
-            x.setdp(LeyDePotencias.espacion_anular(fluido, fluido.get_lec_fan_300(), fluido.get_lec_fan_600(),
-                                                   bomba.get_gasto(), x.get_dmayor(), x.get_dmenor(), fluido.get_dl(),
-                                                   x.get_long(), fluido.get_vp(), fluido.get_pc()))
+            x.set_dp(LeyDePotencias.espacion_anular(fluido, fluido.get_lec_fan_300(), fluido.get_lec_fan_600(),
+                                                    bomba.get_gasto(), x.get_dmayor(), x.get_dmenor(), fluido.get_dl(),
+                                                    x.get_long(), fluido.get_vp(), fluido.get_pc()))
 
     @staticmethod
     def set_ley_potencias_modificado_superficial(pozo):
@@ -30,10 +30,11 @@ class LeyDePotencias:
             indice_consistencia = lec_fan_600 / 1022
         else:
             n = 3.32 * math.log10(((2 * visco_plastica) + punto_cedencia) / (visco_plastica + punto_cedencia))
-            indice_consistencia = (visco_plastica + punto_cedencia) / 511
+            indice_consistencia = (visco_plastica + punto_cedencia) / math.pow(511, n)
         vel_flujo = 24.51 * gasto / dimetro_cuadrado
-        nre = (densidad_lodo * (vel_flujo ** 2) / (2.319 * indice_consistencia)) * ((2.5 * diametro_interior * n) /
-                                                                                    (vel_flujo * ((3 * n) + 1)))
+        nre = (densidad_lodo * (vel_flujo ** 2) / (2.319 * indice_consistencia)) * math.pow(
+            ((2.5 * diametro_interior * n) /
+             (vel_flujo * ((3 * n) + 1))), n)
         fluido.set_k(indice_consistencia)
         fluido.set_n(n)
         nre_tl = 3470 - (1370 * n)
@@ -60,16 +61,17 @@ class LeyDePotencias:
             indice_consistencia = lec_fan_600 / 1022
         else:
             n = 3.32 * math.log10(((2 * visco_plastica) + punto_cedencia) / (visco_plastica + punto_cedencia))
-            indice_consistencia = (visco_plastica + punto_cedencia) / 511
+            indice_consistencia = (visco_plastica + punto_cedencia) / pow(511, n)
         vel_flujo = 24.51 * gasto / dif_cuadrados
-        nre = (densidad_lodo * (vel_flujo ** 2) / (1.65 * indice_consistencia)) * \
-              ((1.25 * ea * n) / (vel_flujo * ((2 * n) + 1)))
+        nre = (densidad_lodo * (vel_flujo ** 2) / (1.65 * indice_consistencia)) * pow(((1.25 * ea * n) /
+                                                                                       (vel_flujo * ((2 * n) + 1))), n)
         fluido.set_k(indice_consistencia)
         fluido.set_n(n)
         nre_tl = 3470 - (1370 * n)
         nre_tt = 4270 - (1370 * n)
         a = (math.log10(n) + 3.93) / 50
         b = (1.75 - math.log10(n)) / 7
+
         if nre <= nre_tl:
             return (indice_consistencia * longitud / (1300.5 * ea)) * \
                    math.pow(((((2 * n) + 1) * vel_flujo) / (1.25 * ea * n)), n)

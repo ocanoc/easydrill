@@ -181,7 +181,7 @@ class TuberiasRevestimiento(QWidget):
             self.ultimo = True
             self.mas.setEnabled(True)
 
-    def get_data(self):
+    def get_datos(self):
         return self.datos
 
     def set_long_disp(self, prof_maxima):

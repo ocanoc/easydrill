@@ -60,17 +60,32 @@ class DatosSarta(QDialog):
 
         self.aceptado = True
         self.data = []
+        self.long = 0
 
     def get_selection(self, selection):
         self.tabs.isActiveWindow()
 
-    @staticmethod
-    def aceptar(source):
-        print(source.get_data())
+    def aceptar(self, source):
+        data, long = source.get_data()
+        print(data)
+        print(long)
+        if data is not None and long is not None:
+            tipo = source.get_tipo()
+            if tipo is 11:
+                text = data[0]
+            else:
+                text = self.text_tipo(tipo)
+
+            data.insert(0, text)
+            data.append(str(long))
+            print(data)
+            self.data = data
+            self.long = long
+            self.accept()
 
     def cancelar(self):
-        self.close()
         self.aceptado = False
+        self.reject()
 
     def aceptado(self):
         return self.aceptado
@@ -97,6 +112,20 @@ class DatosSarta(QDialog):
                     border-style: inset;
                 }""")
 
+    @staticmethod
+    def text_tipo(argument):
+        switcher = {
+            6: "TP",
+            3: "TP HW",
+            4: "Lastra Barrenas",
+            9: "Combinacion",
+            8: "Martillo",
+            16: "Amortiguador",
+            5: "Estabilizador",
+            7: "Porta Barrena",
+            10: "Motor de fondo",
+        }
+        return switcher.get(argument, "Otro")
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

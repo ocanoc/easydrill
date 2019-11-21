@@ -13,6 +13,9 @@ class Bomba:
     def set_gasto_bomba_triplex(self):
         self.gasto = (self.diametro_camisa ** 2) * self.longitud_carrera * self.eficiencia / 98
 
+    def set_gasto(self, data):
+        self.gasto = data
+
     def get_gasto(self):
         return self.gasto
 

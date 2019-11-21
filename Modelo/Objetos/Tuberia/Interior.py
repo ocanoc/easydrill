@@ -26,7 +26,7 @@ class Interior (General):
     def setentr(self):
         self.entr = True
 
-    def setdp(self, dp):
+    def set_dp(self, dp):
         self.caidaPresion = dp
 
     def __str__(self):

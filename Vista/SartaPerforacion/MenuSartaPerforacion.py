@@ -1,5 +1,3 @@
-import sys
-
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
@@ -12,13 +10,10 @@ from Vista.SartaPerforacion.Datos.DatosTuberiasSuperficiales.DatosTuberiasSuperf
 
 
 class SartaPerforacion(QWidget):
-    app = QApplication(sys.argv)
-    app.setStyle('Fusion')
-
     model = QStandardItemModel()
     model.setHorizontalHeaderLabels(
-        ['Tipo \nelemeto', 'ID\n [pg]', "OD\n [pg]", "Long.\n[m]",
-         "Peso\nnominal\n[lb/ft]", "Conexion\n 1", "Conexion \n 2"])
+        ['Elemento', 'OD\n [pg]', "ID\n [pg]", "Longitud\n[m]",
+         "Peso\n[kg]", "Conexión\n Top", "Conexión \n Bit", "Longitud \n acumulada"])
 
     texto_tp = QLabel()
     texto_tp.setPixmap(QPixmap("Imagenes/TP/TextoTp.png"))
@@ -31,10 +26,9 @@ class SartaPerforacion(QWidget):
     table.setSelectionBehavior(QAbstractItemView.SelectRows)
     table.setEditTriggers(QAbstractItemView.NoEditTriggers)
     header = table.horizontalHeader()
-    header.setMinimumSectionSize(65)
-    header.setMaximumSectionSize(90)
     header.setSectionResizeMode(QHeaderView.Stretch)
-    table.setFixedSize(650, 205)
+    header.setDefaultSectionSize(100)
+    table.setFixedSize(800, 205)
     table.setHorizontalHeader(header)
     table.setModel(model)
     table.setAlternatingRowColors(True)
@@ -70,9 +64,9 @@ class SartaPerforacion(QWidget):
 
     layout_botones = QFormLayout()
     layout_botones.addRow("", QLabel(""))
-    layout_botones.addRow("Agregar elemento", mas)
-    layout_botones.addRow("Eliminar elemento", menos)
-    layout_botones.addRow("Longitud disponible [md]: ", label_long_disp)
+    layout_botones.addRow("", QLabel(""))
+    layout_botones.addRow("Agregar \nelemento", mas)
+    layout_botones.addRow("Eliminar \nelemento", menos)
     layout_botones.setAlignment(Qt.AlignCenter)
     layout_botones.setSpacing(15)
 
@@ -242,7 +236,8 @@ class SartaPerforacion(QWidget):
             self.model.insertRow(self.model.rowCount())
             data = DatosSarta()
             if data.exec_():
-                print("agregar")
+                datos = data.get_data()
+                self.adf_row(self.model.rowCount() - 1, datos)
         else:
             QMessageBox.warning(self, "Aviso.", "Es necesario agregar una Barrena.")
 
@@ -333,17 +328,109 @@ class SartaPerforacion(QWidget):
                 crea_barrena = None
                 crea_barrena = CreaBarrena(self)
                 crea_barrena.set_tipo(tipo)
-                crea_barrena.exec_()
-                self.data_barrena, self.area_toberas = crea_barrena.get_data()
-                if self.data_barrena is not None:
-                    print(self.area_toberas)
-                    self.isclicked(source)
-                    rows = 0
-                    if self.barrena is False:
-                        self.model.insertRow(self.model.rowCount())
-                    self.barrena = True
-                    for row in self.data_barrena:
-                        self.model.setData(self.model.index(0, rows), str(row))
-                        rows += 1
+                if crea_barrena.exec_():
+                    self.data_barrena, self.area_toberas = crea_barrena.get_data()
+                    if self.data_barrena is not None:
+                        self.isclicked(source)
+                        if self.barrena is False:
+                            self.model.insertRow(self.model.rowCount())
+                            self.table.clearSelection()
+                        self.barrena = True
+                        self.model.setData(self.model.index(0, 0), self.data_barrena[0])
+                        self.model.setData(self.model.index(0, 1), self.data_barrena[2])
+                        self.model.setData(self.model.index(0, 2), "-")
+                        self.model.setData(self.model.index(0, 3), float(self.data_barrena[5]) * 0.0254)
+                        self.model.setData(self.model.index(0, 6), "-")
+                        self.model.setData(self.model.index(0, 5), self.data_barrena[3])
+                        if tipo is 2:
+                            self.model.setData(self.model.index(0, 4), self.data_barrena[7])
+                            self.model.setData(self.model.index(0, 7), self.data_barrena[6])
+                        if tipo is 1:
+                            self.model.setData(self.model.index(0, 4), self.data_barrena[6])
+                            self.model.setData(self.model.index(0, 7), self.data_barrena[5])
+                    self.table.clearSelection()
+
         except ValueError:
             pass
+
+    def adf_row(self, pos, data):
+        elemento = ""
+        od = ""
+        di = ""
+        long = 0
+        peso = 0
+        ct = ""
+        cb = ""
+        long_acu = ""
+        if data[0] == "TP":
+            elemento = data[0] + " " + data[1]
+            od = data[3]
+            di = data[4]
+            long = float(data[7])
+            peso = long * float(data[6]) * 1.488
+            ct = data[6]
+            cb = data[6]
+            long_acu = data[7]
+
+        if data[0] == "TP HW":
+            elemento = data[0]
+            od = data[1]
+            di = data[3]
+            long = float(data[6])
+            peso = long * float(data[5]) * 1.488
+            ct = data[4]
+            cb = data[4]
+            long_acu = data[6]
+
+        if data[0] == "Lastra Barrenas":
+            elemento = data[0]
+            od = data[1]
+            di = data[3]
+            long = float(data[6])
+            peso = long * float(data[5]) * 1.488
+            ct = data[4]
+            cb = data[4]
+            long_acu = data[6]
+
+        self.model.setData(self.model.index(pos, 0), elemento)
+        self.model.setData(self.model.index(pos, 1), od)
+        self.model.setData(self.model.index(pos, 2), di)
+        self.model.setData(self.model.index(pos, 3), long)
+        self.model.setData(self.model.index(pos, 4), peso)
+        self.model.setData(self.model.index(pos, 5), ct)
+        self.model.setData(self.model.index(pos, 6), cb)
+        self.model.setData(self.model.index(pos, 7), long_acu)
+
+    def get_datos(self):
+        datos_sup = self.get_data_sup()
+        data = self.collect_data()
+        gasto = self.get_gato()
+        return datos_sup, gasto, data
+
+    def get_data_sup(self):
+        if self.tipo.currentIndex() is 0:
+            QMessageBox.critical(self, "Error", "Selecciona las conexione superficiales.")
+            return None
+        else:
+            return self.longitud_equivalente.text()
+
+    def get_gato(self):
+        try:
+            if float(self.campo_gasto.text()) > 0:
+                gasto = self.campo_gasto.text()
+                return gasto
+            else:
+                QMessageBox.critical(self, "Error", "Ingresa un gasto valido.")
+                return None
+        except ValueError:
+            QMessageBox.critical(self, "Error", "Ingresa una gasto.")
+            return None
+
+    def collect_data(self):
+        data = []
+        for row in range(self.model.rowCount()):
+            data.append([])
+            for column in range(self.model.columnCount()):
+                index = self.model.index(row, column)
+                data[row].append(str(self.model.data(index)))
+        return data

@@ -34,15 +34,13 @@ class ControladorDireccional:
             lista_direccional.append(Direccional(INCREMENTO, angulo, long_estaciones,
                                                  ControladorDireccional.get_coseno_estaciones(angulo), profd, profv))
             profd += long_estaciones
-            profv += ControladorDireccional.get_coseno(angulo)
+            profv += long_estaciones * ControladorDireccional.get_coseno(angulo)
         if otro:
-            profv -= ControladorDireccional.get_coseno(angulo)
             angulo -= severidad
             angulo += angulomax - angulo
-            profv += ControladorDireccional.get_coseno(angulo)
             lista_direccional.append(Direccional(INCREMENTO, angulo, long_estaciones,
                                                  ControladorDireccional.get_coseno_estaciones(angulo), profd, profv))
-            profv += ControladorDireccional.get_coseno(angulo)
+            profv += long_estaciones * ControladorDireccional.get_coseno(angulo)
         lista_direccional.append(Direccional(TANGENTE, angulomax, profmax - profd,
                                              ((profmax - profd) * ControladorDireccional.get_coseno(angulo)),
                                              profd, profv))
@@ -58,7 +56,6 @@ class ControladorDireccional:
         profv = ultima.get_fin_pv()
         otro = False
         long_estaciones = 30
-        print(angulomax / dor)
         if (round(angulomax / dor) - (angulomax / dor)) > 0:
             esatciones = int(angulomax / dor)
             otro = True
@@ -69,18 +66,22 @@ class ControladorDireccional:
             lista_direccional.append(Direccional(DECREMENTO, angulo, long_estaciones,
                                                  ControladorDireccional.get_coseno_estaciones(angulo), profd, profv))
             profd += long_estaciones
-            profv += ControladorDireccional.get_coseno(angulo)
+            profv += long_estaciones * ControladorDireccional.get_coseno(angulo)
 
         if otro:
-            profv -= ControladorDireccional.get_coseno(angulo)
             angulo += severidad
             angulo -= angulomax - angulo
-            profv += ControladorDireccional.get_coseno(angulo)
             lista_direccional.append(Direccional(DECREMENTO, angulo, long_estaciones,
                                                  ControladorDireccional.get_coseno_estaciones(angulo), profd, profv))
-            profv += ControladorDireccional.get_coseno(angulo)
+            profv += long_estaciones * ControladorDireccional.get_coseno(angulo)
 
         lista_direccional.append(Direccional(SECCION_VERTICAL, angulo, profmax - profd,
                                              ((profmax - profd) * ControladorDireccional.get_coseno(angulo)),
                                              profd, profv))
         return lista_direccional
+
+    @staticmethod
+    def tipov(profundidad):
+        unica = Direccional(SECCION_VERTICAL, 0, profundidad, profundidad, 0, 0)
+        lista_direcional = [unica]
+        return lista_direcional

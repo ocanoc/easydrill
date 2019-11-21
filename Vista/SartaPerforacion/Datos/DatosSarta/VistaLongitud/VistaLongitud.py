@@ -34,5 +34,10 @@ class VistaLongitud(QWidget):
                     return data, long
                 else:
                     QMessageBox.critical(self, "Error", "Ingresa una longitud valida.")
+                    return None, None
             except ValueError:
-                return False
+                QMessageBox.critical(self, "Error", "Ingresa una longitud.")
+                return None, None
+
+    def get_tipo(self):
+        return self.table.get_tipo()

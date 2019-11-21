@@ -22,13 +22,13 @@ class Datos(QWidget):
 
     def fill_table(self, tipo):
         file = None
-        if tipo is 1:
+        if tipo is 2:
             self.list = ['Código \n IADC', 'OD\n [pg]', "Conexión", "Tipo", "Longitud\n[pg]", "Boquillas",
                          "Peso\n[Kg]"]
             file = 'CSV/BarrenasTriconicas.csv'
-        if tipo is 2:
-            self.list = ['Código \n IADC', 'OD\n [pg]', "Conexión", "Tipo", "Longitud\n[pg]", "Boquillas",
-                         "Puertos \nFijos", "Peso\n[Kg]"]
+        if tipo is 1:
+            self.list = ['Código \n IADC', 'OD\n [pg]', "Conexión", "Tipo", "Longitud\n[pg]", "Peso\n[Kg]", "Boquillas",
+                         "Puertos \nFijos"]
             file = 'CSV/BarrenasPDC.csv'
         self.model_table.setHorizontalHeaderLabels(self.list)
         self.table.setModel(self.model_table)

@@ -205,11 +205,17 @@ class Nuevo(QWidget):
     def get_datos(self):
         datos_trayectoria = self.DatosTrayectoria.get_datos()
         datos_fluidos = self.DatosFluidos.get_datos(DatosFluidos.MenuFluidos.get_modelo())
+        datos_revestimiento = self.Tuberiras_revetimietno.get_datos()
+        datos_sup, gasto, datos_sarta = self.Sarta_Perforacion.get_datos()
         print("Datos trayectoria")
         for x in datos_trayectoria:
             print(x, "\n")
         print("Datos fluidos")
         for x in datos_fluidos:
+            print(x, "\n")
+        for x in datos_revestimiento:
+            print(x, "\n")
+        for x in datos_sarta:
             print(x, "\n")
 
     @staticmethod

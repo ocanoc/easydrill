@@ -46,13 +46,13 @@ class SeccionesAnulares:
     def get_longitudD(self):
         return self.longitudD
 
-    def get_longitudV(self):
+    def get_long(self):
         return self.longitudV
 
-    def get_diametroMayor(self):
+    def get_dmayor(self):
         return self.diametroMayor
 
-    def get_diametroMenor(self):
+    def get_dmenor(self):
         return self.diametroMenor
 
     def get_vel_anular(self):
@@ -70,3 +70,5 @@ class SeccionesAnulares:
     def get_deltaP(self):
         return self.deltaP
 
+    def set_dp(self, dp):
+        self.deltaP = dp

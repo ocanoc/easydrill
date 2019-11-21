@@ -21,7 +21,9 @@ class Prueba(QDialog):
         self.setPalette(p)
         self.layot = QHBoxLayout()
         # self.layot.addWidget(MenuEdicion())
-        self.layot.addWidget(SartaPerforacion())
+        sarta = SartaPerforacion()
+
+        self.layot.addWidget(sarta)
         self.setLayout(self.layot)
 
     def termianr(self):

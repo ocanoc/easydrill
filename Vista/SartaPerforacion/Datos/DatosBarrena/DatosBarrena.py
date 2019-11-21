@@ -42,8 +42,10 @@ class CreaBarrena(QDialog):
         self.Datos = None
         self.layout_ventana = QVBoxLayout()
         self.title = None
+        self.tipo = 0
 
     def set_tipo(self, tipo):
+        self.tipo = tipo
         if tipo is 1:
             self.title = "Barrenas PDC"
         if tipo is 2:
@@ -65,17 +67,19 @@ class CreaBarrena(QDialog):
         if self.data is not None:
             self.area_toberas = self.get_area_toberas()
             if self.area_toberas is not 0:
-                for x in self.data:
-                    print(x, "\n")
                 self.aceptado = True
-                self.close()
+                self.accept()
 
     def cancelar(self):
         self.aceptado = False
-        self.close()
+        self.reject()
 
     def get_data(self):
         if self.aceptado is True:
+            if self.tipo is 1:
+                self.data.insert(0, "Barrena PDC")
+            elif self.tipo is 2:
+                self.data.insert(0, "Barrena Triconica")
             return self.data, self.area_toberas
         else:
             return None, 0
@@ -121,5 +125,5 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
     app.setStyle('Fusion')
     ex = CreaBarrena()
-    ex.set_tipo(1)
+    ex.set_tipo(2)
     ex.exec_()

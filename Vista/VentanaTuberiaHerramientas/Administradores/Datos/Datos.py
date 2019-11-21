@@ -55,7 +55,6 @@ class Datos(QWidget):
                                    }""")
 
     def create_table(self, tipo):
-        print(tipo)
         if tipo is 0:
             self.list = ['Tipo', 'OD\n [pg]', 'ID\n [pg]', "Conexión\nTop", "Conexión \nBit", "Longitud\n[m]",
                          "Peso\n[Kg]"]
@@ -68,7 +67,7 @@ class Datos(QWidget):
             self.datos = 16
 
         if tipo is 3:
-            self.list = ['OD\n [pg]', 'ID\n [pg]', "Geometria", "Conexión", "Peso\n Nominal\n[lbs/ft]"]
+            self.list = ['OD\n [pg]', 'ID\n [pg]', "Geometria", "Conexión", "Peso\n Nominal\n[lb/ft]"]
             self.file = 'CSV/HW.csv'
             self.datos = tipo
             self.label_title.setText("Tubería extra pesada.")
@@ -209,6 +208,8 @@ class Datos(QWidget):
     def set_table_height(self, height, widht):
         self.table.setFixedSize(widht, height)
 
+    def get_tipo(self):
+        return self.datos
 
     @staticmethod
     def agrega_fila(model, pos, data):

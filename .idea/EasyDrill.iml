@@ -17,7 +17,6 @@
       <sourceFolder url="file://$MODULE_DIR$/Recursos/Constantes" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Recursos/Pruebas" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Vista" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Controlador/Hidraulica/Metodos Caida de Presion" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Modelo/Objetos/Pozo" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Vista/MenuPrincipal" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Recursos/darkstyle" isTestSource="false" />

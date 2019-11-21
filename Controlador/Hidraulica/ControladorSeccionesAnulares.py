@@ -1,5 +1,6 @@
-from Modelo.Objetos.Hidraulica.SeccionesAnulares import *
 import math
+
+from Modelo.Objetos.Hidraulica.SeccionesAnulares import *
 
 
 class ControladorSecciones:
@@ -19,7 +20,7 @@ class ControladorSecciones:
                 iniciopd += disponible
             else:
                 longv += ControladorSecciones.get_long_pv(longitud, x)
-                return 0
+                return longv
         return longv
 
     @staticmethod
