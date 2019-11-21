@@ -1,18 +1,19 @@
+import sys
+
+from PyQt5 import QtWidgets
+
+from Controlador.Hidraulica.Metodos.LeydePotenciasModificado import LeyDePotenciasModificado
 from Controlador.Tuberia.ControladorTuberia import ControladorTuberia
 from ControladorDireccional import *
 from ControladorSeccionesAnulares import *
 from Modelo.Objetos.Tuberia.Exterior import *
 from Modelo.Objetos.Tuberia.Interior import *
+from Objetos.Hidraulica.Bomba import Bomba
+from Objetos.Hidraulica.Fluido import Fluido
+from Recursos.Pruebas.aver3 import MainWindow
 
 """
-vertical = ControladorDireccional.tipov(2200)
 
-Tuberia_uno = Interior(5, 4.276, 2200, vertical, None)
-TR1 = Exterior(13.375, 12.565, 780, vertical, None)
-Agujero = Exterior(12.25, 12.25, 1420, vertical, TR1)
-internas = [Tuberia_uno]
-externas = [TR1, Agujero]
-lista_secciones = ControladorSecciones.creasecciones(externas, internas, vertical)
 f = Fluido(1.06, 12, 12)
 b = Bomba(1, 1, 1)
 b.set_gasto(700)
@@ -33,10 +34,10 @@ for x in lista_secciones:
 for x in internas:
     print(x, "\n")
 
-"""
+pip install pyqtgraph
 
-# dir = ControladorDireccional.tipo_j(1500, 1.5, 30, 5000)\
-dir = ControladorDireccional.tipos(500, 1.22, 45, 5000, 3500, 1.5)
+dir = ControladorDireccional.tipo_j(1500, 1.5, 30, 5000)\
+#dir = ControladorDireccional.tipos(500, 1.22, 45, 5000, 3500, 1.5)
 Tuberia_uno = Interior(10, 9, 500, dir, None)
 Tuberia_dos = Interior(8, 7, 800, dir, Tuberia_uno)
 Tuberia_tres = Interior(5, 4, 1000, dir, Tuberia_dos)
@@ -45,6 +46,40 @@ TR2 = Exterior(25, 24, 800, dir, TR1)
 TR3 = Exterior(18, 15, 800, dir, TR2)
 Agujero = Exterior(10, 8, 300, dir, TR3)
 internas = [Tuberia_uno, Tuberia_dos, Tuberia_tres]
-ControladorTuberia.profundidad_vertical(internas, dir)
+
 externas = [TR1, TR2, TR3, Agujero]
 lista_secciones = ControladorSecciones.creasecciones(externas, internas, dir)
+"""
+
+vertical = ControladorDireccional.tipov(2200)
+Tuberia_uno = Interior(5, 4.276, 2200, vertical, None)
+TR1 = Exterior(13.375, 12.565, 780, vertical, None)
+Agujero = Exterior(12.25, 12.25, 1420, vertical, TR1)
+internas = [Tuberia_uno]
+externas = [TR1, Agujero]
+lista_secciones = ControladorSecciones.creasecciones(externas, internas, vertical)
+ControladorTuberia.profundidad_vertical(internas, vertical)
+
+f = Fluido(1.06, 12, 12)
+b = Bomba(1, 1, 1)
+b.set_gasto(700)
+
+LeyDePotenciasModificado.set_ley_potencias_modificado(internas, lista_secciones, f, b)
+
+profundidad_secciones = [0]
+presion_secciones = [0]
+presion = 0
+for x in lista_secciones:
+    profundidad_secciones.append(x.get_fin_pd())
+    presion += x.get_deltaP()
+    presion_secciones.append(presion * 14.22)
+for x in profundidad_secciones:
+    print(x, "\n")
+for x in presion_secciones:
+    print(x, "\n")
+
+app = QtWidgets.QApplication(sys.argv)
+main = MainWindow()
+main.plot(profundidad_secciones, presion_secciones)
+main.show()
+sys.exit(app.exec_())

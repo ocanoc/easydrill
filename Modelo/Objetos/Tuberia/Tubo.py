@@ -89,13 +89,10 @@ Fin PV                  \t{}""".format(self.dExt, self.dInt, self.inicioPD, self
         self.finPV = data
 
     def set_lv(self):
-        print(self.inicioPV)
-        print(self.finPV)
+
         self.longMV = self.finPV - self.inicioPV
-        print("Holi", self.longMV)
 
     def set_inicio_pv(self, data):
-        print(data)
         self.inicioPV = data
 
 

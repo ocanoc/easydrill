@@ -72,3 +72,6 @@ class SeccionesAnulares:
 
     def set_dp(self, dp):
         self.deltaP = dp
+
+    def get_fin_pd(self):
+        return self.finPD
