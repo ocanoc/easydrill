@@ -16,7 +16,7 @@ class MenuEdicion(QWidget):
         self.texto_encabezado.setPixmap(QPixmap("Imagenes/Titulos/TextoAdmin.png"))
 
         self.tab = QTabWidget()
-        self.tab.setFixedSize(950, 475)
+        self.tab.setFixedSize(950, 470)
         self.tab.setObjectName("Tab");
         self.tab.setIconSize(QSize(187, 90))
         self.tab.setStyleSheet("""

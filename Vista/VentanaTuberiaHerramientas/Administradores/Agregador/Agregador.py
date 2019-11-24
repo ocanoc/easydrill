@@ -120,7 +120,7 @@ class Agregar(QDialog):
             self.layout_campos.addRow("ID [pg]:", QLineEdit())
 
             self.layout_campos_2.addRow("Conexión:", QLineEdit())
-            self.layout_campos_2.addRow("Peso nominal [m]:", QLineEdit())
+            self.layout_campos_2.addRow("Peso nominal [lb/ft]:", QLineEdit())
 
         if source is 9:
             p.setBrush(10, QBrush(QImage("Imagenes/Fondo/FondoDatosBNA.png")))
@@ -173,7 +173,7 @@ class Agregar(QDialog):
             self.layout_campos.addRow("Conexión Top:", QLineEdit())
 
             self.layout_campos_2.addRow("Conexión Bit:", QLineEdit())
-            self.layout_campos_2.addRow("Longitud [pg]:", QLineEdit())
+            self.layout_campos_2.addRow("Longitud [m]:", QLineEdit())
             self.layout_campos_2.addRow("Peso [kg]:", QLineEdit())
 
         if source is 10:
@@ -191,7 +191,7 @@ class Agregar(QDialog):
             self.layout_campos_2.addRow("Conexión Bit:", QLineEdit())
             self.layout_campos_2.addRow("OD [pg]:", QLineEdit())
             self.layout_campos_2.addRow("ID [pg]:", QLineEdit())
-            self.layout_campos_2.addRow("Longitud [pg]:", QLineEdit())
+            self.layout_campos_2.addRow("Longitud [m]:", QLineEdit())
 
         if source is 11:
             p.setBrush(10, QBrush(QImage("Imagenes/Fondo/FondoDatosRegistros.png")))
@@ -231,7 +231,7 @@ class Agregar(QDialog):
 
             self.layout_campos_2.addRow("Conexión Bit:", QLineEdit())
             self.layout_campos_2.addRow("Tipo conexión Bit:", self.tipo_conexion_bit)
-            self.layout_campos_2.addRow("Longitud [pg]:", QLineEdit())
+            self.layout_campos_2.addRow("Longitud [m]:", QLineEdit())
             self.layout_campos_2.addRow("Peso [kg]:", QLineEdit())
         self.setPalette(p)
 

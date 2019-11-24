@@ -71,11 +71,14 @@ presion_secciones = [0]
 presion = 0
 for x in lista_secciones:
     profundidad_secciones.append(x.get_fin_pd())
-    presion += x.get_deltaP()
+    presion += x.get_dp()
     presion_secciones.append(presion * 14.22)
 for x in profundidad_secciones:
     print(x, "\n")
 for x in presion_secciones:
+    print(x, "\n")
+
+for x in lista_secciones:
     print(x, "\n")
 
 app = QtWidgets.QApplication(sys.argv)

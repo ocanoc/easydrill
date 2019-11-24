@@ -233,10 +233,10 @@ class SartaPerforacion(QWidget):
     def agrega(self):
         self.barrena = True
         if self.barrena is True:
-            self.model.insertRow(self.model.rowCount())
             data = DatosSarta()
             if data.exec_():
                 datos = data.get_data()
+                self.model.insertRow(self.model.rowCount())
                 self.adf_row(self.model.rowCount() - 1, datos)
         else:
             QMessageBox.warning(self, "Aviso.", "Es necesario agregar una Barrena.")
@@ -406,6 +406,9 @@ class SartaPerforacion(QWidget):
         data = self.collect_data()
         gasto = self.get_gato()
         return datos_sup, gasto, data
+
+    def is_fil(self):
+        self.get_datos()
 
     def get_data_sup(self):
         if self.tipo.currentIndex() is 0:

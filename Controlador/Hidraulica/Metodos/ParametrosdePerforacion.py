@@ -1,9 +1,22 @@
-class PamarametosPerforacion:
+import math
+
+
+class ParametrosPerforacion:
 
     @staticmethod
-    def inidice_limpieza(pozo):
-        return (pozo.get_barrena().get_caidad_presion() * pozo.get_bomba().get_gasto()) /\
-               (1346.18 * (pozo.get_barrena().get_dext()))
+    def vel_anular(bomba, d_ext, d_int):
+
+        return (24.51 * bomba.get_gasto()) / ((d_ext ** 2) - (d_int ** 2))
+    @staticmethod
+    def indice_limpieza(fluido, vel):
+        if fluido.get_n() is 0 or fluido.get_k() is 0:
+            n = 3.32 * math.log10(((2 * fluido.get_visco_plastica()) + fluido.get_p_cedencia()) / (
+                        fluido.get_visco_plastica() + fluido.get_p_cedencia()))
+            fluido.set_n(n)
+            indice_consistencia = (fluido.get_visco_plastica() + fluido.get_p_cedencia()) / math.pow(511, n)
+            fluido.set_k(indice_consistencia)
+        print(fluido.get_k())
+        return (fluido.get_dl() * fluido.get_k() * vel) / 48000
 
     @staticmethod
     def capacicad_accrreo(pozo):

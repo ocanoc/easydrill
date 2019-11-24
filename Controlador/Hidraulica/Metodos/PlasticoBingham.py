@@ -1,23 +1,23 @@
 import math
 
 
-class PlacticoBingham:
+class PlascticoBingham:
     @staticmethod
     def set_plastico_bingham(tuberia_interna, secciones, fluido, bomba):
         for x in tuberia_interna:
-            x.set_dp(PlacticoBingham.interior(bomba.get_gasto(), x.get_dint(), fluido.get_dl(),
-                                              x.get_long(), fluido.get_pc(), fluido.get_vp()))
+            x.set_dp(PlascticoBingham.interior(bomba.get_gasto(), x.get_dint(), fluido.get_dl(),
+                                               x.get_long(), fluido.get_pc(), fluido.get_vp()))
 
         for x in secciones:
-            x.set_dp(PlacticoBingham.espacio_anular(bomba.get_gasto(), x.get_dmayor(), x.get_dmenor(), fluido.get_dl(),
-                                                    x.get_long(), fluido.get_pc(), fluido.get_vp()))
+            x.set_dp(PlascticoBingham.espacio_anular(bomba.get_gasto(), x.get_dmayor(), x.get_dmenor(), fluido.get_dl(),
+                                                     x.get_long(), fluido.get_pc(), fluido.get_vp()))
 
     @staticmethod
     def set_ley_potencias_modificado_superficial(pozo):
-        PlacticoBingham.interior(pozo.get_bombas().get_gasto(), pozo.get_superficial().get_diametro(),
-                                 pozo.get_fluido().get_dl(), pozo.get_superficial().get_longiotud(),
-                                 pozo.get_fluido().get_pc(),
-                                 pozo.get_fluido().get_vp())
+        PlascticoBingham.interior(pozo.get_bombas().get_gasto(), pozo.get_superficial().get_diametro(),
+                                  pozo.get_fluido().get_dl(), pozo.get_superficial().get_longiotud(),
+                                  pozo.get_fluido().get_pc(),
+                                  pozo.get_fluido().get_vp())
 
     @staticmethod
     def interior(gasto, diametro_interior, densidad_lodo, longitud, punto_cedencia, visc_plastica):
@@ -31,10 +31,12 @@ class PlacticoBingham:
 
         if vel_flujo < vel_critica:
             """Laminar"""
+
             return ((visc_plastica * longitud * vel_flujo) /
                     (389081 * dimetro_cuadrado)) + ((punto_cedencia * longitud) /
                                                     (913 * diametro_interior))
         else:
+
             nre = 129 * diametro_interior * vel_flujo * densidad_lodo / visc_plastica
             f = 0.079 / math.pow(nre, 0.25)
             return (f * densidad_lodo * (vel_flujo ** 2) * longitud) / (48251 * diametro_interior)
@@ -56,7 +58,7 @@ class PlacticoBingham:
             return ((visc_plastica * longitud * vel_flujo) / (259387 * (ea ** 2))) + ((punto_cedencia * longitud) /
                                                                                       (812.6 * ea))
         else:
-            nre = 129 * ea * vel_flujo * densidad_lodo / visc_plastica
-            f = 0.0079 / math.pow(nre, 0.25)
 
+            nre = 129 * ea * vel_flujo * densidad_lodo / visc_plastica
+            f = 0.079 / math.pow(nre, 0.25)
             return (f * densidad_lodo * (vel_flujo ** 2) * longitud) / (48251 * ea)

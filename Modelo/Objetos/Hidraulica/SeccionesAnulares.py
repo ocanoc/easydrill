@@ -37,8 +37,12 @@ class SeccionesAnulares:
     Longitud PV             \t{}
     Capacidad               \t{}
     Volumen                 \t{}
-    Caida de presion        \t{}""".format(self.diametroMayor, self.diametroMenor, self.inicioPD, self.longitudD,
-                                           self.finPD, self.longitudV, self.capacidad, self.volumen, self.deltaP)
+    Caida de presion        \t{}
+    Indice acarreo          \t{}
+    Velocidad Anular        \t{}
+    """.format(self.diametroMayor, self.diametroMenor, self.inicioPD, self.longitudD,
+               self.finPD, self.longitudV, self.capacidad, self.volumen, self.deltaP,
+               self.indice_acarreo, self.vel_anular)
 
     def set_caida_presion(self, caida_presion):
         self.caida_presion = caida_presion
@@ -67,7 +71,7 @@ class SeccionesAnulares:
     def set_indice_acarreo(self, acarreo):
         self.indice_acarreo = acarreo
 
-    def get_deltaP(self):
+    def get_dp(self):
         return self.deltaP
 
     def set_dp(self, dp):
@@ -75,3 +79,6 @@ class SeccionesAnulares:
 
     def get_fin_pd(self):
         return self.finPD
+
+    def get_inicio_pd(self):
+        return self.inicioPD

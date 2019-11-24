@@ -61,7 +61,7 @@ class DatosTrayectoria(QWidget):
 
     layout_central = QVBoxLayout()
     layout_central.setAlignment(Qt.AlignTop)
-    layout_central.addSpacing(45)
+    layout_central.addSpacing(60)
     layout_central.addWidget(label_instrucciones)
     layout_central.addSpacing(10)
     layout_central.addLayout(layout_datos)

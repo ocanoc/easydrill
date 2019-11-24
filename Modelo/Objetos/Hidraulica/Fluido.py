@@ -54,3 +54,15 @@ class Fluido:
 
     def set_n(self, data):
         self.n = data
+
+    def get_visco_plastica(self):
+        return self.visco_p
+
+    def get_p_cedencia(self):
+        return self.p_cedencia
+
+    def get_k(self):
+        return self.k
+
+    def get_n(self, ):
+        return self.n

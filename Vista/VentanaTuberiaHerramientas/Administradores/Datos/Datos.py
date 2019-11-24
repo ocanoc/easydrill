@@ -11,7 +11,7 @@ class Datos(QWidget):
     def __init__(self, tipo, parent=None):
         super(Datos, self).__init__(parent)
         self.table_widht = 780
-        self.table_height = 320
+        self.table_height = 360
         self.label_title = QLabel()
         self.datos = None
         self.tipo = tipo + 1
@@ -72,15 +72,14 @@ class Datos(QWidget):
             self.datos = tipo
             self.label_title.setText("Tubería extra pesada.")
             self.layout_pantalla.addWidget(self.label_title, 1, Qt.AlignLeft)
-            self.table_height = 380
+
 
         if tipo is 4:
-            self.list = ['OD\n [pg]', 'ID\n [pg]', "Geometria", "Conexión", "Longitud\n[m]", "Peso\nNominal\n[lb/ft]"]
+            self.list = ['OD\n [pg]', 'ID\n [pg]', "Geometria", "Conexión", "Peso\nNominal\n[lb/ft]"]
             self.file = 'CSV/DC.csv'
             self.datos = tipo
             self.label_title.setText("Lastrabarrenas.")
             self.layout_pantalla.addWidget(self.label_title, 1, Qt.AlignLeft)
-            self.table_height = 380
 
         if tipo is 5:
             self.list = ["Tipo", "Posición", "Conexión\nTop", "Conexión \nBit", 'OD\n [pg]', 'ID\n [pg]',
@@ -89,7 +88,6 @@ class Datos(QWidget):
             self.datos = tipo
             self.label_title.setText("Estabilizadores.")
             self.layout_pantalla.addWidget(self.label_title, 1, Qt.AlignLeft)
-            self.table_height = 380
 
         if tipo is 6:
             self.list = ["Grado", "Upset\nTipo", 'OD\n [pg]', 'ID\n [pg]', "Conexión", "Peso\nNominal\n[lb/ft]"]
@@ -97,15 +95,13 @@ class Datos(QWidget):
             self.datos = tipo
             self.label_title.setText("Tuberia de perforación.")
             self.layout_pantalla.addWidget(self.label_title, 1, Qt.AlignLeft)
-            self.table_height = 380
 
         if tipo is 7:
-            self.list = ["Conexión\nTop", "Tipo", "Conexión\nBit", "Tipo", 'OD\n [pg]', "Longitud\n[in]", "Peso\n[Kg]"]
+            self.list = ["Conexión\nTop", "Tipo", "Conexión\nBit", "Tipo", 'OD\n [pg]', "Longitud\n[pg]", "Peso\n[Kg]"]
             self.file = 'CSV/PortaBarrenas.csv'
             self.datos = tipo
             self.label_title.setText("Portabarrenas.")
             self.layout_pantalla.addWidget(self.label_title, 1, Qt.AlignLeft)
-            self.table_height = 380
 
         if tipo is 10:
             self.list = ["Lóbulos", "Etapas", "Tipo", "Conexión\nTop", "Conexión\nBit", 'OD\n [pg]', 'ID\n [pg]',
@@ -114,7 +110,6 @@ class Datos(QWidget):
             self.datos = tipo
             self.label_title.setText("Motores de fondo.")
             self.layout_pantalla.addWidget(self.label_title, 1, Qt.AlignLeft)
-            self.table_height = 380
 
         if tipo is 11:
             self.list = ["Registro", 'OD\n [pg]', 'ID\n [pg]', "Conexión\nTop", "Tipo", "Conexión\nBit", "Tipo",
@@ -123,7 +118,6 @@ class Datos(QWidget):
             self.datos = tipo
             self.label_title.setText("Herramientas de Registros.")
             self.layout_pantalla.addWidget(self.label_title, 1, Qt.AlignLeft)
-            self.table_height = 380
         self.model_table.setHorizontalHeaderLabels(self.list)
         self.table.setModel(self.model_table)
         self.acondiciona(self.table)

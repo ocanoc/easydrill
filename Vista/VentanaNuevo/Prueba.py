@@ -4,7 +4,7 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
-from SartaPerforacion.MenuSartaPerforacion import SartaPerforacion
+from Vista.VentanaResultados.MenuResultados import MenuResultados
 
 
 class Prueba(QDialog):
@@ -14,16 +14,19 @@ class Prueba(QDialog):
 
     def __init__(self):
         super(Prueba, self).__init__()
+        palette = QPalette()
+        palette.setBrush(10, QBrush(QImage("Imagenes/Fondo/Fondo.png")))
+        self.setPalette(palette)
         self.setFixedSize(1000, 604)
-        self.setFont(QFont('Calibri (Cuerpo)', 10, QFont.Bold))
-        p = self.palette()
-        p.setColor(self.backgroundRole(), QColor(208, 206, 206))
-        self.setPalette(p)
+        self.setFont(QFont('Arial', 10, QFont.AnyStyle))
         self.layot = QHBoxLayout()
-        # self.layot.addWidget(MenuEdicion())
-        sarta = SartaPerforacion()
 
-        self.layot.addWidget(sarta)
+        # self.layot.addWidget(MenuEdicion())
+        # sarta = SartaPerforacion()
+        menu_resultados = MenuResultados()
+        # revestimiento = TuberiasRevestimiento()
+        menu_resultados.get_data()
+        self.layot.addWidget(menu_resultados)
         self.setLayout(self.layot)
 
     def termianr(self):
@@ -59,4 +62,3 @@ if __name__ == "__main__":
     window = Prueba()
     window.show()
     app.exec_()
-    print("hola despues de la weas")

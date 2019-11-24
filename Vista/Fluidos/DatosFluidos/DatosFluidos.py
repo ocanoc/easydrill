@@ -46,7 +46,7 @@ class DatosFluidos(QWidget):
                         <span class="bar">/</span>
                         <span class="fdn">100ft<sup>2</sup></span>
                         ]</div>""", campo_l600)
-    layout_izquierda.setVerticalSpacing(15)
+    layout_izquierda.setVerticalSpacing(10)
     layout_izquierda.setFormAlignment(Qt.AlignCenter)
 
     layout_derecha = QFormLayout()
@@ -56,7 +56,7 @@ class DatosFluidos(QWidget):
                         <span class="bar">/</span>
                         <span class="fdn">100ft<sup>2</sup></span>
                         ]</div>""", campo_pc)
-    layout_derecha.setVerticalSpacing(15)
+    layout_derecha.setVerticalSpacing(10)
     layout_derecha.itemAt(0, QFormLayout.LabelRole)
     layout_derecha.setRowWrapPolicy(QFormLayout.WrapLongRows)
     layout_derecha.setFormAlignment(Qt.AlignTop)
@@ -95,6 +95,7 @@ class DatosFluidos(QWidget):
     layout_pantalla = QVBoxLayout()
     layout_pantalla.addSpacing(0)
     layout_pantalla.addWidget(texto_encabezado)
+    layout_pantalla.addSpacing(10)
     layout_pantalla.addWidget(label_instrucciones)
     layout_pantalla.addLayout(layoutvertical1)
     layout_pantalla.addLayout(layout_switch)

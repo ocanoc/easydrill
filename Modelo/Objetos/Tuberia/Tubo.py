@@ -12,6 +12,7 @@ class General:
     finPV = 0
     capacidad = 0
     VolInterior = 0
+    long_disp = 0
 
     def profundidad(self, dd):
         long = self.longMD
@@ -19,20 +20,18 @@ class General:
         for x in dd:
             disponible = x.get_fin_pd() - inicio
             if disponible >= long:
-                self.finPD += long
                 self.finPV += get_long_pv(long, x)
                 return 0
             elif disponible > long > disponible:
                 long -= disponible
-                self.finPD += disponible
                 self.finPV += get_long_pv(disponible, x)
                 inicio += disponible
             else:
-                self.finPD += long
                 self.finPV += get_long_pv(long, x)
                 return 0
 
     def __init__(self, d_e, d, l, d_direccional, previa):
+        self.long_disp = l
         self.dExt = d_e
         self.dInt = d
         self.longMD = l
@@ -40,10 +39,12 @@ class General:
         if previa is not None:
             self.inicioPD = previa.get_fin_pd()
             self.inicioPV = previa.get_fin_pv()
+            self.finPD = previa.get_fin_pd() + l
         else:
             self.inicioPD = 0
             self.inicioPV = 0
-        self.finPD = self.inicioPD
+            self.finPD = l
+
         self.finPV = self.inicioPV
         self.profundidad(d_direccional)
         self.longMV = self.finPV - self.inicioPV
@@ -58,7 +59,7 @@ Longitud PD             \t{}
 Fin PD                  \t{}
 Inicio PV               \t{}
 Longitud PV             \t{}
-Fin PV                  \t{}""".format(self.dExt, self.dInt, self.inicioPD, self.longMD, self.longMV, self.inicioPV,
+Fin PV                  \t{}""".format(self.dExt, self.dInt, self.inicioPD, self.longMD, self.finPD, self.inicioPV,
                                        self.longMV, self.finPV)
 
     def get_inicio_pd(self):
@@ -94,6 +95,12 @@ Fin PV                  \t{}""".format(self.dExt, self.dInt, self.inicioPD, self
 
     def set_inicio_pv(self, data):
         self.inicioPV = data
+
+    def get_long_disp(self):
+        return self.long_disp
+
+    def set_disp(self, data):
+        self.long_disp = data
 
 
 def get_long_pv(long_pd, x):

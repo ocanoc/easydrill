@@ -1,3 +1,5 @@
+import sys
+
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
@@ -11,10 +13,12 @@ from TuberiasRevestmiento.MenuTuberiasRevestimiento import TuberiasRevestimiento
 
 # noinspection PyArgumentList
 class Nuevo(QWidget):
+
     seleccion = 0
     pos = 0
     stop = False
-
+    app = QApplication(sys.argv)
+    app.setStyle('Fusion')
     btn_aceptar = QPushButton("Aceptar")
     btn_cancelar = QPushButton("Cancelar")
     btn_regresar = QPushButton("Regresar")
@@ -65,6 +69,7 @@ class Nuevo(QWidget):
         self.setLayout(self.layout_pantalla)
         palette = QPalette()
         palette.setBrush(10, QBrush(QImage("Imagenes/Fondo/Fondo.png")))
+        self.setFont(QFont('Calibri (Cuerpo)', 12, QFont.Bold))
         self.setPalette(palette)
 
         self.Trayectoria.imagen_vertical.installEventFilter(self)
@@ -150,8 +155,8 @@ class Nuevo(QWidget):
                 self.cambiar_central()
                 self.btn_aceptar.setText("Terminar")
         elif self.pos is 4:
-            print("Recoger informacion")
-            self.get_datos()
+            if self.Sarta_Perforacion.is_fill():
+                self.get_datos()
 
     def eventFilter(self, source, event):
         if source is self.DatosFluidos.tipo_datos:

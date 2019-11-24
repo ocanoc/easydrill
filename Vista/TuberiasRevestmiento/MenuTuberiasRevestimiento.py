@@ -88,19 +88,18 @@ class TuberiasRevestimiento(QWidget):
     def agrega(self):
         try:
             if self.etapa.count() < 10:
-                if self.etapa.widget(self.etapa.count() - 1).get_tipo() is 2 and self.etapa.count() is 1:
-                    QMessageBox.critical(self, "Error", "Se debe agregar al menos una Tuberia de Revestimiento.")
+                if self.lleno is False and self.etapa.widget(self.etapa.count() - 1).get_tipo() is 2:
+                    QMessageBox.critical(self, "Error", "Se debe agregar al menos una tuberia de revestimiento.")
                 elif self.agujero and self.lleno:
                     QMessageBox.critical(self, "Error", "Debes borrar la etapa agujero para agregar mas etapas.")
                 elif self.etapa.widget(self.etapa.count() - 1).is_fill() and self.check_di():
                     self.rename()
-                    self.datos.append(self.etapa.widget(self.etapa.count() - 1).get_datos())
+                    self.lleno = True
                     if self.etapa.widget(self.etapa.count() - 1).get_tipo() is not 2:
                         self.etapa.addItem(DatosTuberia(self.etapa), "Etapa {}".format(self.etapa.count() + 1))
                         self.etapa.setCurrentIndex(self.etapa.count() - 1)
                     else:
                         self.agujero = True
-                    self.lleno = True
             else:
                 QMessageBox.critical(self, "Error", "Demasiadas etapas.")
         except ValueError:
@@ -109,11 +108,12 @@ class TuberiasRevestimiento(QWidget):
     def elimina(self):
         if self.ultimo is True:
             if self.etapa.count() > 1:
+                if self.etapa.widget(self.etapa.count() - 1).get_tipo() is 2:
+                    self.agujero = False
                 self.etapa.removeItem(self.etapa.currentIndex())
-                self.datos.pop()
             else:
+                self.agujero = False
                 self.lleno = False
-                self.datos.clear()
                 self.etapa.widget(self.etapa.count() - 1).clean()
                 self.etapa.setItemText(self.etapa.count() - 1, "Etapa 1")
                 QMessageBox.information(self, "Limpio", "No hay mas etapas")
@@ -127,12 +127,13 @@ class TuberiasRevestimiento(QWidget):
                 eliminar = count - actual - 1
                 if self.agujero:
                     eliminar = eliminar + 1
+                    self.agujero = False
                 for x in range(eliminar):
                     self.etapa.removeItem(self.etapa.count() - 1)
-                    self.datos.pop()
                 self.mas.setEnabled(True)
                 self.etapa.widget(self.etapa.count() - 1).clean()
                 self.ultimo = True
+                self.etapa.setItemText(self.etapa.count() - 1, "Etapa {}".format(self.etapa.count()))
 
     def actualiza(self):
         count = self.etapa.count()  # number of items
@@ -182,7 +183,11 @@ class TuberiasRevestimiento(QWidget):
             self.mas.setEnabled(True)
 
     def get_datos(self):
-        return self.datos
+        self.datos.clear()
+        if self.lleno and self.agujero:
+            for x in (self.etapa.count() - 1):
+                self.datos.append(self.etapa.widget(x).get_datos())
+            return self.datos
 
     def set_long_disp(self, prof_maxima):
         self.label_long_disp.setText(prof_maxima)

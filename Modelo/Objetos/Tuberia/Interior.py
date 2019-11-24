@@ -29,6 +29,9 @@ class Interior (General):
     def set_dp(self, dp):
         self.caidaPresion = dp
 
+    def get_dp(self):
+        return self.caidaPresion
+
     def __str__(self):
         return """\
 Diametro exterior       \t{}

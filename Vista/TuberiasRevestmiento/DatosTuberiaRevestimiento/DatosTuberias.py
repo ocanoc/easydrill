@@ -2,6 +2,8 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
+from Recursos.Constantes.Convertidor import Convertidor
+
 
 class DatosTuberia(QWidget):
     def __init__(self, parent=None):
@@ -79,26 +81,29 @@ class DatosTuberia(QWidget):
     def is_fill(self):
         try:
             if self.tipo_tuberia.currentIndex() is 0:
-                if float(self.campo_longitud.text()) > 0 and float(self.campo_id.text()) > 0 \
-                        and float(self.campo_od.text()) > 0:
-                    if float(self.campo_id.text()) < float(self.campo_od.text()):
+                if Convertidor.fracc_to_dec(self.campo_longitud.text()) > 0 and \
+                        Convertidor.fracc_to_dec(self.campo_id.text()) > 0 \
+                        and Convertidor.fracc_to_dec(self.campo_od.text()) > 0:
+                    if Convertidor.fracc_to_dec(self.campo_id.text()) < Convertidor.fracc_to_dec(self.campo_od.text()):
                         return True
                     else:
                         QMessageBox.critical(self, "Error", "Diametro interior igual o mayor que diametro exterior.")
                         return False
             if self.tipo_tuberia.currentIndex() is 1:
-                if float(self.campo_longitud.text()) > 0 and float(self.campo_id.text()) > 0 \
-                        and float(self.campo_bl.text()) > 0 and float(self.campo_od.text()) > 0:
-                    if float(self.campo_id.text()) < float(self.campo_od.text()):
+                if Convertidor.fracc_to_dec(self.campo_longitud.text()) > 0 and \
+                        Convertidor.fracc_to_dec(self.campo_id.text()) > 0 \
+                        and Convertidor.fracc_to_dec(self.campo_bl.text()) > 0 and \
+                        Convertidor.fracc_to_dec(self.campo_od.text()) > 0:
+                    if Convertidor.fracc_to_dec(self.campo_id.text()) < Convertidor.fracc_to_dec(self.campo_od.text()):
                         return True
                     else:
                         QMessageBox.critical(self, "Error", "Diametro interior igual o mayor que el diametro exterior.")
                         return False
             if self.tipo_tuberia.currentIndex() is 2:
-                if float(self.campo_longitud.text()) > 0 and float(self.campo_od.text()) > 0:
+                if Convertidor.fracc_to_dec(self.campo_longitud.text()) > 0 and \
+                        Convertidor.fracc_to_dec(self.campo_od.text()) > 0:
                     return True
         except ValueError:
-            print(ValueError)
             QMessageBox.critical(self, "Error", "Datos erroneos o incompletos.")
             return False
         QMessageBox.critical(self, "Error", "Datos erroneos o incompletos.")
@@ -113,26 +118,26 @@ class DatosTuberia(QWidget):
             return "Etapa Liner {} pg ".format(self.campo_od.text())
 
     def get_id(self):
-        return float(self.campo_id.text())
+        return Convertidor.fracc_to_dec(self.campo_id.text())
 
     def get_od(self):
-        return float(self.campo_od.text())
+        return Convertidor.fracc_to_dec(self.campo_od.text())
 
     def get_datos(self):
         datos = []
         if self.tipo_tuberia.currentIndex() is 0:
             datos.append("TR")
-            datos.append(float(self.campo_id.text()))
-            datos.append(float(self.campo_od.text()))
+            datos.append(Convertidor.fracc_to_dec(self.campo_id.text()))
+            datos.append(Convertidor.fracc_to_dec(self.campo_od.text()))
         if self.tipo_tuberia.currentIndex() is 1:
             datos.append("Liner")
-            datos.append(float(self.campo_id.text()))
-            datos.append(float(self.campo_od.text()))
-            datos.append(float(self.campo_bl.text()))
+            datos.append(Convertidor.fracc_to_dec(self.campo_id.text()))
+            datos.append(Convertidor.fracc_to_dec(self.campo_od.text()))
+            datos.append(Convertidor.fracc_to_dec(self.campo_bl.text()))
         if self.tipo_tuberia.currentIndex() is 2:
             datos.append("Agujero")
-            datos.append(float(self.campo_od.text()))
-        datos.append(float(self.campo_longitud.text()))
+            datos.append(Convertidor.fracc_to_dec(self.campo_od.text()))
+        datos.append(Convertidor.fracc_to_dec(self.campo_longitud.text()))
         return datos
 
     def clean(self):
