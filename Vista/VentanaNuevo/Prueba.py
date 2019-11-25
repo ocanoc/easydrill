@@ -4,6 +4,7 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
+from Vista.SartaPerforacion.MenuSartaPerforacion import SartaPerforacion
 from Vista.VentanaResultados.MenuResultados import MenuResultados
 
 
@@ -22,11 +23,11 @@ class Prueba(QDialog):
         self.layot = QHBoxLayout()
 
         # self.layot.addWidget(MenuEdicion())
-        # sarta = SartaPerforacion()
+        sarta = SartaPerforacion()
         menu_resultados = MenuResultados()
         # revestimiento = TuberiasRevestimiento()
-        menu_resultados.get_data()
-        self.layot.addWidget(menu_resultados)
+        # menu_resultados.get_data()
+        self.layot.addWidget(sarta)
         self.setLayout(self.layot)
 
     def termianr(self):

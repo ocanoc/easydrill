@@ -9,6 +9,7 @@ class Interior (General):
     peso_aire = 0
     peso_flotado = 0
     resistencia_tension = 0
+    vel_interior = 0
 
     def set_resistension(self, rt):
         self.resistencia_tension = rt
@@ -31,6 +32,12 @@ class Interior (General):
 
     def get_dp(self):
         return self.caidaPresion
+
+    def set_vel_interior(self, data):
+        self.vel_interior = data
+
+    def get_vel_interior(self):
+        return self.vel_interior
 
     def __str__(self):
         return """\

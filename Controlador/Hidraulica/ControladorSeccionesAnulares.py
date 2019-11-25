@@ -75,4 +75,11 @@ class ControladorSecciones:
     def set_parametros(secciones, bomba, fluido):
         for x in secciones:
             x.set_vel_anular(ParametrosPerforacion.vel_anular(bomba, x.get_dmayor(), x.get_dmenor()))
-            x.set_indice_acarreo(ParametrosPerforacion.indice_limpieza(fluido, x.get_vel_anular()))
+            x.set_indice_acarreo(ParametrosPerforacion.cap_acarreo(fluido, x.get_vel_anular()))
+
+    @staticmethod
+    def set_dec(secciones, fluido):
+        dp_anular = 0
+        for x in secciones:
+            dp_anular += x.get_dp()
+            x.set_dec(fluido.get_dl() + (dp_anular * 10 / x.get_fin_pv()))

@@ -13,6 +13,8 @@ class SeccionesAnulares:
     titnerna = None
     vel_anular = 0
     indice_acarreo = 0
+    dec = 0
+    fin_pv = 0
 
     def __init__(self, iniciopd, finpd, longmd, texterna, tinterna, longitudv):
         self.inicioPD = iniciopd
@@ -40,9 +42,10 @@ class SeccionesAnulares:
     Caida de presion        \t{}
     Indice acarreo          \t{}
     Velocidad Anular        \t{}
+    dec                     \t{}
     """.format(self.diametroMayor, self.diametroMenor, self.inicioPD, self.longitudD,
                self.finPD, self.longitudV, self.capacidad, self.volumen, self.deltaP,
-               self.indice_acarreo, self.vel_anular)
+               self.indice_acarreo, self.vel_anular, self.dec)
 
     def set_caida_presion(self, caida_presion):
         self.caida_presion = caida_presion
@@ -82,3 +85,15 @@ class SeccionesAnulares:
 
     def get_inicio_pd(self):
         return self.inicioPD
+
+    def get_dec(self):
+        return self.dec
+
+    def set_dec(self, data):
+        self.dec = data
+
+    def set_fin_pv(self, data):
+        self.fin_pv = data
+
+    def get_fin_pv(self):
+        return self.fin_pv

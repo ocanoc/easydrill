@@ -31,3 +31,8 @@ class ControladorTuberia:
                 elif inicio_tp >= inicio_e_pd and fin_tp >= fin_e_pd:
                     long_tp_provi += ControladorTuberia.get_long_pv(fin_e_pd - inicio_tp, angulo_e)
                     inicio_tp = fin_e_pd
+
+    @staticmethod
+    def set_velocdad_interior(interiores, bomba):
+        for x in interiores:
+            x.set_vel_interior(bomba.get_gasto() * 24.51 / math.pow(x.get_dint(), 2))

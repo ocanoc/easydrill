@@ -8,6 +8,7 @@ class Barrena:
     velocidad_toberas = 0
     impacto_h = 0
     potencia_h = 0
+    diametro = 0
 
     def __init__(self, tfa):
         self.area_toberas = tfa
@@ -44,3 +45,12 @@ class Barrena:
 
     def get_area_toberas(self):
         return self.area_toberas
+
+    def set_tfa(self, data):
+        self.area_toberas = data
+
+    def get_diametro(self):
+        return self.diametro
+
+    def set_diametro(self, data):
+        self.diametro = data
