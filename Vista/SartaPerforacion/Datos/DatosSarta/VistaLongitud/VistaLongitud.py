@@ -28,6 +28,7 @@ class VistaLongitud(QWidget):
     def get_data(self):
         data = self.table.get_data()
         if data is not None:
+            print("entre")
             try:
                 if float(self.campo_longitud.text()) > 0:
                     long = self.campo_longitud.text()
@@ -38,6 +39,8 @@ class VistaLongitud(QWidget):
             except ValueError:
                 QMessageBox.critical(self, "Error", "Ingresa una longitud.")
                 return None, None
+        else:
+            return None, None
 
     def get_tipo(self):
         return self.table.get_tipo()

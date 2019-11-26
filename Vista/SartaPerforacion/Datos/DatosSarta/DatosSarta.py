@@ -28,7 +28,7 @@ class DatosSarta(QDialog):
         self.tab.addTab(VistaLongitud(6), QIcon("Imagenes/TextosTuberias/TextoTP.png"), "")
         self.tab.addTab(VistaLongitud(3), QIcon("Imagenes/TextosTuberias/TextoHW.png"), "")
         self.tab.addTab(VistaLongitud(4), QIcon("Imagenes/TextosTuberias/TextoDC.png"), "")
-        self.tab.addTab(QWidget(), QIcon("Imagenes/TextosTuberias/TextoConexiones.png"), "")
+        self.tab.addTab(Datos(13), QIcon("Imagenes/TextosTuberias/TextoConexiones.png"), "")
         self.tab.addTab(Datos(5), QIcon("Imagenes/TextosTuberias/TextoEstabilizadores.png"), "")
         self.tab.addTab(Datos(11), QIcon("Imagenes/TextosTuberias/TextoHerramientas.png"), "")
         self.tab.addTab(Datos(7), QIcon("Imagenes/TextosTuberias/TextoPorta.png"), "")
@@ -59,26 +59,25 @@ class DatosSarta(QDialog):
         self.setLayout(self.layout_ventana)
 
         self.aceptado = True
-        self.data = []
+        self.data = None
         self.long = 0
 
     def get_selection(self, selection):
         self.tabs.isActiveWindow()
 
     def aceptar(self, source):
-        data, long = source.get_data()
-        print(data)
-        print(long)
-        if data is not None and long is not None:
+        if self.tab.currentIndex() is 0 or self.tab.currentIndex() is 1 or self.tab.currentIndex() is 2:
+            data, long = source.get_data()
+        else:
+            data = source.get_data()
+            long = 0
+        if data is not None:
             tipo = source.get_tipo()
-            if tipo is 11:
-                text = data[0]
-            else:
+            if tipo is not 11:
                 text = self.text_tipo(tipo)
-
-            data.insert(0, text)
+                data.insert(0, text)
             data.append(str(long))
-            print(data)
+
             self.data = data
             self.long = long
             self.accept()
@@ -118,7 +117,7 @@ class DatosSarta(QDialog):
             6: "TP",
             3: "TP HW",
             4: "Lastra Barrenas",
-            9: "Combinacion",
+            13: "Conexión",
             8: "Martillo",
             16: "Amortiguador",
             5: "Estabilizador",

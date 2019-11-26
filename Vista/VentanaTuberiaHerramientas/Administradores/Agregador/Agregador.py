@@ -122,26 +122,6 @@ class Agregar(QDialog):
             self.layout_campos_2.addRow("Conexión:", QLineEdit())
             self.layout_campos_2.addRow("Peso nominal [lb/ft]:", QLineEdit())
 
-        if source is 9:
-            p.setBrush(10, QBrush(QImage("Imagenes/Fondo/FondoDatosBNA.png")))
-
-            self.tipo_barrena = QComboBox()
-            self.tipo_barrena.addItems(["Triconicas", "PDC"])
-
-            self.tipo_conexion = QComboBox()
-            self.tipo_conexion.addItems(["PIN", "BOX"])
-
-            self.tipo_barrena.currentIndexChanged.connect(self.cambio_tipo)
-            self.layout_campos.addRow("Tipo de Barena", self.tipo_barrena)
-            self.layout_campos.addRow("Código IADC:", QLineEdit())
-            self.layout_campos.addRow("OD [pg]:", QLineEdit())
-            self.layout_campos.addRow("Conexión:", QLineEdit())
-            self.layout_campos.addRow("Tipo Conexión :", self.tipo_conexion)
-
-            self.layout_campos_2.addRow("Longitud [pg]:", QLineEdit())
-            self.layout_campos_2.addRow("Peso [kg]:", QLineEdit())
-            self.layout_campos_2.addRow("Boquillas:", QLineEdit())
-
         if source is 7:
             p.setBrush(10, QBrush(QImage("Imagenes/Fondo/FondoDatosPortaBarrena.png")))
             self.setFixedSize(580, 275)
@@ -175,6 +155,26 @@ class Agregar(QDialog):
             self.layout_campos_2.addRow("Conexión Bit:", QLineEdit())
             self.layout_campos_2.addRow("Longitud [m]:", QLineEdit())
             self.layout_campos_2.addRow("Peso [kg]:", QLineEdit())
+
+        if source is 9:
+            p.setBrush(10, QBrush(QImage("Imagenes/Fondo/FondoDatosBNA.png")))
+
+            self.tipo_barrena = QComboBox()
+            self.tipo_barrena.addItems(["Triconicas", "PDC"])
+
+            self.tipo_conexion = QComboBox()
+            self.tipo_conexion.addItems(["PIN", "BOX"])
+
+            self.tipo_barrena.currentIndexChanged.connect(self.cambio_tipo)
+            self.layout_campos.addRow("Tipo de Barena", self.tipo_barrena)
+            self.layout_campos.addRow("Código IADC:", QLineEdit())
+            self.layout_campos.addRow("OD [pg]:", QLineEdit())
+            self.layout_campos.addRow("Conexión:", QLineEdit())
+            self.layout_campos.addRow("Tipo Conexión :", self.tipo_conexion)
+
+            self.layout_campos_2.addRow("Longitud [pg]:", QLineEdit())
+            self.layout_campos_2.addRow("Peso [kg]:", QLineEdit())
+            self.layout_campos_2.addRow("Boquillas:", QLineEdit())
 
         if source is 10:
             p.setBrush(10, QBrush(QImage("Imagenes/Fondo/FondoDatosMotor.png")))
@@ -214,6 +214,22 @@ class Agregar(QDialog):
             self.layout_campos_2.addRow("Tipo conexión Bit:", self.tipo_conexion_bit)
             self.layout_campos_2.addRow("Longitud [m]:", QLineEdit())
             self.layout_campos_2.addRow("Peso [kg/m]:", QLineEdit())
+
+        if source is 13:
+            p.setBrush(10, QBrush(QImage("Imagenes/Fondo/FondoDatosConexion.png")))
+            self.setFixedSize(580, 300)
+            self.tipo = QComboBox()
+            self.tipo.addItems(["EU", "IU"])
+
+            self.layout_campos.addRow("Conexión", QLineEdit())
+            self.layout_campos.addRow("Tipo", self.tipo)
+            self.layout_campos.addRow("OD [pg]:", QLineEdit())
+            self.layout_campos.addRow("ID [pg]:", QLineEdit())
+
+            self.layout_campos_2.addRow("Longitud Pin [pg]:", QLineEdit())
+            self.layout_campos_2.addRow("Longitud Box [pg]:", QLineEdit())
+            self.layout_campos_2.addRow("Longitud Total [pg]:", QLineEdit())
+            self.layout_campos_2.addRow("Peso nominal [lb/ft]:", QLineEdit())
 
         if source is 16:
             p.setBrush(10, QBrush(QImage("Imagenes/Fondo/FondoDatosMartillo.png")))
@@ -363,6 +379,18 @@ class Agregar(QDialog):
             self.datos.append(self.layout_campos_2.itemAt(3).widget().text())
             self.datos.append(self.layout_campos_2.itemAt(5).widget().text())
             self.datos.append(self.layout_campos_2.itemAt(7).widget().text())
+
+        if self.source is 13:
+            self.datos.append(self.layout_campos.itemAt(1).widget().text())
+            self.datos.append(self.layout_campos.itemAt(3).widget().currentText())
+            self.datos.append(self.layout_campos.itemAt(5).widget().text())
+            self.datos.append(self.layout_campos.itemAt(7).widget().text())
+
+            self.datos.append(self.layout_campos_2.itemAt(1).widget().text())
+            self.datos.append(self.layout_campos_2.itemAt(3).widget().text())
+            self.datos.append(self.layout_campos_2.itemAt(5).widget().text())
+            self.datos.append(self.layout_campos_2.itemAt(7).widget().text())
+
 
         if self.source is 16:
             self.datos.append(self.layout_campos.itemAt(1).widget().text())
@@ -528,6 +556,23 @@ class Agregar(QDialog):
 
             self.layout_campos_2.itemAt(5).widget().setText(data[7])
             self.layout_campos_2.itemAt(7).widget().setText(data[8])
+
+        if self.source is 13:
+            self.layout_campos.itemAt(1).widget().setText(data[0])
+
+            if data[1] == 'EU':
+                self.layout_campos.itemAt(3).widget().setCurrentIndex(0)
+            else:
+                self.layout_campos.itemAt(3).widget().setCurrentIndex(1)
+
+            self.layout_campos.itemAt(5).widget().setText(data[2])
+            self.layout_campos.itemAt(7).widget().setText(data[3])
+
+            self.layout_campos_2.itemAt(1).widget().setText(data[4])
+            self.layout_campos_2.itemAt(3).widget().setText(data[5])
+            self.layout_campos_2.itemAt(5).widget().setText(data[6])
+            self.layout_campos_2.itemAt(7).widget().setText(data[7])
+
 
         if self.source is 16:
             self.layout_campos.itemAt(1).widget().setText(data[0])

@@ -237,7 +237,7 @@ class SartaPerforacion(QWidget):
             if data.exec_():
                 datos = data.get_data()
                 self.model.insertRow(self.model.rowCount())
-                self.adf_row(self.model.rowCount() - 1, datos)
+                self.add_row(self.model.rowCount() - 1, datos)
         else:
             QMessageBox.warning(self, "Aviso.", "Es necesario agregar una Barrena.")
 
@@ -353,7 +353,7 @@ class SartaPerforacion(QWidget):
         except ValueError:
             pass
 
-    def adf_row(self, pos, data):
+    def add_row(self, pos, data):
         elemento = ""
         od = ""
         di = ""
@@ -381,7 +381,6 @@ class SartaPerforacion(QWidget):
             ct = data[4]
             cb = data[4]
             long_acu = data[6]
-
         if data[0] == "Lastra Barrenas":
             elemento = data[0]
             od = data[1]
@@ -391,6 +390,69 @@ class SartaPerforacion(QWidget):
             ct = data[4]
             cb = data[4]
             long_acu = data[6]
+        if data[0] == "Conexión":
+            elemento = data[0]
+            od = data[3]
+            di = data[4]
+            long = float(data[7]) * 0.0254
+            peso = long * float(data[8]) * 1.488
+            ct = data[1]
+            cb = data[1]
+            long_acu = data[6]
+        if data[0] == "Martillo":
+            elemento = data[0] + "  " + data[1]
+            od = data[4]
+            di = data[5]
+            long = float(data[6])
+            peso = data[7]
+            ct = data[2]
+            cb = data[3]
+            long_acu = "-"
+        if data[0] == "Amortiguador":
+            elemento = data[0]
+            od = data[1]
+            di = data[2]
+            long = float(data[7])
+            peso = float(data[8])
+            ct = data[4]
+            cb = data[5]
+            long_acu = "-"
+        if data[0] == "Estabilizador":
+            elemento = data[0] + " tipo " + data[1]
+            od = data[5]
+            di = data[6]
+            long = float(data[7])
+            peso = "-"
+            ct = data[3]
+            cb = data[4]
+            long_acu = data[7]
+        if data[0] == "MDW" or data[0] == "LWD":
+            elemento = data[0]
+            od = data[1]
+            di = data[2]
+            long = float(data[7])
+            peso = float(data[8])
+            ct = data[3]
+            cb = data[5]
+            long_acu = data[7]
+        if data[0] == "Motor de fondo":
+            elemento = data[0]
+            od = data[6]
+            di = data[7]
+            long = float(data[8])
+            peso = "-"
+            ct = data[4]
+            cb = data[5]
+            long_acu = "-"
+        if data[0] == "Porta Barrena":
+            elemento = data[0]
+            od = data[5]
+            di = data[5]
+            long = float(data[6]) * 0.0254
+            peso = float(data[7])
+            ct = data[1]
+            cb = data[3]
+            long_acu = "-"
 
         self.model.setData(self.model.index(pos, 0), elemento)
         self.model.setData(self.model.index(pos, 1), od)

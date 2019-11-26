@@ -13,11 +13,10 @@ class Graficador(QWidget):
         self.layoutcentral = QVBoxLayout()
         self.graphWidget = pg.PlotWidget()
         self.graphWidget.showGrid(x=True, y=True)
-
-        self.graphWidget.setLabel('left',
+        self.graphWidget.setLabel('top',
                                   "<span style=\"color:rgb(0, 80, 85);font-size:18px\">Presión "
                                   "[kg/cm<sup>2</sup>]</span>")
-        self.graphWidget.setLabel('bottom', "<span style=\"color:rgb(0, 80, 85);font-size:18px\">Profundidad "
+        self.graphWidget.setLabel('left', "<span style=\"color:rgb(0, 80, 85);font-size:18px\">Profundidad "
                                             "(m)</span>")
         self.graphWidget.setBackground("w")
         self.graphWidget.showGrid(x=True, y=True)
@@ -25,11 +24,24 @@ class Graficador(QWidget):
         curve.getViewBox().invertY(True)
         self.layoutcentral.addWidget(self.graphWidget)
         self.setLayout(self.layoutcentral)
+        self.graphWidget.addLegend()
+        self.legend = True
 
     def plot(self, p, dp):
         self.graphWidget.clear()
-        self.graphWidget.plot(p, dp, name="Perdidas", pen=self.pen, symbol='o', symbolSize=10, symbolBrush='r')
+        if self.legend:
+            self.graphWidget.plot(dp, p, name="Perdidas", pen=self.pen, symbol='o', symbolSize=10, symbolBrush='r')
+            self.legend = False
+        else:
+            self.graphWidget.plot(dp, p, pen=self.pen, symbol='o', symbolSize=10, symbolBrush='r')
 
     def plot_dec(self, p, dec):
+        self.graphWidget.setLabel('top',
+                                  "<span style=\"color:rgb(0, 80, 85);font-size:18px\">DEC "
+                                  "[g/cm<sup>3</sup>]</span>")
         self.graphWidget.clear()
-        self.graphWidget.plot(dec, p, pen=self.pen, symbol='o', symbolSize=10, symbolBrush='r')
+        if self.legend:
+            self.graphWidget.plot(dec, p, name="DEC", pen=self.pen, symbol='o', symbolSize=10, symbolBrush='r')
+            self.legend = False
+        else:
+            self.graphWidget.plot(dec, p, pen=self.pen, symbol='o', symbolSize=10, symbolBrush='r')

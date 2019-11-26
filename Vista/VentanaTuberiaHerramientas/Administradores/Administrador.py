@@ -76,7 +76,7 @@ class Administrador(QWidget):
         if tipo is 3:
             return Datos(4)
         if tipo is 4:
-            return QWidget()
+            return Datos(13)
         if tipo is 5:
             return Datos(5)
         if tipo is 6:

@@ -56,7 +56,7 @@ class Datos(QWidget):
 
     def create_table(self, tipo):
         if tipo is 0:
-            self.list = ['Tipo', 'OD\n [pg]', 'ID\n [pg]', "Conexión\nTop", "Conexión \nBit", "Longitud\n[m]",
+            self.list = ['Tipo', "Conexión\nTop", "Conexión \nBit", 'OD\n [pg]', 'ID\n [pg]', "Longitud\n[m]",
                          "Peso\n[Kg]"]
             self.file = 'CSV/Martillos.csv'
             self.datos = 8
@@ -72,7 +72,6 @@ class Datos(QWidget):
             self.datos = tipo
             self.label_title.setText("Tubería extra pesada.")
             self.layout_pantalla.addWidget(self.label_title, 1, Qt.AlignLeft)
-
 
         if tipo is 4:
             self.list = ['OD\n [pg]', 'ID\n [pg]', "Geometria", "Conexión", "Peso\nNominal\n[lb/ft]"]
@@ -117,6 +116,14 @@ class Datos(QWidget):
             self.file = 'CSV/HhtasRegistros.csv'
             self.datos = tipo
             self.label_title.setText("Herramientas de Registros.")
+            self.layout_pantalla.addWidget(self.label_title, 1, Qt.AlignLeft)
+
+        if tipo is 13:
+            self.list = ["Conexión", "Tipo", 'OD\n [pg]', 'ID\n [pg]', "Longitud\n Pin[pg]", "Longitud\n Box[pg]",
+                         "Longitud\n Total[pg]", "Peso\nNominal\n[lb/ft]"]
+            self.file = 'CSV/Conexiones.csv'
+            self.datos = tipo
+            self.label_title.setText("Conexiones.")
             self.layout_pantalla.addWidget(self.label_title, 1, Qt.AlignLeft)
         self.model_table.setHorizontalHeaderLabels(self.list)
         self.table.setModel(self.model_table)
