@@ -393,39 +393,46 @@ class MenuResultados(QWidget):
     def plot_grafica(self):
         self.ica_prom = 0
         self.vanular_prom = 0
+        dec_grafica = []
+        profundidad_dec = []
+        presion = 0
+        pv = 0
         if self.primera_grafica:
             self.presion_hestatica = self.trayectoria[
                                          len(self.trayectoria) - 1].get_fin_pv() * self.fluido.get_dl() / 10
             self.equiposup = PlascticoBingham.interior(self.bomba.get_gasto(), 2.764, self.fluido.get_dl(), 133.2,
                                                        self.fluido.get_visco_plastica(), self.fluido.get_p_cedencia())
-            PlascticoBingham.set_plastico_bingham(self.lista_sarta, self.listaseciones, self.fluido, self.bomba)
             profundidad_secciones = [-133.2]
             presion_secciones = [self.equiposup]
-            dec_grafica = []
-            profundidad_dec = []
-            presion = 0
+
+            PlascticoBingham.set_plastico_bingham(self.lista_sarta, self.listaseciones, self.fluido, self.bomba)
             ControladorSecciones.set_parametros(self.listaseciones, self.bomba, self.fluido)
-            pv = 0
+
             for x in self.listaseciones:
                 self.ica_prom += x.get_indice_acarreo()
                 self.vanular_prom += x.get_vel_anular()
                 self.presion_hestatica += x.get_dp()
                 self.presion_anular += x.get_dp()
+                # revisar dnde hacer esto
                 pv += x.get_long()
                 x.set_fin_pv(pv)
+
             ControladorSecciones.set_dec(self.listaseciones, self.fluido)
             ControladorBarrena.set_vel_toberas(self.barrena, self.bomba)
             ControladorBarrena.set_parametros_hidraulicos(self.barrena, self.bomba, self.presion_hestatica, self.fluido)
             self.barrena.set_caida_presion(self.bomba.get_gasto(), self.fluido.get_dl())
             ControladorTuberia.set_velocdad_interior(self.lista_sarta, self.bomba)
+
             for x in self.lista_sarta:
                 self.vel_interior += x.get_vel_interior()
                 profundidad_secciones.append(x.get_fin_pd())
                 presion += x.get_dp()
                 presion_secciones.append(presion)
+
             profundidad_secciones.append(4000)
             presion += self.barrena.get_caidad_presion()
             presion_secciones.append(presion)
+
             for x in reversed(self.listaseciones):
                 profundidad_secciones.append(x.get_inicio_pd())
                 presion += x.get_dp()
@@ -433,6 +440,7 @@ class MenuResultados(QWidget):
 
             profundidad_dec.append(0)
             dec_grafica.append(self.fluido.get_dl())
+
             for x in self.listaseciones:
                 profundidad_dec.append(x.get_fin_pd())
                 dec_grafica.append(x.get_dec())

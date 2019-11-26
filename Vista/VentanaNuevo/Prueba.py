@@ -26,8 +26,8 @@ class Prueba(QDialog):
         sarta = SartaPerforacion()
         menu_resultados = MenuResultados()
         # revestimiento = TuberiasRevestimiento()
-        # menu_resultados.get_data()
-        self.layot.addWidget(sarta)
+        menu_resultados.get_data()
+        self.layot.addWidget(menu_resultados)
         self.setLayout(self.layot)
 
     def termianr(self):
