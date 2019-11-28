@@ -2,6 +2,7 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
+from Modelo.Objetos.Tuberia.Exterior import Exterior
 from Recursos.Constantes.Convertidor import Convertidor
 
 
@@ -29,8 +30,8 @@ class DatosTuberia(QWidget):
         self.layout_izquierda.setFormAlignment(Qt.AlignTop)
 
         self.layout_derecha = QFormLayout()
-        self.layout_derecha.addRow("ID [pg]", self.campo_id)
         self.layout_derecha.addRow("OD [pg]", self.campo_od)
+        self.layout_derecha.addRow("ID [pg]", self.campo_id)
         self.layout_derecha.setVerticalSpacing(20)
         self.layout_derecha.setFormAlignment(Qt.AlignTop)
 
@@ -56,15 +57,15 @@ class DatosTuberia(QWidget):
                 self.layout_derecha.removeRow(1)
                 self.layout_derecha.removeRow(0)
             self.acondiciona_lineedits()
-            self.layout_derecha.addRow("ID [pg]", self.campo_id)
             self.layout_derecha.addRow("OD [pg]", self.campo_od)
+            self.layout_derecha.addRow("ID [pg]", self.campo_id)
             self.anterior = 0
         elif i is 1:
             if self.anterior is 0:
                 self.layout_derecha.removeRow(0)
             self.acondiciona_lineedits()
-            self.layout_derecha.addRow("ID [pg]", self.campo_id)
             self.layout_derecha.addRow("OD [pg]", self.campo_od)
+            self.layout_derecha.addRow("ID [pg]", self.campo_id)
             self.layout_derecha.addRow("B.L [md]", self.campo_bl)
             self.anterior = 1
         elif i is 2:
@@ -123,31 +124,26 @@ class DatosTuberia(QWidget):
     def get_od(self):
         return Convertidor.fracc_to_dec(self.campo_od.text())
 
-    def get_datos(self):
-        datos = []
-        if self.tipo_tuberia.currentIndex() is 0:
-            datos.append("TR")
-            datos.append(Convertidor.fracc_to_dec(self.campo_id.text()))
-            datos.append(Convertidor.fracc_to_dec(self.campo_od.text()))
-        if self.tipo_tuberia.currentIndex() is 1:
-            datos.append("Liner")
-            datos.append(Convertidor.fracc_to_dec(self.campo_id.text()))
-            datos.append(Convertidor.fracc_to_dec(self.campo_od.text()))
-            datos.append(Convertidor.fracc_to_dec(self.campo_bl.text()))
-        if self.tipo_tuberia.currentIndex() is 2:
-            datos.append("Agujero")
-            datos.append(Convertidor.fracc_to_dec(self.campo_od.text()))
-        datos.append(Convertidor.fracc_to_dec(self.campo_longitud.text()))
-        return datos
+    def get_datos(self, direccional, anterior):
+        if self.tipo_tuberia.currentIndex() is 0 or self.tipo_tuberia.currentIndex() is 1:
+            exterior = Exterior(Convertidor.fracc_to_dec(self.campo_od.text()),
+                                Convertidor.fracc_to_dec(self.campo_id.text()),
+                                Convertidor.fracc_to_dec(self.campo_longitud.text()), direccional, anterior)
+            if self.tipo_tuberia.currentIndex() is 0:
+                exterior.set_tipo("TR")
+            if self.tipo_tuberia.currentIndex() is 1:
+                exterior.set_tipo("Liner")
+                exterior.set_boca_liner(Convertidor.fracc_to_dec(self.campo_bl.text()))
+        elif self.tipo_tuberia.currentIndex() is 2:
+            exterior = Exterior(Convertidor.fracc_to_dec(self.campo_od.text()),
+                                Convertidor.fracc_to_dec(self.campo_od.text()),
+                                Convertidor.fracc_to_dec(self.campo_longitud.text()), direccional, anterior)
+            exterior.set_tipo("Agujero")
+        return exterior
 
     def clean(self):
-        self.campo_longitud.setText("0")
-        self.campo_od.setText("0")
-        if self.tipo_tuberia.currentIndex() is 0:
-            self.campo_id.setText("0")
-        if self.tipo_tuberia.currentIndex() is 1:
-            self.campo_id.setText("0")
-            self.campo_bl.setText("0")
+        self.tipo_tuberia.setCurrentIndex(1)
+        self.tipo_tuberia.setCurrentIndex(0)
 
     def get_tipo(self):
         return self.tipo_tuberia.currentIndex()

@@ -3,6 +3,7 @@ from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
 from DatosSarta import DatosSarta
+from Modelo.Objetos.Hidraulica.Bomba import Bomba
 from Vista.SartaPerforacion.Datos.DatosBarrena.DatosBarrena import CreaBarrena
 from Vista.SartaPerforacion.Datos.DatosBomba.CreaBomba import CreeaBomba
 from Vista.SartaPerforacion.Datos.DatosTuberiasSuperficiales.DatosTuberiasSuperficiales import \
@@ -28,7 +29,7 @@ class SartaPerforacion(QWidget):
     header = table.horizontalHeader()
     header.setSectionResizeMode(QHeaderView.Stretch)
     header.setDefaultSectionSize(100)
-    table.setFixedSize(800, 205)
+    table.setFixedSize(815, 210)
     table.setHorizontalHeader(header)
     table.setModel(model)
     table.setAlternatingRowColors(True)
@@ -54,30 +55,27 @@ class SartaPerforacion(QWidget):
 
     mas = QPushButton()
     mas.setIcon(QIcon("Imagenes/Iconos/mas.png"))
-    mas.setToolTip("Agrega Etapa")
+    mas.setToolTip("Agrega Elemento")
 
     menos = QPushButton()
     menos.setIcon(QIcon("Imagenes/Iconos/menos.png"))
-    menos.setToolTip("Elimina Etapa")
+    menos.setToolTip("Elimina Elemento")
 
     label_long_disp = QLabel("0")
 
     layout_botones = QFormLayout()
     layout_botones.addRow("", QLabel(""))
-    layout_botones.addRow("", QLabel(""))
-    layout_botones.addRow("Agregar \nelemento", mas)
-    layout_botones.addRow("Eliminar \nelemento", menos)
+    layout_botones.addRow("Agregar elemento", mas)
+    layout_botones.addRow("Eliminar elemento", menos)
     layout_botones.setAlignment(Qt.AlignCenter)
     layout_botones.setSpacing(15)
 
-    layout_sarta = QHBoxLayout()
-    layout_sarta.addWidget(table, 1, Qt.AlignCenter)
-    layout_sarta.addSpacing(10)
-    layout_sarta.addLayout(layout_botones, 1)
-    layout_sarta.addStretch(1)
+    layout_inferior = QHBoxLayout()
+    layout_inferior.addWidget(table, 1, Qt.AlignCenter)
+    layout_inferior.addSpacing(10)
+    layout_inferior.addLayout(layout_botones, 1)
+    layout_inferior.addStretch(1)
 
-    layout_inferior = QVBoxLayout()
-    layout_inferior.addLayout(layout_sarta)
 
     texto_conexiones = QLabel()
     texto_conexiones.setPixmap(QPixmap("Imagenes/TP/TextoSuperficial.png"))
@@ -90,25 +88,43 @@ class SartaPerforacion(QWidget):
     btn_bomba = QPushButton("Agregar")
 
     campo_gasto = QLineEdit()
+    campo_p_bombeo = QLineEdit()
 
     btn_tabla = QPushButton()
     btn_tabla.setIcon(QIcon("Imagenes/Iconos/info.png"))
     btn_tabla.setToolTip("Mostrar tabla conexiones superficiales")
 
     layout_equiposup = QFormLayout()
-    layout_equiposup.addRow("Conexiones superficiales", tipo)
-    layout_equiposup.addRow("Longitud equivalente Tp [m]:", longitud_equivalente)
+    layout_equiposup.addRow("Tipo:", tipo)
+    layout_equiposup.addRow("Longitud \nequivalente [m]:", longitud_equivalente)
     # layout_equiposup.addRow("Bomba", btn_bomba)
-    layout_equiposup.addRow("Gasto [gpm]:", campo_gasto)
+
     layout_equiposup.setVerticalSpacing(15)
     layout_equiposup.setAlignment(Qt.AlignCenter)
 
+    g_conexiones_sup = QGroupBox()
+    g_conexiones_sup.setTitle("Conexiones Superficiales.")
+    g_conexiones_sup.setLayout(layout_equiposup)
+
+    layout_bomba = QFormLayout()
+    layout_bomba.addRow("Gasto [gpm]:", campo_gasto)
+    layout_bomba.addRow("Presión de  \n bombeo [psi]:", campo_p_bombeo)
+
+    g_datos_bomba = QGroupBox()
+    g_datos_bomba.setTitle("Bomba.")
+    g_datos_bomba.setLayout(layout_bomba)
+
+    layout_datos = QHBoxLayout()
+    layout_datos.addWidget(g_conexiones_sup)
+    layout_datos.addWidget(btn_tabla, 1, Qt.AlignCenter)
+    layout_datos.addWidget(g_datos_bomba)
+
     layout_izquierda = QVBoxLayout()
     layout_izquierda.addWidget(texto_conexiones)
-    layout_izquierda.addSpacing(30)
+    layout_izquierda.addSpacing(10)
     layout_izquierda.addWidget(label_instrucciones)
-    layout_izquierda.addLayout(layout_equiposup)
-    layout_izquierda.addSpacing(30)
+    layout_izquierda.addLayout(layout_datos)
+    layout_izquierda.addSpacing(20)
     layout_izquierda.addWidget(texto_tp)
     layout_izquierda.addStretch(1)
 
@@ -128,9 +144,7 @@ class SartaPerforacion(QWidget):
 
     layout_superior = QHBoxLayout()
     layout_superior.addLayout(layout_izquierda)
-    layout_superior.addSpacing(3)
-    layout_superior.addWidget(btn_tabla, 1, Qt.AlignCenter)
-    layout_superior.addSpacing(75)
+    layout_superior.addSpacing(40)
     layout_superior.addLayout(layout_derecha)
     layout_superior.addStretch(10)
 
@@ -148,14 +162,19 @@ class SartaPerforacion(QWidget):
     barrena = False
     last_opc = 0
     last_long_equi = "N/A"
+    diametro_barrenas = 0
 
     def __init__(self, parent=None):
         super(SartaPerforacion, self).__init__(parent)
+        self.acodiciona(self.g_datos_bomba)
+        self.acodiciona(self.g_conexiones_sup)
         self.acodiciona(self.mas)
         self.acodiciona(self.menos)
         self.acondiciona_imagen(self.barrena_triconica)
         self.acondiciona_imagen(self.barrena_pdc)
         self.acodiciona(self.tipo)
+        self.acodiciona(self.campo_p_bombeo)
+        self.acodiciona(self.layout_botones)
         # self.acondiciona(self.btn_bomba)
         self.btn_bomba.setFixedWidth(110)
         self.acodiciona(self.texto_barrena)
@@ -170,7 +189,7 @@ class SartaPerforacion(QWidget):
         self.btn_tabla.clicked.connect(lambda *args: self.muestratabla())
         # self.btn_bomba.clicked.connect(lambda *args: self.crea_bomba())
         self.setLayout(self.layout_pantalla)
-        self.setFont(QFont('Calibri (Cuerpo)', 12, QFont.Bold))
+        self.setFont(QFont('Calibri (Cuerpo)', 11, QFont.Bold))
 
     def cambio_tipo(self, i):
         if i is 0:
@@ -262,6 +281,20 @@ class SartaPerforacion(QWidget):
             btn.setFixedWidth(85)
             btn.setCursor(Qt.IBeamCursor)
             btn.setPlaceholderText("0")
+        if isinstance(btn, QGroupBox):
+            btn.setStyleSheet("""
+            QGroupBox  {
+            border: 2px solid gray;
+            border-color: #005055;
+            margin-top: 27px;
+            }""")
+            btn.setFont(QFont('Calibri (Cuerpo)', 11, QFont.Bold))
+        if isinstance(btn, QFormLayout):
+            btn.setRowWrapPolicy(QFormLayout.WrapAllRows)
+            btn.setFieldGrowthPolicy(QFormLayout.ExpandingFieldsGrow)
+            btn.setFormAlignment(Qt.AlignCenter)
+            btn.setAlignment(Qt.AlignCenter)
+            btn.setLabelAlignment(Qt.AlignCenter)
 
     def crea_bomba(self):
         crea = CreeaBomba(self)
@@ -466,8 +499,9 @@ class SartaPerforacion(QWidget):
     def get_datos(self):
         datos_sup = self.get_data_sup()
         data = self.collect_data()
-        gasto = self.get_gato()
-        return datos_sup, gasto, data
+        bomba = self.get_bomba()
+        barrena = None
+        return datos_sup, bomba, data
 
     def is_fil(self):
         self.get_datos()
@@ -477,15 +511,16 @@ class SartaPerforacion(QWidget):
             QMessageBox.critical(self, "Error", "Selecciona las conexione superficiales.")
             return None
         else:
-            return self.longitud_equivalente.text()
+            return float(self.longitud_equivalente.text())
 
-    def get_gato(self):
+    def get_bomba(self):
+        bomba = None
         try:
-            if float(self.campo_gasto.text()) > 0:
-                gasto = self.campo_gasto.text()
-                return gasto
+            if float(self.campo_gasto.text()) > 0 and float(self.campo_p_bombeo.text()) > 0:
+                bomba = Bomba(float(self.campo_gasto.text()), float(self.campo_p_bombeo.text()))
+                return bomba
             else:
-                QMessageBox.critical(self, "Error", "Ingresa un gasto valido.")
+                QMessageBox.critical(self, "Error", "Ingresa datos positivos.")
                 return None
         except ValueError:
             QMessageBox.critical(self, "Error", "Ingresa una gasto.")

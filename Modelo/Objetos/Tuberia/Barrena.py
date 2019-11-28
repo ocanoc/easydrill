@@ -10,7 +10,8 @@ class Barrena:
     potencia_h = 0
     diametro = 0
 
-    def __init__(self, tfa):
+    def __init__(self, tfa, diametro):
+        self.diametro = diametro
         self.area_toberas = tfa
 
     def set_caida_presion(self, gasto, densidad_lodo):

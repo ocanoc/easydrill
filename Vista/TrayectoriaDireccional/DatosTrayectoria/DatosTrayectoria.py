@@ -4,6 +4,8 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
+from Controlador.Direccional.ControladorDireccional import ControladorDireccional
+
 
 class DatosTrayectoria(QWidget):
     app = QApplication(sys.argv)
@@ -178,18 +180,23 @@ class DatosTrayectoria(QWidget):
         return False
 
     def get_datos(self):
-        datos = []
+        trayectoria = None
         if self.trayectoria_select is 1:
-            datos = [self.dato(self.campo_profundidad)]
+            trayectoria = ControladorDireccional.tipov(float(self.campo_profundidad.text()))
         elif self.trayectoria_select is 2 or self.trayectoria_select is 4:
-            datos = [self.dato(self.campo_profundidad), self.dato(self.campo_KOP),
-                     self.dato(self.campo_severidad_incremeto), self.dato(self.campo_angulo_maximo)]
+            trayectoria = ControladorDireccional.tipo_j(float(self.campo_KOP.text()),
+                                                        float(self.campo_severidad_incremeto.text()),
+                                                        float(self.campo_angulo_maximo.text()),
+                                                        float(self.campo_profundidad.text()))
         elif self.trayectoria_select is 3:
-            datos = [self.dato(self.campo_profundidad), self.dato(self.campo_KOP),
-                     self.dato(self.campo_severidad_incremeto), self.dato(self.campo_angulo_maximo),
-                     self.dato(self.campo_dop), self.dato(self.campo_severidad_decremento),
-                     self.dato(self.campo_angulo_final)]
-        return datos
+            trayectoria = ControladorDireccional.tipos(self.campo_KOP.text(),
+                                                       float(self.campo_severidad_incremeto.text()),
+                                                       float(self.campo_angulo_maximo.text()),
+                                                       float(self.campo_profundidad.text()),
+                                                       float(self.campo_dop.text()),
+                                                       float(self.campo_severidad_decremento.text()),
+                                                       float(self.campo_angulo_maximo.text()))
+        return trayectoria
 
     @staticmethod
     def dato(line):

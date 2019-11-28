@@ -11,7 +11,7 @@ from Vista.VentanaTuberiaHerramientas.MenuEdicion import MenuEdicion
 
 class MenuInicio(QMainWindow):
     stop = True
-
+    app = QApplication(sys.argv)
     Nuevo = Nuevo()
     Nuevo.hide()
 

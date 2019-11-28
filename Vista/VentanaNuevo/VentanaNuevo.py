@@ -62,11 +62,11 @@ class Nuevo(QWidget):
 
     def __init__(self):
         super(Nuevo, self).__init__()
-
         self.acodiciona(self.btn_aceptar)
         self.acodiciona(self.btn_cancelar)
         self.acodiciona(self.btn_regresar)
         self.setLayout(self.layout_pantalla)
+
         palette = QPalette()
         palette.setBrush(10, QBrush(QImage("Imagenes/Fondo/Fondo.png")))
         self.setFont(QFont('Calibri (Cuerpo)', 12, QFont.Bold))
@@ -76,15 +76,18 @@ class Nuevo(QWidget):
         self.Trayectoria.imagen_tipo_s.installEventFilter(self)
         self.Trayectoria.imagen_tipo_j.installEventFilter(self)
         self.Trayectoria.imagen_horizontal.installEventFilter(self)
+
         self.DatosFluidos.tipo_datos.installEventFilter(self)
         self.DatosFluidos.MenuFluidos.grafica_bingham.installEventFilter(self)
         self.DatosFluidos.MenuFluidos.grafica_potencias.installEventFilter(self)
         self.DatosFluidos.MenuFluidos.grafica_potencias_m.installEventFilter(self)
         self.DatosFluidos.MenuFluidos.dibujo_smith.installEventFilter(self)
+
         self.Sarta_Perforacion.barrena_triconica.installEventFilter(self)
         self.Sarta_Perforacion.barrena_pdc.installEventFilter(self)
         self.Sarta_Perforacion.barrena_triconica.installEventFilter(self)
         self.Sarta_Perforacion.barrena_pdc.installEventFilter(self)
+
         self.cambiar_central()
         self.btn_aceptar.clicked.connect(self.aceptar)
         self.btn_regresar.clicked.connect(self.regresar)

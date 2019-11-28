@@ -126,6 +126,7 @@ class DatosSarta(QDialog):
         }
         return switcher.get(argument, "Otro")
 
+
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     ex = DatosSarta()

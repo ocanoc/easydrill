@@ -19,7 +19,7 @@ class Interior (General):
 
     def set_peso_aire(self, pu):
         self.peso_unitario = pu
-        self.peso_aire = pu * self.longMD
+        self.peso_aire = pu * self.long_md
 
     def getentr(self):
         return self.entr
@@ -49,5 +49,5 @@ Fin PD                  \t{}
 Longitud PV             \t{}
 Capacidad               \t{}
 Volumen                 \t{}
-Caida de presion        \t{}""".format(self.dExt, self.dInt, self.inicioPD, self.longMD, self.finPD,
-                                       self.longMV, self.capacidad, self.VolInterior, self.caidaPresion)
+Caida de presion        \t{}""".format(self.d_ext, self.d_int, self.inicio_pd, self.long_md, self.fin_pd,
+                                       self.long_mv, self.capacidad, self.vol_interior, self.caidaPresion)

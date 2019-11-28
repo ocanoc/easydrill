@@ -4,7 +4,10 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
-from Vista.SartaPerforacion.MenuSartaPerforacion import SartaPerforacion
+from Fluidos.DatosFluidos.DatosFluidos import DatosFluidos
+from MenuSartaPerforacion import SartaPerforacion
+from TuberiasRevestmiento.MenuTuberiasRevestimiento import TuberiasRevestimiento
+from Vista.TrayectoriaDireccional.DatosTrayectoria.DatosTrayectoria import DatosTrayectoria
 from Vista.VentanaResultados.MenuResultados import MenuResultados
 
 
@@ -20,16 +23,24 @@ class Prueba(QDialog):
         self.setPalette(palette)
         self.setFixedSize(1000, 604)
         self.setFont(QFont('Arial', 10, QFont.AnyStyle))
-        self.layot = QHBoxLayout()
+        btn = QPushButton("datos")
+
+        self.layot = QVBoxLayout()
 
         # self.layot.addWidget(MenuEdicion())
-        sarta = SartaPerforacion()
         menu_resultados = MenuResultados()
-        # revestimiento = TuberiasRevestimiento()
         menu_resultados.get_data()
+        self.DatosTrayectoria = DatosTrayectoria()
+        self.DatosTrayectoria.cambia_trayectoria(3)
+        self.DatosFluidos = DatosFluidos()
+        self.Tuberiras_revetimietno = TuberiasRevestimiento()
+        self.Sarta_Perforacion = SartaPerforacion()
         self.layot.addWidget(menu_resultados)
+        # self.layot.addWidget(btn)
+
         self.setLayout(self.layot)
 
+        btn.clicked.connect(lambda: print(self.Sarta_Perforacion.get_datos()))
     def termianr(self):
         pass
 

@@ -1,4 +1,5 @@
 from MenuFluidos import *
+from Modelo.Objetos.Hidraulica.Fluido import Fluido
 from Widgets.SwitchButton.SwitchButton import SwitchButton
 
 
@@ -160,16 +161,15 @@ class DatosFluidos(QWidget):
         return False
 
     def get_datos(self, modelo):
-        datosfluidos = [self.dato(self.campo_densidad)]
         if self.flag:
-            datosfluidos.append(self.dato(self.campo_pc))
-            datosfluidos.append(self.dato(self.campo_vp))
+            fluido = Fluido(float(self.campo_densidad.text()), float(self.campo_pc.text()), float(self.campo_pc.text()))
         else:
-            datosfluidos.append(self.dato(self.campo_l600))
-            datosfluidos.append(self.dato(self.campo_l300))
+            fluido = Fluido(float(self.campo_densidad.text()), 0, 0)
+            fluido.set_lec_fan_600(float(self.campo_l600.text()))
+            fluido.set_lec_fan_300((float(self.campo_l300.text())))
         if modelo is 3:
-            datosfluidos.append(self.dato(self.campo_gel))
-        return datosfluidos
+            fluido.set_gel(self.dato(self.campo_gel))
+        return fluido
 
     @staticmethod
     def dato(line):

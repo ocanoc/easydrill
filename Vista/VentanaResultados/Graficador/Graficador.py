@@ -25,6 +25,7 @@ class Graficador(QWidget):
         self.layoutcentral.addWidget(self.graphWidget)
         self.setLayout(self.layoutcentral)
         self.graphWidget.addLegend()
+        self.setFixedWidth(300)
         self.legend = True
 
     def plot(self, p, dp):
@@ -34,7 +35,6 @@ class Graficador(QWidget):
             self.legend = False
         else:
             self.graphWidget.plot(dp, p, pen=self.pen, symbol='o', symbolSize=10, symbolBrush='r')
-
     def plot_dec(self, p, dec):
         self.graphWidget.setLabel('top',
                                   "<span style=\"color:rgb(0, 80, 85);font-size:18px\">DEC "

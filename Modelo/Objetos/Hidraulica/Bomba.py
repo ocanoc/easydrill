@@ -3,12 +3,11 @@ class Bomba:
     longitud_carrera = 0
     eficiencia = 0
     gasto = 0
+    p_bombeo = 0
 
-    def __init__(self, camisa, carrera, efi):
-        self.diametro_camisa = camisa
-        self.longitud_carrera = carrera
-        self.eficiencia = efi
-        self.set_gasto_bomba_triplex()
+    def __init__(self, gasto, p_bombeo):
+        self.gasto = gasto
+        self.p_bombeo = p_bombeo
 
     def set_gasto_bomba_triplex(self):
         self.gasto = (self.diametro_camisa ** 2) * self.longitud_carrera * self.eficiencia / 98

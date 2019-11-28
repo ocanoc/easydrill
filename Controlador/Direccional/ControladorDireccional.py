@@ -47,7 +47,7 @@ class ControladorDireccional:
         return lista_direccional
 
     @staticmethod
-    def tipos(kop, severidad, angulomax, profmax, dop, dor):
+    def tipos(kop, severidad, angulomax, profmax, dop, dor, angulofinal):
         lista_direccional = ControladorDireccional.tipo_j(kop, severidad, angulomax, dop)
         ultima = lista_direccional.pop()
         lista_direccional.append(ultima)
@@ -56,11 +56,11 @@ class ControladorDireccional:
         profv = ultima.get_fin_pv()
         otro = False
         long_estaciones = 30
-        if (round(angulomax / dor) - (angulomax / dor)) > 0:
-            esatciones = int(angulomax / dor)
+        if (round((angulomax - angulofinal) / dor) - ((angulomax - angulofinal) / dor)) > 0:
+            esatciones = int((angulomax - angulofinal) / dor)
             otro = True
         else:
-            esatciones = int(angulomax / dor)
+            esatciones = int((angulomax - angulofinal) / dor)
         for x in range(0, esatciones):
             angulo -= dor
             lista_direccional.append(Direccional(DECREMENTO, angulo, long_estaciones,
@@ -70,7 +70,7 @@ class ControladorDireccional:
 
         if otro:
             angulo += severidad
-            angulo -= angulomax - angulo
+            angulo -= (angulomax - angulofinal) - angulo
             lista_direccional.append(Direccional(DECREMENTO, angulo, long_estaciones,
                                                  ControladorDireccional.get_coseno_estaciones(angulo), profd, profv))
             profv += long_estaciones * ControladorDireccional.get_coseno(angulo)

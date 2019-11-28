@@ -76,7 +76,7 @@ class TuberiasRevestimiento(QWidget):
 
     def __init__(self):
         super(TuberiasRevestimiento, self).__init__()
-        self.etapa.addItem(DatosTuberia(self.etapa), "Etapa 1")
+        self.etapa.addItem(DatosTuberia(self.etapa), "Agrega una etapa")
         self.mas.clicked.connect(lambda *args: self.agrega())
         self.menos.clicked.connect(lambda *args: self.elimina())
         self.acodiciona(self.mas)
@@ -88,7 +88,9 @@ class TuberiasRevestimiento(QWidget):
     def agrega(self):
         try:
             if self.etapa.count() < 10:
-                if self.lleno is False and self.etapa.widget(self.etapa.count() - 1).get_tipo() is 2:
+                if self.lleno is False and (
+                        self.etapa.widget(self.etapa.count() - 1).get_tipo() is 2 or self.etapa.widget(
+                        self.etapa.count() - 1).get_tipo() is 1):
                     QMessageBox.critical(self, "Error", "Se debe agregar al menos una tuberia de revestimiento.")
                 elif self.agujero and self.lleno:
                     QMessageBox.critical(self, "Error", "Debes borrar la etapa agujero para agregar mas etapas.")
@@ -96,7 +98,7 @@ class TuberiasRevestimiento(QWidget):
                     self.rename()
                     self.lleno = True
                     if self.etapa.widget(self.etapa.count() - 1).get_tipo() is not 2:
-                        self.etapa.addItem(DatosTuberia(self.etapa), "Etapa {}".format(self.etapa.count() + 1))
+                        self.etapa.addItem(DatosTuberia(self.etapa), "Agrega una etapa".format(self.etapa.count() + 1))
                         self.etapa.setCurrentIndex(self.etapa.count() - 1)
                     else:
                         self.agujero = True
@@ -115,7 +117,7 @@ class TuberiasRevestimiento(QWidget):
                 self.agujero = False
                 self.lleno = False
                 self.etapa.widget(self.etapa.count() - 1).clean()
-                self.etapa.setItemText(self.etapa.count() - 1, "Etapa 1")
+                self.etapa.setItemText(self.etapa.count() - 1, "Agrega una etapa")
                 QMessageBox.information(self, "Limpio", "No hay mas etapas")
         else:
             result = QMessageBox.question(self, "Confirmacion.", "Se borrarán las etapas siguientes para"
@@ -126,20 +128,14 @@ class TuberiasRevestimiento(QWidget):
                 count = self.etapa.count()
                 eliminar = count - actual - 1
                 if self.agujero:
-                    eliminar = eliminar + 1
+                    eliminar = eliminar
                     self.agujero = False
                 for x in range(eliminar):
                     self.etapa.removeItem(self.etapa.count() - 1)
                 self.mas.setEnabled(True)
                 self.etapa.widget(self.etapa.count() - 1).clean()
                 self.ultimo = True
-                self.etapa.setItemText(self.etapa.count() - 1, "Etapa {}".format(self.etapa.count()))
-
-    def actualiza(self):
-        count = self.etapa.count()  # number of items
-        for x in range(count):
-            self.etapa.setItemText(x, "Etapa {}".format(x + 1))
-            print(self.etapa.widget(x))
+                self.etapa.setItemText(self.etapa.count() - 1, "Agrega una etapa")
 
     def rename(self):
         self.etapa.setItemText(self.etapa.count() - 1, self.etapa.widget(self.etapa.count() - 1).get_name())
@@ -182,12 +178,22 @@ class TuberiasRevestimiento(QWidget):
             self.ultimo = True
             self.mas.setEnabled(True)
 
-    def get_datos(self):
-        self.datos.clear()
+    def get_datos(self, direccional):
+        externas = []
+        count = 0
+        anterior = None
         if self.lleno and self.agujero:
             for x in (self.etapa.count() - 1):
-                self.datos.append(self.etapa.widget(x).get_datos())
-            return self.datos
+                externas.append(self.etapa.widget(x).get_datos(direccional, anterior))
+                anterior = externas[count]
+                if anterior.get_tipo() == "Liner":
+                    externas[count - 1].set_fin_pd(anterior.get_boca_liner())
+                    externas[count - 1].set_long(externas[count - 1].get_fin_pd() - externas[count - 1].get_inicio_pd())
+                    externas[count - 1].update_vertical()
+                    anterior.set_inicio_pd(anterior.get_bolca_liner())
+                    anterior.set_fin_pd(anterior.get_inicio_pd() + anterior.get_long())
+                    anterior.update_vertical()
+            return externas
 
     def set_long_disp(self, prof_maxima):
         self.label_long_disp.setText(prof_maxima)

@@ -12,7 +12,7 @@ from Modelo.Objetos.Tuberia.Interior import *
 from Objetos.Hidraulica.Bomba import Bomba
 from Objetos.Hidraulica.Fluido import Fluido
 from Objetos.Tuberia.Barrena import Barrena
-from VentanaResultados.Graficador.Graficador import Graficador
+from VentanaResultados.Graficador.GrafcadorLineas import Graficador
 
 
 class MenuResultados(QWidget):
@@ -129,10 +129,9 @@ class MenuResultados(QWidget):
         self.fl_hidraulico.addRow("F<sub>b</sub> [lb]:", self.campo_impacto_h)
         self.fl_hidraulico.addRow("Mostrar Grafica DEC:", self.check_dec)
         self.grafica_presiones = Graficador()
-        self.layout_graficador = QVBoxLayout()
-        self.layout_graficador.addWidget(self.grafica_presiones)
-
         self.grafica_dec = Graficador()
+        self.layout_graficador = QHBoxLayout()
+        self.layout_graficador.addWidget(self.grafica_presiones)
 
         self.tab_datos = QTabWidget()
         self.tab_datos.setFixedSize(200, 200)
@@ -186,7 +185,7 @@ class MenuResultados(QWidget):
         self.g_datos.setLayout(self.layout_g_datos)
 
         self.g_grafica = QGroupBox()
-        self.g_grafica.setFixedWidth(750)
+        self.g_grafica.setFixedWidth(700)
         self.g_grafica.setTitle("Grafica: Comportamiento caidas de Presión.")
         self.g_grafica.setFont(QFont('Consolas', 12))
         self.g_grafica.setLayout(self.layout_graficador)
@@ -234,7 +233,7 @@ class MenuResultados(QWidget):
             obj.setStyleSheet("""
                     QSlider::groove:horizontal {
                 border: 1px solid #999999;
-                height: 15px; /* the groove expands to the size of the slider by default. by giving it a height, it has a fixed size */
+                height: 15px; 
                 background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #009ca6 , stop:1 #005055);
                 margin: 2px 0;
             }
@@ -243,7 +242,7 @@ class MenuResultados(QWidget):
                 background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #b4b4b4, stop:1 #8f8f8f);
                 border: 1px solid #5c5c5c;
                 width: 20px;
-                margin: -2px 0; /* handle is placed by default on the contents rect of the groove. Expand outside the groove */
+                margin: -2px 0; 
                 border-radius: 3px;
             }""")
             obj.setTickPosition(QSlider.TicksBothSides)
@@ -371,11 +370,8 @@ class MenuResultados(QWidget):
         # Prueba
 
         self.fluido = Fluido(1.06, 12, 12)
-        self.bomba = Bomba(1, 1, 1)
-        self.gasto = 700
-        self.bomba.set_gasto(self.gasto)
-        self.barrena = Barrena(0.6473)
-        self.barrena.set_diametro(6.125)
+        self.bomba = Bomba(700, 0)
+        self.barrena = Barrena(0.6473, 6.125)
         self.tfa_nueva.setText(str(self.barrena.get_area_toberas()))
         self.gasto_nuevo.setText(str(self.bomba.get_gasto()))
         self.densidad_nueva.setText(str(self.fluido.get_dl()))
