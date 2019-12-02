@@ -74,7 +74,7 @@ class Datos(QWidget):
             self.layout_pantalla.addWidget(self.label_title, 1, Qt.AlignLeft)
 
         if tipo is 4:
-            self.list = ['OD\n [pg]', 'ID\n [pg]', "Geometria", "Conexión", "Peso\nNominal\n[lb/ft]"]
+            self.list = ['OD\n [pg]', 'ID\n [pg]', "Geometria", "Conexión", "Peso\nNominal\n[lb/ft]", "Longitud\n[m]"]
             self.file = 'CSV/DC.csv'
             self.datos = tipo
             self.label_title.setText("Lastrabarrenas.")
@@ -125,6 +125,21 @@ class Datos(QWidget):
             self.datos = tipo
             self.label_title.setText("Conexiones.")
             self.layout_pantalla.addWidget(self.label_title, 1, Qt.AlignLeft)
+
+        if tipo is 14:
+            self.list = ["Conexión", 'OD\n [pg]', 'ID\n [pg]', "Longitud\n [m]", "Peso\n[lb/ft]"]
+            self.file = 'CSV/Monel.csv'
+            self.datos = tipo
+            self.label_title.setText("Monel.")
+            self.layout_pantalla.addWidget(self.label_title, 1, Qt.AlignLeft)
+
+        if tipo is 15:
+            self.list = ['OD\n [pg]', 'ID\n [pg]', "Longitud\n [m]"]
+            self.file = 'CSV/VCP.csv'
+            self.datos = tipo
+            self.label_title.setText("VCP.")
+            self.layout_pantalla.addWidget(self.label_title, 1, Qt.AlignLeft)
+
         self.model_table.setHorizontalHeaderLabels(self.list)
         self.table.setModel(self.model_table)
         self.acondiciona(self.table)

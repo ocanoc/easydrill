@@ -15,8 +15,9 @@ class SeccionesAnulares:
     indice_acarreo = 0
     dec = 0
     fin_pv = 0
+    inicio_pv = 0
 
-    def __init__(self, iniciopd, finpd, longmd, texterna, tinterna, longitudv):
+    def __init__(self, iniciopd, finpd, longmd, texterna, tinterna):
         self.inicioPD = iniciopd
         self.finPD = finpd
         self.longitudD = longmd
@@ -26,7 +27,6 @@ class SeccionesAnulares:
         self.diametroMayor = float(texterna.get_dint())
         self.capacidad = 0.5067 * ((self.diametroMayor ** 2) - (self.diametroMenor ** 2))
         self.volumen = self.capacidad * self.longitudD
-        self.longitudV = longitudv
         self.deltaP = 0
 
     def __str__(self):
@@ -97,3 +97,12 @@ class SeccionesAnulares:
 
     def get_fin_pv(self):
         return self.fin_pv
+
+    def get_inicio_pv(self):
+        return self.inicio_pv
+
+    def set_inicio_pv(self, data):
+        self.inicio_pv = data
+
+    def set_lv(self):
+        self.longitudV = self.fin_pv - self.inicio_pv

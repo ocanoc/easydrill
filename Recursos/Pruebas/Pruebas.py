@@ -1,16 +1,8 @@
-import sys
-
-from PyQt5 import QtWidgets
-
-from Controlador.Hidraulica.Metodos.LeydePotenciasModificado import LeyDePotenciasModificado
 from Controlador.Tuberia.ControladorTuberia import ControladorTuberia
 from ControladorDireccional import *
 from ControladorSeccionesAnulares import *
 from Modelo.Objetos.Tuberia.Exterior import *
 from Modelo.Objetos.Tuberia.Interior import *
-from Objetos.Hidraulica.Bomba import Bomba
-from Objetos.Hidraulica.Fluido import Fluido
-from Recursos.Pruebas.aver3 import MainWindow
 
 """
 
@@ -51,38 +43,19 @@ externas = [TR1, TR2, TR3, Agujero]
 lista_secciones = ControladorSecciones.creasecciones(externas, internas, dir)
 """
 
-vertical = ControladorDireccional.tipov(2200)
-Tuberia_uno = Interior(5, 4.276, 2200, vertical, None)
-TR1 = Exterior(13.375, 12.565, 780, vertical, None)
-Agujero = Exterior(12.25, 12.25, 1420, vertical, TR1)
-internas = [Tuberia_uno]
+vertical = ControladorDireccional.tipo_j(1000, 1.5, 30, 1600)
+tuberia1 = Interior(5, 4.276, 1330, vertical, None)
+tuberia2 = Interior(8, 2.475, 270, vertical, tuberia1)
+TR1 = Exterior(13.375, 12.565, 700, vertical, None)
+Agujero = Exterior(12.25, 12.25, 900, vertical, TR1)
+internas = [tuberia1, tuberia2]
 externas = [TR1, Agujero]
-lista_secciones = ControladorSecciones.creasecciones(externas, internas, vertical)
+ControladorTuberia.profundidad_vertical(externas, vertical)
 ControladorTuberia.profundidad_vertical(internas, vertical)
-
-f = Fluido(1.06, 12, 12)
-b = Bomba(1, 1, 1)
-b.set_gasto(700)
-
-LeyDePotenciasModificado.set_ley_potencias_modificado(internas, lista_secciones, f, b)
-
-profundidad_secciones = [0]
-presion_secciones = [0]
-presion = 0
-for x in lista_secciones:
-    profundidad_secciones.append(x.get_fin_pd())
-    presion += x.get_dp()
-    presion_secciones.append(presion * 14.22)
-for x in profundidad_secciones:
+lista_secciones = ControladorSecciones.creasecciones(externas, internas, vertical)
+ControladorTuberia.profundidad_vertical(lista_secciones, vertical)
+for x in vertical:
     print(x, "\n")
-for x in presion_secciones:
-    print(x, "\n")
-
 for x in lista_secciones:
     print(x, "\n")
 
-app = QtWidgets.QApplication(sys.argv)
-main = MainWindow()
-main.plot(profundidad_secciones, presion_secciones)
-main.show()
-sys.exit(app.exec_())

@@ -9,10 +9,12 @@ class Barrena:
     impacto_h = 0
     potencia_h = 0
     diametro = 0
+    long = 0
 
-    def __init__(self, tfa, diametro):
+    def __init__(self, tfa, diametro, long):
         self.diametro = diametro
         self.area_toberas = tfa
+        self.long = long
 
     def set_caida_presion(self, gasto, densidad_lodo):
         self.cadida_de_presion = (gasto ** 2) * densidad_lodo / (18511.7 * (self.area_toberas ** 2))
@@ -55,3 +57,14 @@ class Barrena:
 
     def set_diametro(self, data):
         self.diametro = data
+
+    def set_long(self, data):
+        self.long = data
+
+    def get_long(self):
+        return self.long
+
+    def __str__(self):
+        return """\
+       Diametro            \t{}
+       Area de toberas     \t{}""".format(self.diametro, self.area_toberas)

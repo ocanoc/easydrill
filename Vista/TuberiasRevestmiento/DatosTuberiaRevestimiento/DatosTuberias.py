@@ -132,6 +132,7 @@ class DatosTuberia(QWidget):
             if self.tipo_tuberia.currentIndex() is 0:
                 exterior.set_tipo("TR")
             if self.tipo_tuberia.currentIndex() is 1:
+                print("entre")
                 exterior.set_tipo("Liner")
                 exterior.set_boca_liner(Convertidor.fracc_to_dec(self.campo_bl.text()))
         elif self.tipo_tuberia.currentIndex() is 2:

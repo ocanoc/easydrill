@@ -31,3 +31,7 @@ class Bomba:
     def get_eficiencia(self):
         return self.eficiencia
 
+    def __str__(self):
+        return """\
+       Gasto            \t{}
+       Presion bombeo   \t{}""".format(self.gasto, self.p_bombeo)

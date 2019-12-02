@@ -2,7 +2,6 @@ from Tubo import *
 
 
 class Interior (General):
-    Tipo = ""
     caidaPresion = 0
     entr = False
     peso_unitario = 0

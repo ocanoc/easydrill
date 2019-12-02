@@ -7,7 +7,6 @@ class Graficador(QWidget):
 
     def __init__(self, parent=None):
         super(Graficador, self).__init__(parent)
-        # generate layout
         pg.setConfigOptions(antialias=True)
         self.win = pg.GraphicsWindow()
         self.p1 = self.win.addPlot(row=1, col=0)
@@ -36,7 +35,7 @@ class Graficador(QWidget):
         self.campo_profunidad = QLineEdit()
         self.campo_dato = QLineEdit()
         self.f_profundiad = QFormLayout()
-        self.f_profundiad.addRow("Profundiad [md]:", self.campo_profunidad)
+        self.f_profundiad.addRow("Profundidad [md]:", self.campo_profunidad)
         self.f_campo = QFormLayout()
         self.f_campo.addRow("Presión [kg/cm<sup>2</sup>]</span>:", self.campo_dato)
         self.l_campos = QHBoxLayout()
@@ -51,7 +50,6 @@ class Graficador(QWidget):
         self.acodiciona(self.campo_profunidad)
 
         def mouseMoved(evt):
-            print("holi")
             pos = evt[0]  ## using signal proxy turns original arguments into a tuple
             if self.p1.sceneBoundingRect().contains(pos):
                 mousePoint = self.vb.mapSceneToView(pos)

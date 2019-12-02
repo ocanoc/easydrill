@@ -123,6 +123,8 @@ class DatosSarta(QDialog):
             5: "Estabilizador",
             7: "Porta Barrena",
             10: "Motor de fondo",
+            14: "Monel",
+            15: "VCP",
         }
         return switcher.get(argument, "Otro")
 

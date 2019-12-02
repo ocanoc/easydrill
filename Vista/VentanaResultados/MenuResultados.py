@@ -5,37 +5,30 @@ from PyQt5.QtWidgets import *
 from Controlador.Hidraulica.ControladorBarrena import ControladorBarrena
 from Controlador.Hidraulica.Metodos.PlasticoBingham import PlascticoBingham
 from Controlador.Tuberia.ControladorTuberia import ControladorTuberia
-from ControladorDireccional import *
 from ControladorSeccionesAnulares import *
-from Modelo.Objetos.Tuberia.Exterior import *
 from Modelo.Objetos.Tuberia.Interior import *
-from Objetos.Hidraulica.Bomba import Bomba
-from Objetos.Hidraulica.Fluido import Fluido
-from Objetos.Tuberia.Barrena import Barrena
+from Recursos.Constantes.Convertidor import Convertidor
 from VentanaResultados.Graficador.GrafcadorLineas import Graficador
+from VentanaResultados.VentanasFlotantes.DatosHidraulicos import DatosHidraulicos
 
 
 class MenuResultados(QWidget):
 
     def __init__(self, parent=None):
         super(MenuResultados, self).__init__(parent)
-        self.datos_direccionales = []
-        self.lista_sarta = []
+        self.trayectoria = None
         self.lista_tr = []
-        self.barrena = []
-        self.datosfluido = []
-        self.equposup = []
-        self.gasto = 0
-        self.listaseciones = []
-        self.trayectoria = []
+        self.barrena = None
+        self.datos_equipo_sup = []
         self.fluido = None
         self.bomba = None
-        self.barrena = None
+
+        self.lista_sarta = []
+        self.listaseciones = []
         self.presion_bna = 0
         self.presion_hestatica = 0
         self.ica_prom = 0
         self.vanular_prom = 0
-        self.datos_equipo_sup = []
         self.equiposup = 0
         self.primera_grafica = False
         self.presion_anular = 0
@@ -45,30 +38,22 @@ class MenuResultados(QWidget):
         self.pos_densi = 50
         self.pos_tfa = 50
 
+        self.datos_hidraulicos = DatosHidraulicos()
+        self.datos_hidraulicos.hide()
         self.texto_encabezado = QLabel()
         self.texto_encabezado.setScaledContents(True)
         self.texto_encabezado.setFixedSize(250, 50)
         self.texto_encabezado.setPixmap(QPixmap("Imagenes/Titulos/TextoResultados.png"))
 
-        self.campo_limp_agujero = QLineEdit()
-        self.campo_limp_agujero.setToolTip("Limpieza de agujero")
-        self.campo_cap_accarreo = QLineEdit()
-        self.campo_cap_accarreo.setToolTip("Capacidad de acarreo")
-
-        self.campo_vel_anular_op = QLineEdit()
-        self.campo_vel_anular_op.setToolTip("Velocidad anular")
-        self.campo_vel_interior = QLineEdit()
-        self.campo_vel_interior.setToolTip("Velocidad interior")
-        self.campo_velocidad_toberas = QLineEdit()
-        self.campo_velocidad_toberas.setToolTip("Velociada en las tobeas")
-
-        self.campo_impacto_h = QLineEdit()
-        self.campo_impacto_h.setToolTip("Impacto Hidraulico")
-        self.campo_potencia_h = QLineEdit()
-        self.campo_potencia_h.setToolTip("Potencia Hidraulica")
+        self.btn_datos_h = QPushButton("Datos Hidraulicos")
+        self.btn_datos_h.clicked.connect(lambda: self.datos_hidraulicos.show())
 
         self.campo_dp_total = QLineEdit()
+        self.campo_dp_total.setReadOnly(True)
         self.campo_dp_total.setToolTip("Caída de presión total")
+
+        self.fl_dp = QFormLayout()
+        self.fl_dp.addRow("ΔP total [kg/cm<sup>3</>]", self.campo_dp_total)
 
         self.gasto_nuevo = QLineEdit("0")
         self.gasto_nuevo.setToolTip("Gasto")
@@ -111,51 +96,24 @@ class MenuResultados(QWidget):
         self.layout_sensi.addLayout(self.fl_slider_tfa)
         self.layout_sensi.addStretch(1)
 
-        self.check_dec = QCheckBox("Grafica DEC")
+        self.check_dec = QCheckBox("DEC")
         self.check_dec.setChecked(False)
-        self.check_dec.stateChanged.connect(lambda: self.btnstate(self.check_dec.isChecked()))
+        self.check_dec.clicked.connect(lambda: self.btnstate(self.check_dec, self.check_dec.isChecked()))
 
-        self.fl_limpieza = QFormLayout()
-        self.fl_limpieza.addRow("I.L [H.P./pg<sup>2</sup>]:", self.campo_limp_agujero)
-        self.fl_limpieza.addRow("CCI [adim]:", self.campo_cap_accarreo)
+        self.check_p = QCheckBox("Caidas de Presion")
+        self.check_p.setChecked(True)
+        self.check_p.clicked.connect(lambda: self.btnstate(self.check_p, self.check_p.isChecked()))
 
-        self.fl_velocidades = QFormLayout()
-        self.fl_velocidades.addRow("Vi [ft/seg]:", self.campo_vel_interior)
-        self.fl_velocidades.addRow("Va [ft/seg]:", self.campo_vel_anular_op)
-        self.fl_velocidades.addRow("Vt [ft/seg]:", self.campo_velocidad_toberas)
+        self.layout_c_b = QVBoxLayout()
+        self.layout_c_b.addWidget(self.check_p)
+        self.layout_c_b.addWidget(self.check_dec)
 
-        self.fl_hidraulico = QFormLayout()
-        self.fl_hidraulico.addRow("HP<sub>b</sub> [HP]:", self.campo_potencia_h)
-        self.fl_hidraulico.addRow("F<sub>b</sub> [lb]:", self.campo_impacto_h)
-        self.fl_hidraulico.addRow("Mostrar Grafica DEC:", self.check_dec)
         self.grafica_presiones = Graficador()
         self.grafica_dec = Graficador()
         self.layout_graficador = QHBoxLayout()
         self.layout_graficador.addWidget(self.grafica_presiones)
 
-        self.tab_datos = QTabWidget()
-        self.tab_datos.setFixedSize(200, 200)
-        self.tab1 = QWidget()
-        self.tab1.setLayout(self.fl_velocidades)
-        self.tab2 = QWidget()
-        self.tab2.setLayout(self.fl_limpieza)
-        self.tab3 = QWidget()
-        self.tab3.setLayout(self.fl_hidraulico)
-        self.tab_datos.addTab(self.tab3, "Hidraulico")
-        self.tab_datos.addTab(self.tab2, "Limpieza")
-        self.tab_datos.addTab(self.tab1, "Velocidades")
-
-        dpt = QFormLayout()
-        dpt.addRow("DPt [Psi]:", self.campo_dp_total)
-        dpt.setSpacing(10)
-
-        self.acondiciona(self.campo_cap_accarreo)
-        self.acondiciona(self.campo_impacto_h)
         self.acondiciona(self.campo_dp_total)
-        self.acondiciona(self.campo_limp_agujero)
-        self.acondiciona(self.campo_vel_anular_op)
-        self.acondiciona(self.campo_velocidad_toberas)
-        self.acondiciona(self.campo_potencia_h)
         self.acondiciona(self.slider_gasto)
         self.acondiciona(self.slider_densidad)
         self.acondiciona(self.slider_tfa)
@@ -165,10 +123,8 @@ class MenuResultados(QWidget):
         self.acondiciona(self.fl_slider_tfa)
         self.acondiciona(self.fl_slider_gasto)
         self.acondiciona(self.fl_slider_densidad)
-        self.acondiciona(self.campo_vel_interior)
-        self.acondiciona(self.fl_hidraulico)
-        self.acondiciona(self.fl_limpieza)
-        self.acondiciona(self.fl_velocidades)
+        self.acondiciona(self.btn_datos_h)
+
 
         self.g_sensi = QGroupBox("Análisis de sensibilidad.")
         self.g_sensi.setFont(QFont('Consolas', 11))
@@ -180,21 +136,23 @@ class MenuResultados(QWidget):
         self.g_datos = QGroupBox()
         self.g_datos.setTitle("Datos.")
         self.g_datos.setFont(QFont('Consolas', 11))
-        self.layout_g_datos = QVBoxLayout()
-        self.layout_g_datos.addWidget(self.tab_datos)
-        self.g_datos.setLayout(self.layout_g_datos)
 
         self.g_grafica = QGroupBox()
-        self.g_grafica.setFixedWidth(700)
-        self.g_grafica.setTitle("Grafica: Comportamiento caidas de Presión.")
+        self.g_grafica.setFixedWidth(720)
+        self.g_grafica.setTitle("Gráfica: Comportamiento caidas de Presión.")
         self.g_grafica.setFont(QFont('Consolas', 12))
         self.g_grafica.setLayout(self.layout_graficador)
 
-        self.layout_izquierda = QVBoxLayout()
-        self.layout_izquierda.addSpacing(25)
-        self.layout_izquierda.addWidget(self.g_sensi)
-        self.layout_izquierda.addWidget(self.g_datos)
+        self.g_select_grafica = QGroupBox()
+        self.g_select_grafica.setTitle("Graficas.")
+        self.g_select_grafica.setLayout(self.layout_c_b)
 
+        self.layout_izquierda = QVBoxLayout()
+        self.layout_izquierda.addSpacing(57)
+        self.layout_izquierda.addWidget(self.g_sensi)
+        self.layout_izquierda.addWidget(self.g_select_grafica)
+        self.layout_izquierda.addLayout(self.fl_dp)
+        self.layout_izquierda.addWidget(self.btn_datos_h)
         self.layout_derecha = QVBoxLayout()
         self.layout_derecha.addWidget(self.texto_encabezado)
         self.layout_derecha.addWidget(self.g_grafica)
@@ -205,30 +163,33 @@ class MenuResultados(QWidget):
 
         self.setLayout(self.layout_pantalla)
 
-    def btnstate(self, status):
-        if status:
-            for i in reversed(range(self.layout_graficador.count())):
-                self.layout_graficador.itemAt(i).widget().setParent(None)
+    def btnstate(self, source, status):
+        for i in reversed(range(self.layout_graficador.count())):
+            self.layout_graficador.itemAt(i).widget().setParent(None)
+        if source is self.check_dec:
+            self.g_grafica.setTitle("Gráfica: Comportamiento DEC.")
             self.layout_graficador.addWidget(self.grafica_dec)
+            self.check_dec.setChecked(True)
+            self.check_p.setChecked(False)
         else:
-            for i in reversed(range(self.layout_graficador.count())):
-                self.layout_graficador.itemAt(i).widget().setParent(None)
+            self.g_grafica.setTitle("Gráfica: Comportamiento caidas de Presión.")
             self.layout_graficador.addWidget(self.grafica_presiones)
+            self.check_dec.setChecked(False)
+            self.check_p.setChecked(True)
+
 
     @staticmethod
     def acondiciona(obj):
         if isinstance(obj, QPushButton):
-            btnancho = 75
-            obj.setIconSize(QSize(btnancho, btnancho))
-            obj.setFixedSize(btnancho, btnancho)
             obj.setCursor(Qt.PointingHandCursor)
         if isinstance(obj, QLineEdit):
             obj.setCursor(Qt.IBeamCursor)
-            obj.setFixedSize(120, 20)
+            obj.setFixedSize(80, 20)
             obj.setText(str(0))
             obj.setMaxLength(9)
         if isinstance(obj, QSlider):
-            obj.setFixedSize(200, 7)
+            obj.setCursor(Qt.PointingHandCursor)
+            obj.setFixedSize(210, 12)
             obj.setValue(50)
             obj.setStyleSheet("""
                     QSlider::groove:horizontal {
@@ -250,8 +211,6 @@ class MenuResultados(QWidget):
         if isinstance(obj, QFormLayout):
             obj.setRowWrapPolicy(QFormLayout.WrapAllRows)
             obj.setFieldGrowthPolicy(QFormLayout.ExpandingFieldsGrow)
-            obj.setFormAlignment(Qt.AlignHCenter)
-            obj.setLabelAlignment(Qt.AlignRight)
 
     def tfa_editado(self):
         self.tfa_nueva.setEnabled(False)
@@ -344,51 +303,37 @@ class MenuResultados(QWidget):
     def set_data_graphic(self, x, y):
         self.grafica_presiones.plot(x, y)
 
-    def get_data(self):
-        self.operate_data()
-
-    def operate_data(self):
-        self.datos_direccionales = []
-        self.lista_sarta = []
-        self.lista_tr = []
-        self.barrena = []
-        self.datosfluido = []
-        self.equposup = []
-        self.gasto = 0
+    def operate_data(self, trayecotria, fluido, externas, datos_sup, bomba, internas, barrena):
+        self.trayectoria = trayecotria
+        self.lista_tr = externas
+        self.barrena = barrena
+        self.datos_equipo_sup = datos_sup
+        self.fluido = fluido
+        self.bomba = bomba
         self.listaseciones = []
-        self.trayectoria = []
-        self.fluido = None
-        self.bomba = None
-        self.barrena = None
-        self.presion_bna = 0
-        self.presion_hestatica = 0
-        self.ica_prom = 0
-        self.vanular_prom = 0
-        self.datos_equipo_sup = []
-        self.equiposup = 0
-        self.presion_anular = 0
-        # Prueba
-
-        self.fluido = Fluido(1.06, 12, 12)
-        self.bomba = Bomba(700, 0)
-        self.barrena = Barrena(0.6473, 6.125)
+        self.lista_sarta = []
+        anterior = None
+        for x in reversed(internas):
+            tuberia = Interior(Convertidor.fracc_to_dec(x[1]), Convertidor.fracc_to_dec(x[2]),
+                               x[3], self.trayectoria, anterior)
+            self.lista_sarta.append(tuberia)
+            anterior = tuberia
+        ControladorTuberia.profundidad_vertical(self.lista_sarta, self.trayectoria)
         self.tfa_nueva.setText(str(self.barrena.get_area_toberas()))
         self.gasto_nuevo.setText(str(self.bomba.get_gasto()))
         self.densidad_nueva.setText(str(self.fluido.get_dl()))
-        self.trayectoria = ControladorDireccional.tipov(4000)
-        self.lista_sarta.append(Interior(5, 4.214, 2000, self.trayectoria, None))
-        self.lista_sarta.append(Interior(3.5, 2.764, 1985, self.trayectoria, self.lista_sarta[0]))
-        self.lista_tr.append(Exterior(9.625, 9, 2250, self.trayectoria, None))
-        self.lista_tr.append(Exterior(7, 6.456, 950, self.trayectoria, self.lista_tr[0]))
-        self.lista_tr.append(Exterior(6.125, 6.125, 785, self.trayectoria, self.lista_tr[1]))
         self.listaseciones = ControladorSecciones.creasecciones(self.lista_tr, self.lista_sarta, self.trayectoria)
-        ControladorTuberia.profundidad_vertical(self.lista_sarta, self.trayectoria)
+        ControladorTuberia.profundidad_vertical(self.listaseciones, self.trayecotria)
         self.primera_grafica = True
         self.plot_grafica()
 
     def plot_grafica(self):
+        self.presion_anular = 0
+        self.presion_bna = 0
+        self.equiposup = 0
         self.ica_prom = 0
         self.vanular_prom = 0
+        self.presion_hestatica = 0
         dec_grafica = []
         profundidad_dec = []
         presion = 0
@@ -396,9 +341,10 @@ class MenuResultados(QWidget):
         if self.primera_grafica:
             self.presion_hestatica = self.trayectoria[
                                          len(self.trayectoria) - 1].get_fin_pv() * self.fluido.get_dl() / 10
-            self.equiposup = PlascticoBingham.interior(self.bomba.get_gasto(), 2.764, self.fluido.get_dl(), 133.2,
+            self.equiposup = PlascticoBingham.interior(self.bomba.get_gasto(), self.datos_equipo_sup[0],
+                                                       self.fluido.get_dl(), self.datos_equipo_sup[1],
                                                        self.fluido.get_visco_plastica(), self.fluido.get_p_cedencia())
-            profundidad_secciones = [-133.2]
+            profundidad_secciones = [-self.datos_equipo_sup[1]]
             presion_secciones = [self.equiposup]
 
             PlascticoBingham.set_plastico_bingham(self.lista_sarta, self.listaseciones, self.fluido, self.bomba)
@@ -425,7 +371,8 @@ class MenuResultados(QWidget):
                 presion += x.get_dp()
                 presion_secciones.append(presion)
 
-            profundidad_secciones.append(4000)
+            profundidad_secciones.append(
+                profundidad_secciones[len(profundidad_secciones) - 1] + self.barrena.get_long())
             presion += self.barrena.get_caidad_presion()
             presion_secciones.append(presion)
 
@@ -438,6 +385,7 @@ class MenuResultados(QWidget):
             dec_grafica.append(self.fluido.get_dl())
 
             for x in self.listaseciones:
+                print(x, "\n")
                 profundidad_dec.append(x.get_fin_pd())
                 dec_grafica.append(x.get_dec())
 
@@ -446,13 +394,14 @@ class MenuResultados(QWidget):
             self.update_campos()
 
     def update_campos(self):
-        self.campo_impacto_h.setText(str(self.barrena.get_imapcto_h()))
-        self.campo_potencia_h.setText(str(self.barrena.get_potencia_h()))
-        self.campo_limp_agujero.setText(str(self.barrena.get_potencia_h() / self.barrena.get_diametro()))
-        self.campo_cap_accarreo.setText(str(self.ica_prom / len(self.listaseciones)))
-        self.campo_vel_anular_op.setText(str(self.vanular_prom / len(self.listaseciones)))
-        self.campo_vel_interior.setText(str(self.vel_interior / len(self.lista_sarta)))
-        self.campo_velocidad_toberas.setText(str(self.barrena.get_vel_toberas()))
+        self.datos_hidraulicos.campo_impacto_h.setText(str(self.barrena.get_imapcto_h()))
+        self.datos_hidraulicos.campo_potencia_h.setText(str(self.barrena.get_potencia_h()))
+        self.datos_hidraulicos.campo_limp_agujero.setText(
+            str(self.barrena.get_potencia_h() / self.barrena.get_diametro()))
+        self.datos_hidraulicos.campo_cap_accarreo.setText(str(self.ica_prom / len(self.listaseciones)))
+        self.datos_hidraulicos.campo_vel_anular_op.setText(str(self.vanular_prom / len(self.listaseciones)))
+        self.datos_hidraulicos.campo_vel_interior.setText(str(self.vel_interior / len(self.lista_sarta)))
+        self.datos_hidraulicos.campo_velocidad_toberas.setText(str(self.barrena.get_vel_toberas()))
 
     def update_desidad(self):
         if self.primera_grafica:

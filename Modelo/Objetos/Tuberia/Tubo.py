@@ -2,6 +2,7 @@ import math
 
 
 class General:
+    tipo = ""
     d_ext = 0
     d_int = 0
     long_md = 0
@@ -14,22 +15,6 @@ class General:
     vol_interior = 0
     long_disp = 0
     direccional = None
-
-    def profundidad(self, dd):
-        long = self.long_md
-        inicio = self.inicio_pd
-        for x in dd:
-            disponible = x.get_fin_pd() - inicio
-            if disponible >= long:
-                self.fin_pv += get_long_pv(long, x)
-                return 0
-            elif disponible > long > disponible:
-                long -= disponible
-                self.fin_pv += get_long_pv(disponible, x)
-                inicio += disponible
-            else:
-                self.fin_pv += get_long_pv(long, x)
-                return 0
 
     def __init__(self, d_e, d, l, d_direccional, previa):
         self.long_disp = l
@@ -48,7 +33,6 @@ class General:
             self.fin_pd = l
 
         self.fin_pv = self.inicio_pv
-        self.profundidad(d_direccional)
         self.long_mv = self.fin_pv - self.inicio_pv
         self.vol_interior = self.capacidad * self.long_md
 
@@ -68,6 +52,9 @@ Fin PV                  \t{}""".format(self.d_ext, self.d_int, self.inicio_pd, s
     def get_inicio_pd(self):
         return self.inicio_pd
 
+    def set_inicio_pd(self, data):
+        self.inicio_pd = data
+
     def get_inicio_pv(self):
         return self.inicio_pv
 
@@ -76,6 +63,9 @@ Fin PV                  \t{}""".format(self.d_ext, self.d_int, self.inicio_pd, s
 
     def get_fin_pd(self):
         return self.fin_pd
+
+    def set_fin_pd(self, dato):
+        self.fin_pd = dato
 
     def get_fin_pv(self):
         return self.fin_pv
@@ -96,7 +86,6 @@ Fin PV                  \t{}""".format(self.d_ext, self.d_int, self.inicio_pd, s
         self.fin_pv = data
 
     def set_lv(self):
-
         self.long_mv = self.fin_pv - self.inicio_pv
 
     def set_inicio_pv(self, data):
@@ -108,8 +97,12 @@ Fin PV                  \t{}""".format(self.d_ext, self.d_int, self.inicio_pd, s
     def set_disp(self, data):
         self.long_disp = data
 
-    def update_vertical(self):
-        self.profundidad(self.direccional)
+    def set_tipo(self, datos):
+        self.tipo = datos
+
+    def get_tipo(self):
+        return self.tipo
+
 
 def get_long_pv(long_pd, x):
     return long_pd * (math.cos(math.radians(x.get_angulo())))

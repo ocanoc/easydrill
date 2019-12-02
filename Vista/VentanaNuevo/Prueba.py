@@ -4,9 +4,11 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
+from ControladorDireccional import *
 from Fluidos.DatosFluidos.DatosFluidos import DatosFluidos
 from MenuSartaPerforacion import SartaPerforacion
 from TuberiasRevestmiento.MenuTuberiasRevestimiento import TuberiasRevestimiento
+from Vista.SartaPerforacion.Datos.DatosSarta.CreadorCoples.CreadorCoples import CreadorCoples
 from Vista.TrayectoriaDireccional.DatosTrayectoria.DatosTrayectoria import DatosTrayectoria
 from Vista.VentanaResultados.MenuResultados import MenuResultados
 
@@ -24,23 +26,26 @@ class Prueba(QDialog):
         self.setFixedSize(1000, 604)
         self.setFont(QFont('Arial', 10, QFont.AnyStyle))
         btn = QPushButton("datos")
+        self.acodiciona(btn)
 
         self.layot = QVBoxLayout()
 
         # self.layot.addWidget(MenuEdicion())
+        creador = CreadorCoples()
         menu_resultados = MenuResultados()
-        menu_resultados.get_data()
         self.DatosTrayectoria = DatosTrayectoria()
         self.DatosTrayectoria.cambia_trayectoria(3)
         self.DatosFluidos = DatosFluidos()
         self.Tuberiras_revetimietno = TuberiasRevestimiento()
         self.Sarta_Perforacion = SartaPerforacion()
-        self.layot.addWidget(menu_resultados)
-        # self.layot.addWidget(btn)
+        self.layot.addWidget(creador)
+
+        self.layot.addWidget(btn)
+        self.layot.addSpacing(20)
 
         self.setLayout(self.layot)
 
-        btn.clicked.connect(lambda: print(self.Sarta_Perforacion.get_datos()))
+        btn.clicked.connect(lambda: print(self.Tuberiras_revetimietno.get_datos(ControladorDireccional.tipov(4000))))
     def termianr(self):
         pass
 

@@ -88,6 +88,7 @@ class Agregar(QDialog):
 
             self.layout_campos_2.addRow("Conexión:", QLineEdit())
             self.layout_campos_2.addRow("Peso [lb/ft]:", QLineEdit())
+            self.layout_campos_2.addRow("Longitud [m]:", QLineEdit())
 
         if source is 5:
             p.setBrush(10, QBrush(QImage("Imagenes/Fondo/FondoDatosEstabilizador.png")))
@@ -231,6 +232,24 @@ class Agregar(QDialog):
             self.layout_campos_2.addRow("Longitud Total [pg]:", QLineEdit())
             self.layout_campos_2.addRow("Peso nominal [lb/ft]:", QLineEdit())
 
+        if source is 14:
+            p.setBrush(10, QBrush(QImage("Imagenes/Fondo/FondoDatosMartillo.png")))
+            self.setFixedSize(580, 265)
+            self.layout_campos.addRow("Conexión", QLineEdit())
+            self.layout_campos.addRow("OD [pg]:", QLineEdit())
+            self.layout_campos.addRow("ID [pg]:", QLineEdit())
+
+            self.layout_campos_2.addRow("Longitud [m]:", QLineEdit())
+            self.layout_campos_2.addRow("Peso [lb/ft]:", QLineEdit())
+
+        if source is 15:
+            p.setBrush(10, QBrush(QImage("Imagenes/Fondo/FondoDatosMartillo.png")))
+            self.setFixedSize(580, 265)
+            self.layout_campos.addRow("OD [pg]:", QLineEdit())
+            self.layout_campos.addRow("ID [pg]:", QLineEdit())
+
+            self.layout_campos_2.addRow("Longitud [m]:", QLineEdit())
+
         if source is 16:
             p.setBrush(10, QBrush(QImage("Imagenes/Fondo/FondoDatosMartillo.png")))
             self.setFixedSize(580, 265)
@@ -310,13 +329,23 @@ class Agregar(QDialog):
 
     def collect_data(self):
 
-        if self.source is 3 or self.source is 4:
+        if self.source is 3:
             self.datos.append(self.layout_campos.itemAt(1).widget().text())
             self.datos.append((self.layout_campos.itemAt(3).widget().text()))
             self.datos.append(self.layout_campos.itemAt(5).widget().currentText())
 
             self.datos.append(self.layout_campos_2.itemAt(1).widget().text())
             self.datos.append(self.layout_campos_2.itemAt(3).widget().text())
+
+        if self.source is 4:
+            self.datos.append(self.layout_campos.itemAt(1).widget().text())
+            self.datos.append((self.layout_campos.itemAt(3).widget().text()))
+            self.datos.append(self.layout_campos.itemAt(5).widget().currentText())
+
+            self.datos.append(self.layout_campos_2.itemAt(1).widget().text())
+            self.datos.append(self.layout_campos_2.itemAt(3).widget().text())
+            self.datos.append(self.layout_campos_2.itemAt(5).widget().text())
+
 
         if self.source is 5:
             self.datos.append(self.layout_campos.itemAt(1).widget().currentText())
@@ -391,16 +420,29 @@ class Agregar(QDialog):
             self.datos.append(self.layout_campos_2.itemAt(5).widget().text())
             self.datos.append(self.layout_campos_2.itemAt(7).widget().text())
 
+        if self.source is 14:
+            self.datos.append(self.layout_campos.itemAt(1).widget().text())
+            self.datos.append(self.layout_campos.itemAt(3).widget().text())
+            self.datos.append(self.layout_campos.itemAt(5).widget().text())
+
+            self.datos.append(self.layout_campos_2.itemAt(1).widget().text())
+            self.datos.append(self.layout_campos_2.itemAt(3).widget().text())
+
+        if self.source is 15:
+            self.datos.append(self.layout_campos.itemAt(1).widget().text())
+            self.datos.append(self.layout_campos.itemAt(3).widget().text())
+
+            self.datos.append(self.layout_campos_2.itemAt(1).widget().text())
 
         if self.source is 16:
             self.datos.append(self.layout_campos.itemAt(1).widget().text())
-            self.datos.append((self.layout_campos.itemAt(3).widget().text()))
+            self.datos.append(self.layout_campos.itemAt(3).widget().text())
             self.datos.append(self.layout_campos.itemAt(5).widget().text())
             self.datos.append(self.layout_campos.itemAt(7).widget().currentText())
 
             self.datos.append(self.layout_campos_2.itemAt(1).widget().text())
             self.datos.append(self.layout_campos_2.itemAt(3).widget().currentText())
-            self.datos.append(self.layout_campos_2.itemAt(6).widget().text())
+            self.datos.append(self.layout_campos_2.itemAt(5).widget().text())
             self.datos.append(self.layout_campos_2.itemAt(7).widget().text())
 
     def is_modificador(self, data):
@@ -430,6 +472,8 @@ class Agregar(QDialog):
 
             self.layout_campos_2.itemAt(1).widget().setText(data[3])
             self.layout_campos_2.itemAt(3).widget().setText(data[4])
+            self.layout_campos_2.itemAt(5).widget().setText(data[5])
+
 
         if self.source is 5:
             if data[0] == '"ROTATIVO RECTO CORTO",':
@@ -573,6 +617,19 @@ class Agregar(QDialog):
             self.layout_campos_2.itemAt(5).widget().setText(data[6])
             self.layout_campos_2.itemAt(7).widget().setText(data[7])
 
+        if self.source is 14:
+            self.layout_campos.itemAt(1).widget().setText(data[0])
+            self.layout_campos.itemAt(3).widget().setText(data[1])
+            self.layout_campos.itemAt(5).widget().setText(data[2])
+
+            self.layout_campos_2.itemAt(1).widget().setText(data[3])
+            self.layout_campos_2.itemAt(3).widget().setText(data[4])
+
+        if self.source is 15:
+            self.layout_campos.itemAt(1).widget().setText(data[0])
+            self.layout_campos.itemAt(3).widget().setText(data[1])
+
+            self.layout_campos_2.itemAt(1).widget().setText(data[2])
 
         if self.source is 16:
             self.layout_campos.itemAt(1).widget().setText(data[0])

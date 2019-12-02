@@ -2,17 +2,10 @@ from Tubo import *
 
 
 class Exterior (General):
-    tipo = ""
     boca_liner = 0
     CAnular = 0
     VolAnular = 0
     tinterior = ""
-
-    def set_tipo(self, datos):
-        self.tipo = datos
-
-    def get_tipo(self):
-        return self.tipo
 
     def set_boca_liner(self, dato):
         self.boca_liner = dato

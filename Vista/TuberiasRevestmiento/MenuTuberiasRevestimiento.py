@@ -4,6 +4,7 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
+from Controlador.Tuberia.ControladorTuberia import ControladorTuberia
 from TuberiasRevestmiento.DatosTuberiaRevestimiento.DatosTuberias import DatosTuberia
 
 
@@ -180,20 +181,19 @@ class TuberiasRevestimiento(QWidget):
 
     def get_datos(self, direccional):
         externas = []
-        count = 0
         anterior = None
         if self.lleno and self.agujero:
-            for x in (self.etapa.count() - 1):
-                externas.append(self.etapa.widget(x).get_datos(direccional, anterior))
-                anterior = externas[count]
-                if anterior.get_tipo() == "Liner":
-                    externas[count - 1].set_fin_pd(anterior.get_boca_liner())
-                    externas[count - 1].set_long(externas[count - 1].get_fin_pd() - externas[count - 1].get_inicio_pd())
-                    externas[count - 1].update_vertical()
-                    anterior.set_inicio_pd(anterior.get_bolca_liner())
-                    anterior.set_fin_pd(anterior.get_inicio_pd() + anterior.get_long())
-                    anterior.update_vertical()
-            return externas
+            for x in range(self.etapa.count()):
+                nueva = self.etapa.widget(x).get_datos(direccional, anterior)
+                externas.append(nueva)
+                if nueva.get_tipo() == "Liner":
+                    anterior.set_fin_pd(nueva.get_boca_liner())
+                    anterior.set_long(anterior.get_fin_pd() - anterior.get_inicio_pd())
+                    nueva.set_inicio_pd(nueva.get_boca_liner())
+                    nueva.set_fin_pd(nueva.get_inicio_pd() + nueva.get_long())
+                anterior = nueva
+        ControladorTuberia.profundidad_vertical(externas, direccional)
+        return externas
 
     def set_long_disp(self, prof_maxima):
         self.label_long_disp.setText(prof_maxima)

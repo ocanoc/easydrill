@@ -9,6 +9,7 @@ from Fluidos.DatosFluidos.DatosFluidos import DatosFluidos
 from MenuSartaPerforacion import SartaPerforacion
 from TrayectoriaDireccional.MenuTrayectoria import Trayectoria
 from TuberiasRevestmiento.MenuTuberiasRevestimiento import TuberiasRevestimiento
+from VentanaResultados.MenuResultados import MenuResultados
 
 
 # noinspection PyArgumentList
@@ -38,6 +39,9 @@ class Nuevo(QWidget):
     Sarta_Perforacion = SartaPerforacion()
     Sarta_Perforacion.hide()
 
+    menu_resultados = MenuResultados()
+    menu_resultados.hide()
+
     layout_btn = QHBoxLayout()
     layout_btn.addSpacing(50)
     layout_btn.addWidget(btn_cancelar, 1, Qt.AlignLeft)
@@ -52,6 +56,7 @@ class Nuevo(QWidget):
     layout_pantalla.addWidget(DatosFluidos)
     layout_pantalla.addWidget(Tuberiras_revetimietno)
     layout_pantalla.addWidget(Sarta_Perforacion)
+    layout_pantalla.addWidget(menu_resultados)
     layout_pantalla.addLayout(layout_btn)
 
     datos_trayectoria = []
@@ -112,6 +117,10 @@ class Nuevo(QWidget):
         if self.pos is 4:
             self.Tuberiras_revetimietno.hide()
             self.Sarta_Perforacion.show()
+            self.menu_resultados.hide()
+        if self.pos is 5:
+            self.Sarta_Perforacion.hide()
+            self.menu_resultados.show()
 
     @pyqtSlot()
     def regresar(self):
@@ -132,6 +141,10 @@ class Nuevo(QWidget):
             self.pos = 3
             self.btn_aceptar.setText("Aceptar")
             self.cambiar_central()
+        elif self.pos is 5:
+            self.pos = 4
+            self.cambiar_central()
+            self.btn_aceptar.show()
 
     @pyqtSlot()
     def aceptar(self):
@@ -158,8 +171,11 @@ class Nuevo(QWidget):
                 self.cambiar_central()
                 self.btn_aceptar.setText("Terminar")
         elif self.pos is 4:
-            if self.Sarta_Perforacion.is_fill():
+            if self.Sarta_Perforacion.check():
                 self.get_datos()
+                self.pos = 5
+                self.cambiar_central()
+                self.btn_aceptar.hide()
 
     def eventFilter(self, source, event):
         if source is self.DatosFluidos.tipo_datos:
@@ -213,18 +229,25 @@ class Nuevo(QWidget):
     def get_datos(self):
         datos_trayectoria = self.DatosTrayectoria.get_datos()
         datos_fluidos = self.DatosFluidos.get_datos(DatosFluidos.MenuFluidos.get_modelo())
-        datos_revestimiento = self.Tuberiras_revetimietno.get_datos()
-        datos_sup, gasto, datos_sarta = self.Sarta_Perforacion.get_datos()
-        print("Datos trayectoria")
+        datos_revestimiento = self.Tuberiras_revetimietno.get_datos(datos_trayectoria)
+        datos_sup, bomba, datos_sarta, barrena = self.Sarta_Perforacion.get_datos()
+
+        print("Datos fluidos: \n", datos_fluidos)
+        print("Datos barrena: \n", barrena)
+        print("Datos bomba: \n", bomba)
+        print("Datos equipos: \n", datos_sup)
+
+        print("Datos trayectoria\n")
         for x in datos_trayectoria:
             print(x, "\n")
-        print("Datos fluidos")
-        for x in datos_fluidos:
-            print(x, "\n")
+        print("Datos Revestimiento \n")
         for x in datos_revestimiento:
             print(x, "\n")
+        print("Datos sarta\n")
         for x in datos_sarta:
             print(x, "\n")
+        self.menu_resultados.operate_data(datos_trayectoria, datos_fluidos, datos_revestimiento, datos_sup, bomba,
+                                          datos_sarta, barrena)
 
     @staticmethod
     def acodiciona(btn):

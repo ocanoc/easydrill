@@ -66,3 +66,12 @@ class Fluido:
 
     def get_n(self, ):
         return self.n
+
+    def __str__(self):
+        return """\
+    Densidad            \t{}
+    Viscocidad          \t{}
+    Punto cedencia      \t{}
+    Gel                 \t{}
+    L600                \t{}
+    L300                \t{}""".format(self.densidad, self.visco_p, self.p_cedencia, self.gel, self.l_600, self.l_300)

@@ -9,13 +9,17 @@ class VistaHerramientas(QWidget):
         self.label_instrucciones = QLabel("Selecciona el tipo de herramienta.")
 
         self.tipo_herramienta = QComboBox()
-        self.tipo_herramienta.addItems((["Selecciona", "Martillos", "Amortiguadores"]))
+        self.tipo_herramienta.addItems((["Selecciona", "Martillos", "Amortiguadores", "Monel", "VCP"]))
         self.tipo_herramienta.currentIndexChanged.connect(self.cambio_tipo)
 
         self.amortiguadores = Datos(1)
         self.amortiguadores.hide()
         self.martillos = Datos(0)
         self.martillos.hide()
+        self.monel = Datos(14)
+        self.monel.hide()
+        self.vcp = Datos(15)
+        self.vcp.hide()
         self.empty = QWidget()
 
         self.layout = QVBoxLayout()
@@ -24,6 +28,8 @@ class VistaHerramientas(QWidget):
         self.layout.addWidget(self.empty)
         self.layout.addWidget(self.amortiguadores)
         self.layout.addWidget(self.martillos)
+        self.layout.addWidget(self.monel)
+        self.layout.addWidget(self.vcp)
         self.layout.addStretch(1)
 
         self.setLayout(self.layout)
@@ -33,14 +39,32 @@ class VistaHerramientas(QWidget):
             self.empty.show()
             self.martillos.hide()
             self.amortiguadores.hide()
+            self.vcp.hide()
+            self.monel.hide()
         if self.tipo_herramienta.currentIndex() is 1:
             self.empty.hide()
             self.martillos.show()
             self.amortiguadores.hide()
+            self.vcp.hide()
+            self.monel.hide()
         if self.tipo_herramienta.currentIndex() is 2:
             self.empty.hide()
             self.martillos.hide()
             self.amortiguadores.show()
+            self.vcp.hide()
+            self.monel.hide()
+        if self.tipo_herramienta.currentIndex() is 3:
+            self.empty.hide()
+            self.martillos.hide()
+            self.amortiguadores.hide()
+            self.vcp.hide()
+            self.monel.show()
+        if self.tipo_herramienta.currentIndex() is 4:
+            self.empty.hide()
+            self.martillos.hide()
+            self.amortiguadores.hide()
+            self.vcp.hide()
+            self.monel.show()
 
     def agregar(self):
         if self.tipo_herramienta.currentIndex() is 0:

@@ -3,29 +3,6 @@ from Modelo.Objetos.Hidraulica.SeccionesAnulares import *
 
 
 class ControladorSecciones:
-
-    @staticmethod
-    def profundidad(iniciopd, finpd, long, dd):
-        longv = 0
-        longitud = long
-        for x in dd:
-            disponible = x.get_fin_pd()
-            if iniciopd >= x.get_inicio_pd() and finpd <= x.get_fin_pd():
-                longv = ControladorSecciones.get_long_pv(long, x)
-                return longv
-            if iniciopd > x.get_inicio_pd() and finpd > x.get_fin_pd():
-                longitud -= disponible
-                longv += ControladorSecciones.get_long_pv(disponible, x)
-                iniciopd += disponible
-            else:
-                longv += ControladorSecciones.get_long_pv(longitud, x)
-                return longv
-        return longv
-
-    @staticmethod
-    def get_long_pv(long_pd, x):
-        return long_pd * (math.cos(math.radians(x.get_angulo())))
-
     @staticmethod
     def vel_anular(pozo):
         for x in pozo.get_anulares():
@@ -38,35 +15,31 @@ class ControladorSecciones:
         listasecciones = []
         for x in exterior:
             longdisp = x.get_long_disp()
+            print("diponible tr", longdisp)
             for y in interior:
+                print(longrestante)
                 if longdisp > 0 and y.getentr() is False:
                     if (y.get_inicio_pd() >= x.get_inicio_pd()) and (y.get_fin_pd() <= x.get_fin_pd()):
+                        print("caso1")
+                        print("meti :", y.get_long())
                         longdisp -= y.get_long()
                         x.set_disp(longdisp)
                         y.setentr()
-                        listasecciones.append(SeccionesAnulares(y.get_inicio_pd(), y.get_fin_pd(), y.get_long(),
-                                                                x, y,
-                                                                ControladorSecciones.profundidad(y.get_inicio_pd(),
-                                                                                                 y.get_fin_pd(),
-                                                                                                 y.get_long(),
-                                                                                                 direccional)))
+                        listasecciones.append(SeccionesAnulares(y.get_inicio_pd(), y.get_fin_pd(), y.get_long(), x, y))
                     elif (y.get_inicio_pd() >= x.get_inicio_pd()) and (y.get_fin_pd() >= x.get_fin_pd()):
-                        listasecciones.append(SeccionesAnulares(y.get_inicio_pd(), x.get_fin_pd(), longdisp,
-                                                                x, y, ControladorSecciones.profundidad(x.get_fin_pd() -
-                                                                                                       longdisp,
-                                                                                                       x.get_fin_pd(),
-                                                                                                       longdisp,
-                                                                                                       direccional)))
+                        print("caso2")
+                        longrestante = y.get_long()
+                        print("meti :", longdisp)
+                        print("resta", longrestante - longdisp)
+                        listasecciones.append(SeccionesAnulares(y.get_inicio_pd(), x.get_fin_pd(), longdisp, x, y))
                         x.set_disp(0)
-                        longrestante = y.get_long() - longdisp
+                        longrestante = longrestante - longdisp
+                        break
                     else:
-                        listasecciones.append(SeccionesAnulares(y.get_fin_pd() - longrestante, x.get_fin_pd(),
-                                                                longdisp, x, y,
-                                                                ControladorSecciones.profundidad(y.get_fin_pd() -
-                                                                                                 longrestante,
-                                                                                                 y.get_fin_pd(),
-                                                                                                 longdisp,
-                                                                                                 direccional)))
+                        print("caso3")
+                        print("meti :", longrestante)
+                        listasecciones.append(SeccionesAnulares(y.get_fin_pd() - longrestante,
+                                                                x.get_inicio_pd() + longrestante, longrestante, x, y, ))
                         longrestante -= longdisp
                         x.set_disp(longdisp)
         return listasecciones

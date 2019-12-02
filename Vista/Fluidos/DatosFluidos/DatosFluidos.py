@@ -147,7 +147,6 @@ class DatosFluidos(QWidget):
                     return True
             QMessageBox.critical(self, "Error", "Datos erroneos o incompletos")
         except ValueError:
-            print("aqui")
             QMessageBox.critical(self, "Error", "Datos erroneos o incompletos")
             return False
         return False
