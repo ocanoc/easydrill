@@ -16,6 +16,7 @@ class DatosFluidos(QWidget):
     tipo_datos = SwitchButton()
     label_dc = QLabel("Datos de campo")
     label_dl = QLabel("Datos de laboratorio")
+    tipo_datos.setCursor(Qt.PointingHandCursor)
 
     campo_densidad = QLineEdit()
     campo_l600 = QLineEdit()
@@ -161,13 +162,15 @@ class DatosFluidos(QWidget):
 
     def get_datos(self, modelo):
         if self.flag:
-            fluido = Fluido(float(self.campo_densidad.text()), float(self.campo_pc.text()), float(self.campo_pc.text()))
+            fluido = Fluido(float(self.campo_densidad.text()), float(self.campo_vp.text()), float(self.campo_pc.text()))
+
         else:
             fluido = Fluido(float(self.campo_densidad.text()), 0, 0)
             fluido.set_lec_fan_600(float(self.campo_l600.text()))
             fluido.set_lec_fan_300((float(self.campo_l300.text())))
         if modelo is 3:
             fluido.set_gel(self.dato(self.campo_gel))
+        fluido.set_tipo(modelo)
         return fluido
 
     @staticmethod

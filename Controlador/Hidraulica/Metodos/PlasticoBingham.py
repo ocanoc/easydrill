@@ -12,12 +12,6 @@ class PlascticoBingham:
             x.set_dp(PlascticoBingham.espacio_anular(bomba.get_gasto(), x.get_dmayor(), x.get_dmenor(), fluido.get_dl(),
                                                      x.get_long(), fluido.get_pc(), fluido.get_vp()))
 
-    @staticmethod
-    def set_ley_potencias_modificado_superficial(pozo):
-        PlascticoBingham.interior(pozo.get_bombas().get_gasto(), pozo.get_superficial().get_diametro(),
-                                  pozo.get_fluido().get_dl(), pozo.get_superficial().get_longiotud(),
-                                  pozo.get_fluido().get_pc(),
-                                  pozo.get_fluido().get_vp())
 
     @staticmethod
     def interior(gasto, diametro_interior, densidad_lodo, longitud, punto_cedencia, visc_plastica):
@@ -28,7 +22,6 @@ class PlascticoBingham:
                                                                  (109.83 * punto_cedencia * dimetro_cuadrado
                                                                   * densidad_lodo))) /\
                       (densidad_lodo * diametro_interior)
-
         if vel_flujo < vel_critica:
             """Laminar"""
 

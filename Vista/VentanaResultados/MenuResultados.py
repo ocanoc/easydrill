@@ -3,7 +3,10 @@ from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
 from Controlador.Hidraulica.ControladorBarrena import ControladorBarrena
+from Controlador.Hidraulica.Metodos.LeydePotencias import LeyDePotencias
+from Controlador.Hidraulica.Metodos.LeydePotenciasModificado import LeyDePotenciasModificado
 from Controlador.Hidraulica.Metodos.PlasticoBingham import PlascticoBingham
+from Controlador.Hidraulica.Metodos.SmithTool import SmithTool
 from Controlador.Tuberia.ControladorTuberia import ControladorTuberia
 from ControladorSeccionesAnulares import *
 from Modelo.Objetos.Tuberia.Interior import *
@@ -39,6 +42,7 @@ class MenuResultados(QWidget):
         self.pos_tfa = 50
 
         self.datos_hidraulicos = DatosHidraulicos()
+        self.datos_hidraulicos.installEventFilter(self)
         self.datos_hidraulicos.hide()
         self.texto_encabezado = QLabel()
         self.texto_encabezado.setScaledContents(True)
@@ -138,7 +142,7 @@ class MenuResultados(QWidget):
         self.g_datos.setFont(QFont('Consolas', 11))
 
         self.g_grafica = QGroupBox()
-        self.g_grafica.setFixedWidth(720)
+        self.g_grafica.setFixedWidth(700)
         self.g_grafica.setTitle("Gráfica: Comportamiento caidas de Presión.")
         self.g_grafica.setFont(QFont('Consolas', 12))
         self.g_grafica.setLayout(self.layout_graficador)
@@ -317,13 +321,14 @@ class MenuResultados(QWidget):
             tuberia = Interior(Convertidor.fracc_to_dec(x[1]), Convertidor.fracc_to_dec(x[2]),
                                x[3], self.trayectoria, anterior)
             self.lista_sarta.append(tuberia)
+            tuberia.set_tipo(x[0])
             anterior = tuberia
         ControladorTuberia.profundidad_vertical(self.lista_sarta, self.trayectoria)
         self.tfa_nueva.setText(str(self.barrena.get_area_toberas()))
         self.gasto_nuevo.setText(str(self.bomba.get_gasto()))
         self.densidad_nueva.setText(str(self.fluido.get_dl()))
-        self.listaseciones = ControladorSecciones.creasecciones(self.lista_tr, self.lista_sarta, self.trayectoria)
-        ControladorTuberia.profundidad_vertical(self.listaseciones, self.trayecotria)
+        self.listaseciones = ControladorSecciones.creasecciones(self.lista_tr, self.lista_sarta)
+        ControladorTuberia.profundidad_vertical(self.listaseciones, self.trayectoria)
         self.primera_grafica = True
         self.plot_grafica()
 
@@ -341,13 +346,37 @@ class MenuResultados(QWidget):
         if self.primera_grafica:
             self.presion_hestatica = self.trayectoria[
                                          len(self.trayectoria) - 1].get_fin_pv() * self.fluido.get_dl() / 10
-            self.equiposup = PlascticoBingham.interior(self.bomba.get_gasto(), self.datos_equipo_sup[0],
-                                                       self.fluido.get_dl(), self.datos_equipo_sup[1],
-                                                       self.fluido.get_visco_plastica(), self.fluido.get_p_cedencia())
+            if self.fluido.get_tipo() is 1:
+                self.equiposup = PlascticoBingham.interior(self.bomba.get_gasto(), self.datos_equipo_sup[0],
+                                                           self.fluido.get_dl(), self.datos_equipo_sup[1],
+                                                           self.fluido.get_p_cedencia(),
+                                                           self.fluido.get_visco_plastica())
+                PlascticoBingham.set_plastico_bingham(self.lista_sarta, self.listaseciones, self.fluido, self.bomba)
+            if self.fluido.get_tipo() is 2:
+                self.equiposup = LeyDePotencias.interior(self.fluido, self.fluido.set_lec_fan_300(),
+                                                         self.fluido.set_lec_fan_600(), self.bomba.get_gasto(),
+                                                         self.datos_equipo_sup[0], self.fluido.get_dl(),
+                                                         self.datos_equipo_sup[1], self.fluido.get_p_cedencia(),
+                                                         self.fluido.get_visco_plastica())
+                LeyDePotencias.set_ley_potencias(self.lista_sarta, self.listaseciones, self.fluido, self.bomba)
+            if self.fluido.get_tipo() is 3:
+                self.equiposup = LeyDePotenciasModificado.interior(self.fluido, self.fluido.set_lec_fan_300(),
+                                                                   self.fluido.set_lec_fan_600(),
+                                                                   self.bomba.get_gasto(), self.datos_equipo_sup[0],
+                                                                   self.fluido.get_dl(), self.datos_equipo_sup[1],
+                                                                   self.fluido.get_p_cedencia(),
+                                                                   self.fluido.get_visco_plastica(),
+                                                                   self.fluido.get_gel())
+                LeyDePotenciasModificado.set_ley_potencias_modificado(self.lista_sarta, self.listaseciones, self.fluido,
+                                                                      self.bomba)
+            if self.fluido.get_tipo() is 4:
+                self.equiposup = SmithTool.interior(self.fluido.get_visco_plastica(), self.datos_equipo_sup[0],
+                                                    self.bomba.get_gasto(), self.datos_equipo_sup[0],
+                                                    self.fluido.get_dl())
+                SmithTool.set_smith_tool(self.lista_sarta, self.listaseciones, self.fluido, self.bomba)
+
             profundidad_secciones = [-self.datos_equipo_sup[1]]
             presion_secciones = [self.equiposup]
-
-            PlascticoBingham.set_plastico_bingham(self.lista_sarta, self.listaseciones, self.fluido, self.bomba)
             ControladorSecciones.set_parametros(self.listaseciones, self.bomba, self.fluido)
 
             for x in self.listaseciones:
@@ -391,9 +420,11 @@ class MenuResultados(QWidget):
 
             self.grafica_presiones.plot(profundidad_secciones, presion_secciones)
             self.grafica_dec.plot_dec(profundidad_dec, dec_grafica)
+            self.campo_dp_total.setText(str(presion))
             self.update_campos()
 
     def update_campos(self):
+        self.update_tabla()
         self.datos_hidraulicos.campo_impacto_h.setText(str(self.barrena.get_imapcto_h()))
         self.datos_hidraulicos.campo_potencia_h.setText(str(self.barrena.get_potencia_h()))
         self.datos_hidraulicos.campo_limp_agujero.setText(
@@ -414,3 +445,55 @@ class MenuResultados(QWidget):
     def update_tfa(self):
         if self.primera_grafica:
             self.barrena.set_tfa(float(self.tfa_nueva.text()))
+
+    def update_tabla(self):
+        columnas = ['Tipo', 'OD\n [pg]', 'ID\n [pg]', "Longitud\n[md]", "inicio \n[md],", "ΔP\n [kg/cc]",
+                    "ΔP\n acumulada \n[kg/cc]"]
+        model = QStandardItemModel()
+        model.setHorizontalHeaderLabels(columnas)
+        count = 0
+        dp_acu = self.equiposup
+        model.insertRow(count)
+        model.setData(model.index(count, 0), "Conexiones\nsuperficiales")
+        model.setData(model.index(count, 1), self.datos_equipo_sup[0])
+        model.setData(model.index(count, 2), self.datos_equipo_sup[0])
+        model.setData(model.index(count, 3), self.datos_equipo_sup[1])
+        model.setData(model.index(count, 4), -self.datos_equipo_sup[1])
+        model.setData(model.index(count, 5), dp_acu)
+        model.setData(model.index(count, 6), dp_acu)
+        count = 1
+
+        for x in self.lista_sarta:
+            model.insertRow(count)
+            dp_acu += x.get_inicio_pd()
+            model.setData(model.index(count, 0), x.get_tipo())
+            model.setData(model.index(count, 1), x.get_dext())
+            model.setData(model.index(count, 2), x.get_dint())
+            model.setData(model.index(count, 3), x.get_long())
+            model.setData(model.index(count, 4), x.get_inicio_pd())
+            model.setData(model.index(count, 5), x.get_dp())
+            model.setData(model.index(count, 6), dp_acu)
+            count += 1
+        model.insertRow(count)
+        dp_acu += self.barrena.get_caidad_presion()
+        model.setData(model.index(count, 0), "Barrena \n" + self.barrena.get_tipo())
+        model.setData(model.index(count, 1), self.barrena.get_diametro())
+        model.setData(model.index(count, 2), self.barrena.get_diametro())
+        model.setData(model.index(count, 3), self.barrena.get_long())
+        model.setData(model.index(count, 4), "")
+        model.setData(model.index(count, 5), self.barrena.get_caidad_presion())
+        model.setData(model.index(count, 6), dp_acu)
+        self.datos_hidraulicos.set_model(model)
+
+    def eventFilter(self, source, event):
+        if source is self.datos_hidraulicos:
+            if event.type() == QEvent.WindowActivate:
+                print("widget window has gained focus")
+                self.datos_hidraulicos.setWindowOpacity(1.0)
+            elif event.type() == QEvent.WindowDeactivate:
+                self.datos_hidraulicos.setWindowOpacity(0.5)
+                print("widget window has lost focus")
+            else:
+                return False
+        else:
+            return False

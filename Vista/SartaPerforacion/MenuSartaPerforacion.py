@@ -167,6 +167,7 @@ class SartaPerforacion(QWidget):
     diametro_barrenas = 0
     diametro_sup = 0
     long_barrena = 0
+    tipo_barrena = ""
 
     def __init__(self, parent=None):
         super(SartaPerforacion, self).__init__(parent)
@@ -388,9 +389,11 @@ class SartaPerforacion(QWidget):
                         if tipo is 2:
                             self.model.setData(self.model.index(0, 4), self.data_barrena[7])
                             self.model.setData(self.model.index(0, 7), self.data_barrena[6])
+                            self.tipo_barrena = "Triconica"
                         if tipo is 1:
                             self.model.setData(self.model.index(0, 4), self.data_barrena[6])
                             self.model.setData(self.model.index(0, 7), self.data_barrena[5])
+                            self.tipo_barrena = "PDC"
                     self.table.clearSelection()
 
         except ValueError:
@@ -428,19 +431,19 @@ class SartaPerforacion(QWidget):
             elemento = data[0]
             od = data[1]
             di = data[2]
-            long = float(data[6])
+            long = float(data[7])
             peso = long * float(data[5]) * 1.488
             ct = data[4]
             cb = data[4]
 
         if data[0] == "Conexión":
             elemento = data[0]
-            od = data[3]
-            di = data[4]
-            long = float(data[7]) * 0.0254
-            peso = long * float(data[8]) * 1.488
-            ct = data[1]
-            cb = data[1]
+            od = data[1]
+            di = data[2]
+            long = data[3]
+            peso = "-"
+            ct = data[5]
+            cb = data[4]
 
         if data[0] == "Martillo":
             elemento = data[0] + "  " + data[1]
@@ -505,6 +508,15 @@ class SartaPerforacion(QWidget):
             ct = data[1]
             cb = data[1]
 
+        if data[0] == "VCP":
+            elemento = data[0]
+            od = data[1]
+            di = data[2]
+            long = float(data[3])
+            peso = "-"
+            ct = "-"
+            cb = "-"
+
         self.model.setData(self.model.index(pos, 0), elemento)
         self.model.setData(self.model.index(pos, 1), od)
         self.model.setData(self.model.index(pos, 2), di)
@@ -560,4 +572,5 @@ class SartaPerforacion(QWidget):
 
     def get_barrena(self):
         barrena = Barrena(self.area_toberas, self.diametro_barrenas, self.long_barrena)
+        barrena.set_tipo(self.tipo_barrena)
         return barrena

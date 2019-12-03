@@ -1,4 +1,5 @@
 class Fluido:
+    tipo_fluido = 0
     densidad = 0
     p_cedencia = 0
     l_300 = 0
@@ -66,6 +67,12 @@ class Fluido:
 
     def get_n(self, ):
         return self.n
+
+    def set_tipo(self, dato):
+        self.tipo_fluido = dato
+
+    def get_tipo(self):
+        return self.tipo_fluido
 
     def __str__(self):
         return """\

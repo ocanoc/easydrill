@@ -10,34 +10,25 @@ class ControladorSecciones:
                             (x.get_diametroMayor ** 2 - x.get_diametroMenor ** 2))
 
     @staticmethod
-    def creasecciones(exterior, interior, direccional):
+    def creasecciones(exterior, interior):
         longrestante = 0
         listasecciones = []
         for x in exterior:
             longdisp = x.get_long_disp()
-            print("diponible tr", longdisp)
             for y in interior:
-                print(longrestante)
                 if longdisp > 0 and y.getentr() is False:
                     if (y.get_inicio_pd() >= x.get_inicio_pd()) and (y.get_fin_pd() <= x.get_fin_pd()):
-                        print("caso1")
-                        print("meti :", y.get_long())
                         longdisp -= y.get_long()
                         x.set_disp(longdisp)
                         y.setentr()
                         listasecciones.append(SeccionesAnulares(y.get_inicio_pd(), y.get_fin_pd(), y.get_long(), x, y))
                     elif (y.get_inicio_pd() >= x.get_inicio_pd()) and (y.get_fin_pd() >= x.get_fin_pd()):
-                        print("caso2")
                         longrestante = y.get_long()
-                        print("meti :", longdisp)
-                        print("resta", longrestante - longdisp)
                         listasecciones.append(SeccionesAnulares(y.get_inicio_pd(), x.get_fin_pd(), longdisp, x, y))
                         x.set_disp(0)
                         longrestante = longrestante - longdisp
                         break
                     else:
-                        print("caso3")
-                        print("meti :", longrestante)
                         listasecciones.append(SeccionesAnulares(y.get_fin_pd() - longrestante,
                                                                 x.get_inicio_pd() + longrestante, longrestante, x, y, ))
                         longrestante -= longdisp

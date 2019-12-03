@@ -1,5 +1,5 @@
 class Barrena:
-    Tipo = ""
+    tipo = ""
     numero_toberas = 0
     diametro_toberas = 0
     area_toberas = 0
@@ -63,6 +63,12 @@ class Barrena:
 
     def get_long(self):
         return self.long
+
+    def set_tipo(self, data):
+        self.tipo = data
+
+    def get_tipo(self):
+        return self.tipo
 
     def __str__(self):
         return """\

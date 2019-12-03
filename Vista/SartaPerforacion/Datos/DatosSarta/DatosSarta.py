@@ -4,6 +4,7 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
+from Vista.SartaPerforacion.Datos.DatosSarta.CreadorCoples.CreadorCoples import CreadorCoples
 from Vista.SartaPerforacion.Datos.DatosSarta.VistaLongitud.VistaLongitud import VistaLongitud
 from Vista.VentanaTuberiaHerramientas.Administradores.Datos.Datos import Datos
 from Vista.VentanaTuberiaHerramientas.Administradores.VistaHerramientas.VistaHerramientas import VistaHerramientas
@@ -28,7 +29,7 @@ class DatosSarta(QDialog):
         self.tab.addTab(VistaLongitud(6), QIcon("Imagenes/TextosTuberias/TextoTP.png"), "")
         self.tab.addTab(VistaLongitud(3), QIcon("Imagenes/TextosTuberias/TextoHW.png"), "")
         self.tab.addTab(VistaLongitud(4), QIcon("Imagenes/TextosTuberias/TextoDC.png"), "")
-        self.tab.addTab(Datos(13), QIcon("Imagenes/TextosTuberias/TextoConexiones.png"), "")
+        self.tab.addTab(CreadorCoples(), QIcon("Imagenes/TextosTuberias/TextoConexiones.png"), "")
         self.tab.addTab(Datos(5), QIcon("Imagenes/TextosTuberias/TextoEstabilizadores.png"), "")
         self.tab.addTab(Datos(11), QIcon("Imagenes/TextosTuberias/TextoHerramientas.png"), "")
         self.tab.addTab(Datos(7), QIcon("Imagenes/TextosTuberias/TextoPorta.png"), "")

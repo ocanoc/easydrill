@@ -41,12 +41,15 @@ class Interior (General):
     def __str__(self):
         return """\
 Diametro exterior       \t{}
-Diametro interior      \t{}
+Diametro interior       \t{}
 Inicio PD               \t{}
 Longitud PD             \t{}
 Fin PD                  \t{}
-Longitud PV             \t{}
+Inicio PV               \t{}
+Longitud v              \t{}
+Fin PV                  \t{}
 Capacidad               \t{}
 Volumen                 \t{}
 Caida de presion        \t{}""".format(self.d_ext, self.d_int, self.inicio_pd, self.long_md, self.fin_pd,
-                                       self.long_mv, self.capacidad, self.vol_interior, self.caidaPresion)
+                                       self.inicio_pv, self.long_mv, self.fin_pv, self.capacidad, self.vol_interior,
+                                       self.caidaPresion)

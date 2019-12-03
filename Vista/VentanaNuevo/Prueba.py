@@ -4,7 +4,6 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
-from ControladorDireccional import *
 from Fluidos.DatosFluidos.DatosFluidos import DatosFluidos
 from MenuSartaPerforacion import SartaPerforacion
 from TuberiasRevestmiento.MenuTuberiasRevestimiento import TuberiasRevestimiento
@@ -45,7 +44,8 @@ class Prueba(QDialog):
 
         self.setLayout(self.layot)
 
-        btn.clicked.connect(lambda: print(self.Tuberiras_revetimietno.get_datos(ControladorDireccional.tipov(4000))))
+        btn.clicked.connect(lambda: creador.get_data())
+
     def termianr(self):
         pass
 

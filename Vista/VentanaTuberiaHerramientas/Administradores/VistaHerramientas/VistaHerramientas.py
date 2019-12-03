@@ -63,8 +63,8 @@ class VistaHerramientas(QWidget):
             self.empty.hide()
             self.martillos.hide()
             self.amortiguadores.hide()
-            self.vcp.hide()
-            self.monel.show()
+            self.vcp.show()
+            self.monel.hide()
 
     def agregar(self):
         if self.tipo_herramienta.currentIndex() is 0:

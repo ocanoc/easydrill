@@ -88,6 +88,7 @@ class MenuInicio(QMainWindow):
         self.installEventFilter(self)
         self.btn_admin.clicked.connect(lambda *args: self.tuberia_herramientas())
         self.Edicion.btn_finalizar.clicked.connect(lambda *args: self.cancelar())
+        self.Nuevo.menu_resultados.datos_hidraulicos.installEventFilter(self)
 
     def cancelar(self):
         self.Nuevo.hide()

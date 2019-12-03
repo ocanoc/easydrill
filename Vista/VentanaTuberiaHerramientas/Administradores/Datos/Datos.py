@@ -10,7 +10,7 @@ from VentanaTuberiaHerramientas.Administradores.Agregador.Agregador import Agreg
 class Datos(QWidget):
     def __init__(self, tipo, parent=None):
         super(Datos, self).__init__(parent)
-        self.table_widht = 780
+        self.table_widht = 770
         self.table_height = 360
         self.label_title = QLabel()
         self.datos = None

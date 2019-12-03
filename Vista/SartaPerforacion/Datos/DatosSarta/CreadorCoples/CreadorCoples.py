@@ -1,14 +1,21 @@
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 
+from Recursos.Constantes.Convertidor import Convertidor
+from SartaPerforacion.Datos.DatosSarta.CreadorCoples.DatosCoples.DatosCoples import DatosCoples
+
 
 class CreadorCoples(QWidget):
     def __init__(self, parent=None):
         super(CreadorCoples, self).__init__(parent)
+        self.llene_bit = False
+        self.llene_top = False
+        self.datos = []
+        self.label = QLabel("Ingresa los datos de la combinación")
         self.btn1 = QPushButton("Seleccionar")
         self.btn2 = QPushButton("Seleccionar")
         self.btn1.clicked.connect(lambda: self.agrega(1))
-        self.btn2.clicked.connect(lambda: self.agrega(1))
+        self.btn2.clicked.connect(lambda: self.agrega(2))
         self.g_conexion_top = QGroupBox()
         self.g_conexion_top.setTitle("Conexion Top")
         self.g_conexion_bit = QGroupBox()
@@ -38,6 +45,7 @@ class CreadorCoples(QWidget):
         self.layout_campo.addRow("Longitud [m]:", self.campo_longitud)
 
         self.layout = QVBoxLayout()
+        self.layout.addWidget(self.label)
         self.layout.addWidget(self.g_conexion_top)
         self.layout.addWidget(self.g_conexion_bit)
 
@@ -47,25 +55,55 @@ class CreadorCoples(QWidget):
         self.setLayout(self.layout)
 
     def agrega(self, tipo):
-        if tipo is 1:
-            print("tipo1")
+        nuevo = DatosCoples()
+        if nuevo.exec_():
+            datos = nuevo.get_data()
+            if tipo is 1:
+                self.fl_conexion_top.itemAt(1).widget().setText(datos[0])
+                self.fl_conexion_top.itemAt(3).widget().setText(datos[2])
+                self.fl_conexion_top.itemAt(5).widget().setText(datos[3])
+                self.llene_top = True
+            if tipo is 2:
+                self.fl_conexion_bit.itemAt(1).widget().setText(datos[0])
+                self.fl_conexion_bit.itemAt(3).widget().setText(datos[2])
+                self.fl_conexion_bit.itemAt(5).widget().setText(datos[3])
+                self.llene_bit = True
 
     def get_data(self):
-        data = self.table.get_data()
-        if data is not None:
-            print("entre")
-            try:
+        try:
+            if self.llene_top and self.llene_bit:
                 if float(self.campo_longitud.text()) > 0:
-                    long = self.campo_longitud.text()
-                    return data, long
+                    print("aqui")
+                    self.collect_data()
+                    return self.datos
                 else:
                     QMessageBox.critical(self, "Error", "Ingresa una longitud valida.")
-                    return None, None
-            except ValueError:
-                QMessageBox.critical(self, "Error", "Ingresa una longitud.")
-                return None, None
-        else:
-            return None, None
+                    return None
+            else:
+                QMessageBox.critical(self, "Error", "Completa los datos.")
+        except ValueError:
+            QMessageBox.critical(self, "Error", "Ingresa una longitud.")
+            return None
 
     def get_tipo(self):
-        return self.table.get_tipo()
+        return 13
+
+    def collect_data(self):
+        if Convertidor.fracc_to_dec((self.fl_conexion_top.itemAt(3).widget().text())) >= \
+                Convertidor.fracc_to_dec(self.fl_conexion_bit.itemAt(3).widget().text()):
+            self.datos.append(self.fl_conexion_top.itemAt(3).widget().text())
+        else:
+            self.datos.append(self.fl_conexion_bit.itemAt(3).widget().text())
+
+        if Convertidor.fracc_to_dec((self.fl_conexion_top.itemAt(5).widget().text())) >= \
+                Convertidor.fracc_to_dec(self.fl_conexion_bit.itemAt(5).widget().text()):
+            self.datos.append(self.fl_conexion_top.itemAt(5).widget().text())
+        else:
+            self.datos.append(self.fl_conexion_bit.itemAt(5).widget().text())
+        self.datos.append(float(self.campo_longitud.text()))
+        text = self.fl_conexion_bit.itemAt(1).widget().text() + " a \n" + self.fl_conexion_top.itemAt(1).widget().text()
+        self.datos.append(self.fl_conexion_bit.itemAt(1).widget().text())
+        self.datos.append(self.fl_conexion_top.itemAt(1).widget().text())
+        self.datos.append(text)
+        for x in self.datos:
+            print("\n", x)

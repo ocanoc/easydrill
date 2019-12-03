@@ -9,7 +9,6 @@ from PyQt5.QtWidgets import *
 class DatosHidraulicos(QDialog):
     def __init__(self, parent=None):
         super(DatosHidraulicos, self).__init__(parent)
-        self.installEventFilter(self)
         self.setWindowFlag(Qt.WindowStaysOnTopHint)
         self.setWindowModality(Qt.NonModal)
         self.setWindowIcon(QIcon("Imagenes/Iconos/Gota.png"))
@@ -17,8 +16,8 @@ class DatosHidraulicos(QDialog):
 
         self.table = QTableView()
         self.model_table = QStandardItemModel()
-        self.columnas = ['Tipo', 'OD\n [pg]', 'ID\n [pg]', "Longitud\n[md]", "inicio \n[md],", "ΔP\n [kg/cm<sup>3</>]",
-                         "ΔP\n acumulada [kg/cm<sup>3</>]"]
+        self.columnas = ['Tipo', 'OD\n [pg]', 'ID\n [pg]', "Longitud\n[md]", "inicio \n[md],", "ΔP \n[kg/cc]",
+                         "ΔP\n acumulada \n[kg/cc]"]
         self.campo_limp_agujero = QLineEdit()
         self.model_table.setHorizontalHeaderLabels(self.columnas)
         self.table.setModel(self.model_table)
@@ -85,35 +84,27 @@ class DatosHidraulicos(QDialog):
         self.acondiciona(self.fl_potencia)
         self.acondiciona(self.fl_impacto)
 
-        self.tab_datos = QTabWidget()
-        self.tab_datos.setFixedSize(310, 80)
-        self.tab1 = QWidget()
-        self.tab1.setLayout(self.layout_vel)
-        self.tab2 = QWidget()
-        self.tab2.setLayout(self.layout_limpieza)
-        self.tab3 = QWidget()
-        self.tab3.setLayout(self.layout_hidraulico)
-        self.tab_datos.addTab(self.tab3, "Hidraulico")
-        self.tab_datos.addTab(self.tab2, "Limpieza")
-        self.tab_datos.addTab(self.tab1, "Velocidades")
+        self.g_hidraulico = QGroupBox()
+        self.g_hidraulico.setTitle("Hidraulico")
+        self.g_hidraulico.setLayout(self.layout_hidraulico)
+        self.g_limpieza = QGroupBox()
+        self.g_limpieza.setTitle("Limpieza")
+        self.g_limpieza.setLayout(self.layout_limpieza)
+        self.g_velocidades = QGroupBox()
+        self.g_velocidades.setTitle("Velocidades")
+        self.g_velocidades.setLayout(self.layout_vel)
+
+        self.layout_datos = QHBoxLayout()
+        self.layout_datos.addWidget(self.g_velocidades)
+        self.layout_datos.addWidget(self.g_hidraulico)
+        self.layout_datos.addWidget(self.g_limpieza)
+
         self.layout_central = QVBoxLayout()
         self.layout_central.addWidget(self.table)
-        self.layout_central.addWidget(self.tab_datos)
+        self.layout_central.addLayout(self.layout_datos)
+
         self.setLayout(self.layout_central)
 
-    def eventFilter(self, object, event):
-        if event.type() == QEvent.WindowActivate:
-            print("widget window has gained focus")
-            self.setWindowOpacity(1.0)
-        elif event.type() == QEvent.WindowDeactivate:
-            self.setWindowOpacity(0.5)
-            print("widget window has lost focus")
-        elif event.type() == QEvent.FocusIn:
-            print("widget has gained keyboard focus")
-        elif event.type() == QEvent.FocusOut:
-            print("widget has lost keyboard focus")
-
-        return False
 
     @staticmethod
     def acondiciona(obj):
@@ -134,7 +125,7 @@ class DatosHidraulicos(QDialog):
             header.setSectionResizeMode(QHeaderView.Stretch)
             obj.setHorizontalHeader(header)
             obj.setAlternatingRowColors(True)
-            obj.setFixedSize(800, 500)
+            obj.setFixedSize(800, 250)
             obj.setStyleSheet("""
                                       QTableView {
                                        font-size: 13px;
@@ -153,6 +144,9 @@ class DatosHidraulicos(QDialog):
                                        background-color: rgb(0, 80, 85);
                                        }""")
 
+    def set_model(self, model):
+        self.table.setModel(model)
+        self.acondiciona(self.table)
 
 if __name__ == "__main__":
     cadena = "5 1/2"

@@ -231,21 +231,6 @@ class Nuevo(QWidget):
         datos_fluidos = self.DatosFluidos.get_datos(DatosFluidos.MenuFluidos.get_modelo())
         datos_revestimiento = self.Tuberiras_revetimietno.get_datos(datos_trayectoria)
         datos_sup, bomba, datos_sarta, barrena = self.Sarta_Perforacion.get_datos()
-
-        print("Datos fluidos: \n", datos_fluidos)
-        print("Datos barrena: \n", barrena)
-        print("Datos bomba: \n", bomba)
-        print("Datos equipos: \n", datos_sup)
-
-        print("Datos trayectoria\n")
-        for x in datos_trayectoria:
-            print(x, "\n")
-        print("Datos Revestimiento \n")
-        for x in datos_revestimiento:
-            print(x, "\n")
-        print("Datos sarta\n")
-        for x in datos_sarta:
-            print(x, "\n")
         self.menu_resultados.operate_data(datos_trayectoria, datos_fluidos, datos_revestimiento, datos_sup, bomba,
                                           datos_sarta, barrena)
 

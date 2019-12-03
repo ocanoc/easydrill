@@ -17,20 +17,21 @@ class ControladorTuberia:
                 inicio_e_pd = y.get_inicio_pd()
                 fin_e_pd = y.get_fin_pd()
                 angulo_e = y.get_angulo()
-                if inicio_tp >= inicio_e_pd and fin_tp <= fin_e_pd:
-                    long_tp_provi += ControladorTuberia.get_long_pv(fin_tp - inicio_tp, angulo_e)
-                    x.set_fin_pv(long_tp_provi)
-                    if count is 0:
-                        x.set_inicio_pv(0)
-                        x.set_lv()
-                    else:
-                        x.set_inicio_pv(interiores[count - 1].get_fin_pv())
-                        x.set_lv()
-                    count += 1
-                    break
-                elif inicio_tp >= inicio_e_pd and fin_tp >= fin_e_pd:
-                    long_tp_provi += ControladorTuberia.get_long_pv(fin_e_pd - inicio_tp, angulo_e)
-                    inicio_tp = fin_e_pd
+                if not (inicio_tp >= fin_e_pd):
+                    if inicio_tp >= inicio_e_pd and fin_tp <= fin_e_pd:
+                        long_tp_provi += ControladorTuberia.get_long_pv(fin_tp - inicio_tp, angulo_e)
+                        x.set_fin_pv(long_tp_provi)
+                        if count is 0:
+                            x.set_inicio_pv(0)
+                            x.set_lv()
+                        else:
+                            x.set_inicio_pv(interiores[count - 1].get_fin_pv())
+                            x.set_lv()
+                        count += 1
+                        break
+                    elif inicio_tp >= inicio_e_pd and fin_tp >= fin_e_pd:
+                        long_tp_provi += ControladorTuberia.get_long_pv(fin_e_pd - inicio_tp, angulo_e)
+                        inicio_tp = fin_e_pd
 
     @staticmethod
     def set_velocdad_interior(interiores, bomba):

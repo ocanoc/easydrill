@@ -1,6 +1,9 @@
+from Controlador.Hidraulica.Metodos.SmithTool import SmithTool
 from Controlador.Tuberia.ControladorTuberia import ControladorTuberia
 from ControladorDireccional import *
 from ControladorSeccionesAnulares import *
+from Modelo.Objetos.Hidraulica.Bomba import Bomba
+from Modelo.Objetos.Hidraulica.Fluido import Fluido
 from Modelo.Objetos.Tuberia.Exterior import *
 from Modelo.Objetos.Tuberia.Interior import *
 
@@ -42,20 +45,29 @@ internas = [Tuberia_uno, Tuberia_dos, Tuberia_tres]
 externas = [TR1, TR2, TR3, Agujero]
 lista_secciones = ControladorSecciones.creasecciones(externas, internas, dir)
 """
-
-vertical = ControladorDireccional.tipo_j(1000, 1.5, 30, 1600)
-tuberia1 = Interior(5, 4.276, 1330, vertical, None)
-tuberia2 = Interior(8, 2.475, 270, vertical, tuberia1)
-TR1 = Exterior(13.375, 12.565, 700, vertical, None)
-Agujero = Exterior(12.25, 12.25, 900, vertical, TR1)
+jota = ControladorDireccional.tipo_j(1000, 1.5, 30, 2500)
+vertical = ControladorDireccional.tipos(1000, 1.5, 30, 3600, 2500, 1.5, 0)
+for x in vertical:
+    print(x, "\n")
+tuberia1 = Interior(5, 4.276, 2000, jota, None)
+tuberia2 = Interior(8, 2.875, 500, jota, tuberia1)
+TR1 = Exterior(13.375, 12.565, 1300, jota, None)
+Agujero = Exterior(12.25, 12.25, 1200, jota, TR1)
 internas = [tuberia1, tuberia2]
 externas = [TR1, Agujero]
-ControladorTuberia.profundidad_vertical(externas, vertical)
-ControladorTuberia.profundidad_vertical(internas, vertical)
-lista_secciones = ControladorSecciones.creasecciones(externas, internas, vertical)
-ControladorTuberia.profundidad_vertical(lista_secciones, vertical)
-for x in vertical:
+ControladorTuberia.profundidad_vertical(externas, jota)
+ControladorTuberia.profundidad_vertical(internas, jota)
+lista_secciones = ControladorSecciones.creasecciones(externas, internas)
+ControladorTuberia.profundidad_vertical(lista_secciones, jota)
+fluido = Fluido(1.2, 15, 12)
+fluido.set_gel(6)
+bomba = Bomba(1000, 1)
+SmithTool.set_smith_tool(internas, lista_secciones, fluido, bomba)
+datos_equipo_sup = [3.826, 103.7]
+equiposup = SmithTool.interior(fluido.get_vp(), datos_equipo_sup[0], bomba.get_gasto(),
+                               datos_equipo_sup[1], fluido.get_dl(), )
+
+for x in internas:
     print(x, "\n")
 for x in lista_secciones:
     print(x, "\n")
-
