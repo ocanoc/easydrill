@@ -14,14 +14,22 @@ class DatosHidraulicos(QDialog):
         self.setWindowIcon(QIcon("Imagenes/Iconos/Gota.png"))
         self.setWindowTitle("Datos Hidraulicos")
 
-        self.table = QTableView()
-        self.model_table = QStandardItemModel()
+        self.table_interiores = QTableView()
+        self.model_table_interiores = QStandardItemModel()
         self.columnas = ['Tipo', 'OD\n [pg]', 'ID\n [pg]', "Longitud\n[md]", "inicio \n[md],", "ΔP \n[kg/cc]",
                          "ΔP\n acumulada \n[kg/cc]"]
         self.campo_limp_agujero = QLineEdit()
-        self.model_table.setHorizontalHeaderLabels(self.columnas)
-        self.table.setModel(self.model_table)
-        self.acondiciona(self.table)
+        self.model_table_interiores.setHorizontalHeaderLabels(self.columnas)
+        self.table_interiores.setModel(self.model_table_interiores)
+        self.acondiciona(self.table_interiores)
+
+        self.table_anulares = QTableView()
+        self.model_table_anulares = QStandardItemModel()
+        self.columnas2 = ['Tipo', 'OD\n [pg]', 'ID\n [pg]', "Longitud\n[md]", "inicio \n[md],", "ΔP \n[kg/cc]",
+                          "ΔP\n acumulada \n[kg/cc]"]
+        self.model_table_anulares.setHorizontalHeaderLabels(self.columnas2)
+        self.table_anulares.setModel(self.model_table_anulares)
+        self.acondiciona(self.table_anulares)
 
         self.campo_limp_agujero.setToolTip("Limpieza de agujero")
         self.campo_cap_accarreo = QLineEdit()
@@ -84,6 +92,9 @@ class DatosHidraulicos(QDialog):
         self.acondiciona(self.fl_potencia)
         self.acondiciona(self.fl_impacto)
 
+        self.tab_tables = QTabWidget()
+        self.tab_tables.addTab(self.table_interiores, "Interiores")
+        self.tab_tables.addTab(self.table_anulares, "Anulares")
         self.g_hidraulico = QGroupBox()
         self.g_hidraulico.setTitle("Hidraulico")
         self.g_hidraulico.setLayout(self.layout_hidraulico)
@@ -100,8 +111,8 @@ class DatosHidraulicos(QDialog):
         self.layout_datos.addWidget(self.g_limpieza)
 
         self.layout_central = QVBoxLayout()
-        self.layout_central.addWidget(self.table)
-        self.layout_central.addLayout(self.layout_datos)
+        self.layout_central.addWidget(self.tab_tables)
+        # self.layout_central.addLayout(self.layout_datos)
 
         self.setLayout(self.layout_central)
 
@@ -145,8 +156,12 @@ class DatosHidraulicos(QDialog):
                                        }""")
 
     def set_model(self, model):
-        self.table.setModel(model)
-        self.acondiciona(self.table)
+        self.table_interiores.setModel(model)
+        self.acondiciona(self.table_interiores)
+
+    def set_model_anulares(self, model):
+        self.table_anulares.setModel(model)
+        self.acondiciona(self.table_anulares)
 
 if __name__ == "__main__":
     cadena = "5 1/2"

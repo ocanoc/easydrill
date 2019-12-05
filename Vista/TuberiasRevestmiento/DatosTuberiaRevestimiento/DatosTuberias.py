@@ -24,7 +24,7 @@ class DatosTuberia(QWidget):
         self.tipo_tuberia.currentIndexChanged.connect(self.selectionchange)
 
         self.layout_izquierda = QFormLayout()
-        self.layout_izquierda.addRow("Tipo de Etapa", self.tipo_tuberia)
+        self.layout_izquierda.addRow("Tipo de seccion", self.tipo_tuberia)
         self.layout_izquierda.addRow("Longitud [m]", self.campo_longitud)
         self.layout_izquierda.setVerticalSpacing(20)
         self.layout_izquierda.setFormAlignment(Qt.AlignTop)

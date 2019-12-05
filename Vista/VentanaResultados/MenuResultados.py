@@ -425,6 +425,7 @@ class MenuResultados(QWidget):
 
     def update_campos(self):
         self.update_tabla()
+        self.update_tabla_anular()
         self.datos_hidraulicos.campo_impacto_h.setText(str(self.barrena.get_imapcto_h()))
         self.datos_hidraulicos.campo_potencia_h.setText(str(self.barrena.get_potencia_h()))
         self.datos_hidraulicos.campo_limp_agujero.setText(
@@ -465,7 +466,7 @@ class MenuResultados(QWidget):
 
         for x in self.lista_sarta:
             model.insertRow(count)
-            dp_acu += x.get_inicio_pd()
+            dp_acu += x.get_dp()
             model.setData(model.index(count, 0), x.get_tipo())
             model.setData(model.index(count, 1), x.get_dext())
             model.setData(model.index(count, 2), x.get_dint())
@@ -484,6 +485,28 @@ class MenuResultados(QWidget):
         model.setData(model.index(count, 5), self.barrena.get_caidad_presion())
         model.setData(model.index(count, 6), dp_acu)
         self.datos_hidraulicos.set_model(model)
+
+    def update_tabla_anular(self):
+        columnas = ['Diametro\nmayor\n [pg]', 'Diametro\nmenor\n [pg]', "Longitud\n[md]", "inicio \n[md],",
+                    "ΔP\n [kg/cc]",
+                    "ΔP\n acumulada \n[kg/cc]", "Velocidad\nAnular\n[ft/seg]", "Indice\nde\nacarreo"]
+        model = QStandardItemModel()
+        model.setHorizontalHeaderLabels(columnas)
+        dp_acu = 0
+        count = 0
+        for x in self.listaseciones:
+            model.insertRow(count)
+            dp_acu += x.get_dp()
+            model.setData(model.index(count, 0), x.get_dmayor())
+            model.setData(model.index(count, 1), x.get_dmenor())
+            model.setData(model.index(count, 2), x.get_long())
+            model.setData(model.index(count, 3), x.get_inicio_pd())
+            model.setData(model.index(count, 4), x.get_dp())
+            model.setData(model.index(count, 5), dp_acu)
+            model.setData(model.index(count, 6), x.get_vel_anular())
+            model.setData(model.index(count, 7), x.get_indice_acarreo())
+            count += 1
+        self.datos_hidraulicos.set_model_anulares(model)
 
     def eventFilter(self, source, event):
         if source is self.datos_hidraulicos:

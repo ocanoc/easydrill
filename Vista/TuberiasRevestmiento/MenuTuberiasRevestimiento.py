@@ -33,7 +33,7 @@ class TuberiasRevestimiento(QWidget):
     menos.setIcon(QIcon("Imagenes/Iconos/menos.png"))
     menos.setToolTip("Elimina Etapa")
 
-    label_instrucciones = QLabel("Ingrese los siguientes datos:")
+    label_instrucciones = QLabel("Ingrese los datos de la etapa:")
 
     label_long_disp = QLabel("0")
 
@@ -77,7 +77,7 @@ class TuberiasRevestimiento(QWidget):
 
     def __init__(self):
         super(TuberiasRevestimiento, self).__init__()
-        self.etapa.addItem(DatosTuberia(self.etapa), "Agrega una etapa")
+        self.etapa.addItem(DatosTuberia(self.etapa), "Agrega una seccion.")
         self.mas.clicked.connect(lambda *args: self.agrega())
         self.menos.clicked.connect(lambda *args: self.elimina())
         self.acodiciona(self.mas)
@@ -118,10 +118,10 @@ class TuberiasRevestimiento(QWidget):
                 self.agujero = False
                 self.lleno = False
                 self.etapa.widget(self.etapa.count() - 1).clean()
-                self.etapa.setItemText(self.etapa.count() - 1, "Agrega una etapa")
+                self.etapa.setItemText(self.etapa.count() - 1, "Agrega una seccion")
                 QMessageBox.information(self, "Limpio", "No hay mas etapas")
         else:
-            result = QMessageBox.question(self, "Confirmacion.", "Se borrarán las etapas siguientes para"
+            result = QMessageBox.question(self, "Confirmacion.", "Se borrarán las secciones siguientes para"
                                                                  " evitar inconsistencias. \n¿Deseas continuar?",
                                           QMessageBox.Yes | QMessageBox.No)
             if result == QMessageBox.Yes:
@@ -136,7 +136,7 @@ class TuberiasRevestimiento(QWidget):
                 self.mas.setEnabled(True)
                 self.etapa.widget(self.etapa.count() - 1).clean()
                 self.ultimo = True
-                self.etapa.setItemText(self.etapa.count() - 1, "Agrega una etapa")
+                self.etapa.setItemText(self.etapa.count() - 1, "Agrega una seccion")
 
     def rename(self):
         self.etapa.setItemText(self.etapa.count() - 1, self.etapa.widget(self.etapa.count() - 1).get_name())
@@ -154,7 +154,7 @@ class TuberiasRevestimiento(QWidget):
         if self.lleno and self.agujero:
             return True
         elif self.lleno is False:
-            QMessageBox.critical(self, "Error", "No hay etapas guardadas.")
+            QMessageBox.critical(self, "Error", "No hay secciones guardadas.")
             return False
         elif self.agujero is False:
             QMessageBox.critical(self, "Error", "No hay agujero descubierto.")

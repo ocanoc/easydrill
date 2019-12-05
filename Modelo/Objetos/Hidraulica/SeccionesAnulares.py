@@ -56,6 +56,9 @@ class SeccionesAnulares:
     def get_long(self):
         return self.longitudD
 
+    def get_long(self):
+        return self.longitudD
+
     def get_dmayor(self):
         return self.diametroMayor
 
