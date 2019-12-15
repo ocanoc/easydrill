@@ -27,11 +27,11 @@ class TuberiasRevestimiento(QWidget):
 
     mas = QPushButton()
     mas.setIcon(QIcon("Imagenes/Iconos/mas.png"))
-    mas.setToolTip("Agrega Etapa")
+    mas.setToolTip("Agrega sección")
 
     menos = QPushButton()
     menos.setIcon(QIcon("Imagenes/Iconos/menos.png"))
-    menos.setToolTip("Elimina Etapa")
+    menos.setToolTip("Elimina sección")
 
     label_instrucciones = QLabel("Ingrese los datos de la etapa:")
 
@@ -41,7 +41,7 @@ class TuberiasRevestimiento(QWidget):
     layout_long_disp.addRow("Longitud disponible [md]: ", label_long_disp)
 
     layout_botones = QHBoxLayout()
-    layout_botones.addSpacing(80)
+    layout_botones.addSpacing(30)
     layout_botones.addLayout(layout_long_disp)
     layout_botones.addStretch(1)
     layout_botones.addWidget(mas)
@@ -74,10 +74,12 @@ class TuberiasRevestimiento(QWidget):
     lleno = False
     agujero = False
     ultimo = True
+    prof_max = 0
+    d_agujero = 0
 
     def __init__(self):
         super(TuberiasRevestimiento, self).__init__()
-        self.etapa.addItem(DatosTuberia(self.etapa), "Agrega una seccion.")
+        self.etapa.addItem(DatosTuberia(self.etapa), "Agrega una sección.")
         self.mas.clicked.connect(lambda *args: self.agrega())
         self.menos.clicked.connect(lambda *args: self.elimina())
         self.acodiciona(self.mas)
@@ -91,20 +93,23 @@ class TuberiasRevestimiento(QWidget):
             if self.etapa.count() < 10:
                 if self.lleno is False and (
                         self.etapa.widget(self.etapa.count() - 1).get_tipo() is 2 or self.etapa.widget(
-                        self.etapa.count() - 1).get_tipo() is 1):
+                    self.etapa.count() - 1).get_tipo() is 1):
                     QMessageBox.critical(self, "Error", "Se debe agregar al menos una tuberia de revestimiento.")
                 elif self.agujero and self.lleno:
                     QMessageBox.critical(self, "Error", "Debes borrar la etapa agujero para agregar mas etapas.")
-                elif self.etapa.widget(self.etapa.count() - 1).is_fill() and self.check_di():
+                elif self.etapa.widget(self.etapa.count() - 1).is_fill() and self.check_di() \
+                        and self.check_long() and self.update_long_disp():
                     self.rename()
                     self.lleno = True
                     if self.etapa.widget(self.etapa.count() - 1).get_tipo() is not 2:
-                        self.etapa.addItem(DatosTuberia(self.etapa), "Agrega una etapa".format(self.etapa.count() + 1))
+                        self.etapa.addItem(DatosTuberia(self.etapa),
+                                           "Agrega una sección".format(self.etapa.count() + 1))
                         self.etapa.setCurrentIndex(self.etapa.count() - 1)
                     else:
+                        self.d_agujero = self.etapa.widget(self.etapa.count() - 1).get_d_agujero()
                         self.agujero = True
             else:
-                QMessageBox.critical(self, "Error", "Demasiadas etapas.")
+                QMessageBox.critical(self, "Error", "Demasiadas secciones.")
         except ValueError:
             return False
 
@@ -118,11 +123,12 @@ class TuberiasRevestimiento(QWidget):
                 self.agujero = False
                 self.lleno = False
                 self.etapa.widget(self.etapa.count() - 1).clean()
-                self.etapa.setItemText(self.etapa.count() - 1, "Agrega una seccion")
+                self.etapa.setItemText(self.etapa.count() - 1, "Agrega una sección")
                 QMessageBox.information(self, "Limpio", "No hay mas etapas")
+            self.update_long_disp()
         else:
             result = QMessageBox.question(self, "Confirmacion.", "Se borrarán las secciones siguientes para"
-                                                                 " evitar inconsistencias. \n¿Deseas continuar?",
+                                                                 " evitar inconsistencias. \n¿Desea continuar?",
                                           QMessageBox.Yes | QMessageBox.No)
             if result == QMessageBox.Yes:
                 actual = self.etapa.currentIndex()
@@ -136,7 +142,8 @@ class TuberiasRevestimiento(QWidget):
                 self.mas.setEnabled(True)
                 self.etapa.widget(self.etapa.count() - 1).clean()
                 self.ultimo = True
-                self.etapa.setItemText(self.etapa.count() - 1, "Agrega una seccion")
+                self.etapa.setItemText(self.etapa.count() - 1, "Agrega una sección")
+                self.update_long_disp()
 
     def rename(self):
         self.etapa.setItemText(self.etapa.count() - 1, self.etapa.widget(self.etapa.count() - 1).get_name())
@@ -158,6 +165,9 @@ class TuberiasRevestimiento(QWidget):
             return False
         elif self.agujero is False:
             QMessageBox.critical(self, "Error", "No hay agujero descubierto.")
+            return False
+        if float(self.label_long_disp.text()) is not 0:
+            QMessageBox.critical(self, "Error", "Longitud disponible.")
             return False
 
     @staticmethod
@@ -196,4 +206,30 @@ class TuberiasRevestimiento(QWidget):
         return externas
 
     def set_long_disp(self, prof_maxima):
-        self.label_long_disp.setText(prof_maxima)
+        self.prof_max = prof_maxima
+        self.update_long_disp()
+
+    def update_long_disp(self):
+        long = 0
+        for x in range(self.etapa.count()):
+            if self.etapa.widget(x).get_tipo() is 1:
+                long = self.etapa.widget(x).get_boca_liner()
+                long += self.etapa.widget(x).get_long()
+            else:
+                long += self.etapa.widget(x).get_long()
+        if long > self.prof_max:
+            QMessageBox.critical(self, "Error", "Longitud mayor a la profundidad desarrollada.")
+            return False
+        else:
+            self.label_long_disp.setText(str(self.prof_max - long))
+            return True
+
+    def check_long(self):
+        if float(self.label_long_disp.text()) > 0:
+            return True
+        else:
+            QMessageBox.critical(self, "Error", "No hay longitud desarrollada disponible.")
+            return False
+
+    def get_d_agujero(self):
+        return self.d_agujero

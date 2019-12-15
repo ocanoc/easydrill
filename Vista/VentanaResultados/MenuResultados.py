@@ -114,11 +114,12 @@ class MenuResultados(QWidget):
 
         self.grafica_presiones = Graficador()
         self.grafica_dec = Graficador()
+        self.grafica_ph = Graficador()
         self.layout_graficador = QHBoxLayout()
         self.layout_graficador.addWidget(self.grafica_presiones)
 
-        self.acondiciona(self.campo_dp_total)
         self.acondiciona(self.slider_gasto)
+        self.acondiciona(self.campo_dp_total)
         self.acondiciona(self.slider_densidad)
         self.acondiciona(self.slider_tfa)
         self.acondiciona(self.tfa_nueva)
@@ -128,7 +129,6 @@ class MenuResultados(QWidget):
         self.acondiciona(self.fl_slider_gasto)
         self.acondiciona(self.fl_slider_densidad)
         self.acondiciona(self.btn_datos_h)
-
 
         self.g_sensi = QGroupBox("Análisis de sensibilidad.")
         self.g_sensi.setFont(QFont('Consolas', 11))
@@ -171,8 +171,9 @@ class MenuResultados(QWidget):
         for i in reversed(range(self.layout_graficador.count())):
             self.layout_graficador.itemAt(i).widget().setParent(None)
         if source is self.check_dec:
-            self.g_grafica.setTitle("Gráfica: Comportamiento DEC.")
+            self.g_grafica.setTitle("Gráfica: Comportamiento DEC y P. Hidrostatica.")
             self.layout_graficador.addWidget(self.grafica_dec)
+            self.layout_graficador.addWidget(self.grafica_ph)
             self.check_dec.setChecked(True)
             self.check_p.setChecked(False)
         else:
@@ -186,14 +187,15 @@ class MenuResultados(QWidget):
     def acondiciona(obj):
         if isinstance(obj, QPushButton):
             obj.setCursor(Qt.PointingHandCursor)
+            obj.setFixedHeight(18)
         if isinstance(obj, QLineEdit):
             obj.setCursor(Qt.IBeamCursor)
-            obj.setFixedSize(80, 20)
+            obj.setFixedSize(80, 18)
             obj.setText(str(0))
             obj.setMaxLength(9)
         if isinstance(obj, QSlider):
             obj.setCursor(Qt.PointingHandCursor)
-            obj.setFixedSize(210, 12)
+            obj.setFixedSize(210, 8)
             obj.setValue(50)
             obj.setStyleSheet("""
                     QSlider::groove:horizontal {
@@ -340,6 +342,7 @@ class MenuResultados(QWidget):
         self.vanular_prom = 0
         self.presion_hestatica = 0
         dec_grafica = []
+        ph_grafica = []
         profundidad_dec = []
         presion = 0
         pv = 0
@@ -411,16 +414,19 @@ class MenuResultados(QWidget):
                 presion_secciones.append(presion)
 
             profundidad_dec.append(0)
+            ph_grafica.append(0)
             dec_grafica.append(self.fluido.get_dl())
 
             for x in self.listaseciones:
                 print(x, "\n")
                 profundidad_dec.append(x.get_fin_pd())
+                ph_grafica.append(x.get_fin_pv() * self.fluido.get_dl())
                 dec_grafica.append(x.get_dec())
 
             self.grafica_presiones.plot(profundidad_secciones, presion_secciones)
             self.grafica_dec.plot_dec(profundidad_dec, dec_grafica)
-            self.campo_dp_total.setText(str(presion))
+            self.grafica_ph.plot_ph(profundidad_dec, ph_grafica)
+            self.campo_dp_total.setText(" %0.3f" % (presion))
             self.update_campos()
 
     def update_campos(self):
@@ -507,16 +513,3 @@ class MenuResultados(QWidget):
             model.setData(model.index(count, 7), x.get_indice_acarreo())
             count += 1
         self.datos_hidraulicos.set_model_anulares(model)
-
-    def eventFilter(self, source, event):
-        if source is self.datos_hidraulicos:
-            if event.type() == QEvent.WindowActivate:
-                print("widget window has gained focus")
-                self.datos_hidraulicos.setWindowOpacity(1.0)
-            elif event.type() == QEvent.WindowDeactivate:
-                self.datos_hidraulicos.setWindowOpacity(0.5)
-                print("widget window has lost focus")
-            else:
-                return False
-        else:
-            return False

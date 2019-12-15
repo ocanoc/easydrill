@@ -12,6 +12,7 @@ class Graficador(QWidget):
         self.p1 = self.win.addPlot(row=1, col=0)
         self.p1.setAutoVisible(y=True)
         self.pen = pg.mkPen(color=(6, 78, 83), width=5, style=Qt.SolidLine)
+        self.pen_ph = pg.mkPen(color=(47, 79, 79), width=5, style=Qt.SolidLine)
         self.win.setBackground("#d0cece")
         self.p1.showGrid(x=True, y=True)
         self.vLine = pg.InfiniteLine(angle=90, movable=False)
@@ -78,6 +79,16 @@ class Graficador(QWidget):
             self.legend = False
         else:
             self.p1.plot(dec, p, pen=self.pen, symbol='o', symbolSize=10, symbolBrush='r')
+
+    def plot_ph(self, p, ph):
+        self.p1.clear()
+        if self.legend:
+            self.f_campo.itemAt(0).widget().setText("P.Hidrostatica [kg/cm<sup>2</sup>]</span>")
+            self.p1.plot(ph, p, name="Presion Hidroestatica", pen=self.pen_ph, symbol='t', symbolSize=10,
+                         symbolBrush='r')
+            self.legend = False
+        else:
+            self.p1.plot(ph, p, pen=self.pen_ph, symbol='o', symbolSize=10, symbolBrush='r')
 
     @staticmethod
     def acodiciona(obj):

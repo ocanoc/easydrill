@@ -11,7 +11,7 @@ class Datos(QWidget):
     def __init__(self, tipo, parent=None):
         super(Datos, self).__init__(parent)
         self.table_widht = 770
-        self.table_height = 360
+        self.table_height = 300
         self.label_title = QLabel()
         self.datos = None
         self.tipo = tipo + 1
@@ -24,6 +24,7 @@ class Datos(QWidget):
         self.layout_pantalla = QVBoxLayout()
         self.create_table(tipo)
         self.layout_pantalla.addWidget(self.table, 1, Qt.AlignHCenter)
+        self.layout_pantalla.addStretch(1)
         self.setLayout(self.layout_pantalla)
 
     def acondiciona(self, obj):

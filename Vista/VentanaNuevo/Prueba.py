@@ -37,14 +37,14 @@ class Prueba(QDialog):
         self.DatosFluidos = DatosFluidos()
         self.Tuberiras_revetimietno = TuberiasRevestimiento()
         self.Sarta_Perforacion = SartaPerforacion()
-        self.layot.addWidget(creador)
+        self.layot.addWidget(self.Sarta_Perforacion)
 
         self.layot.addWidget(btn)
         self.layot.addSpacing(20)
 
         self.setLayout(self.layot)
 
-        btn.clicked.connect(lambda: creador.get_data())
+        # btn.clicked.connect(lambda: creador.get_data())
 
     def termianr(self):
         pass

@@ -78,7 +78,6 @@ class SartaPerforacion(QWidget):
     layout_inferior.addLayout(layout_botones, 1)
     layout_inferior.addStretch(1)
 
-
     texto_conexiones = QLabel()
     texto_conexiones.setPixmap(QPixmap("Imagenes/TP/TextoSuperficial.png"))
 
@@ -110,7 +109,7 @@ class SartaPerforacion(QWidget):
 
     layout_bomba = QFormLayout()
     layout_bomba.addRow("Gasto [gpm]:", campo_gasto)
-    layout_bomba.addRow("Presión de  \n bombeo [psi]:", campo_p_bombeo)
+    layout_bomba.addRow("Presión maxima de\nbombeo [psi]:", campo_p_bombeo)
 
     g_datos_bomba = QGroupBox()
     g_datos_bomba.setTitle("Bomba.")
@@ -168,6 +167,7 @@ class SartaPerforacion(QWidget):
     diametro_sup = 0
     long_barrena = 0
     tipo_barrena = ""
+    datos_sup = False
 
     def __init__(self, parent=None):
         super(SartaPerforacion, self).__init__(parent)
@@ -201,13 +201,11 @@ class SartaPerforacion(QWidget):
             self.longitud_equivalente.setText("N/A")
             self.last_opc = self.tipo.currentIndex()
             self.last_long_equi = "N/A"
-
         elif i is 1:
             self.longitud_equivalente.setText("133.2")
             self.last_opc = self.tipo.currentIndex()
             self.diametro_sup = 2.764
             self.last_long_equi = "133.2"
-
         else:
             self.get_opc(i)
 
@@ -260,18 +258,34 @@ class SartaPerforacion(QWidget):
 
     def agrega(self):
         self.barrena = True
-        if self.barrena is True:
+        if self.check_barrena() and self.check_sup() and (self.tipo.currentIndex() is not 0):
             data = DatosSarta()
             if data.exec_():
                 datos = data.get_data()
                 self.model.insertRow(self.model.rowCount())
                 self.add_row(self.model.rowCount() - 1, datos)
-        else:
-            QMessageBox.warning(self, "Aviso.", "Es necesario agregar una Barrena.")
 
     def muestratabla(self):
         dialog = DatosTuberiasSuperficiales(self)
         dialog.exec()
+
+    def check_sup(self):
+        try:
+            if float(self.campo_gasto.text()) <= 0 or float(self.campo_p_bombeo.text()) <= 0:
+                QMessageBox.warning(self, "Aviso.", "Agrega datos validos.")
+                return False
+            else:
+                return True
+        except ValueError:
+            QMessageBox.critical(self, "Error", "Ingresa los datos superficiales.")
+            return False
+
+    def check_barrena(self):
+        if self.barrena:
+            return True
+        else:
+            QMessageBox.warning(self, "Aviso.", "Es necesario agregar una Barrena.")
+            return False
 
     @staticmethod
     def acodiciona(btn):
@@ -373,27 +387,31 @@ class SartaPerforacion(QWidget):
                 if crea_barrena.exec_():
                     self.data_barrena, self.area_toberas = crea_barrena.get_data()
                     if self.data_barrena is not None:
-                        self.isclicked(source)
-                        if self.barrena is False:
-                            self.model.insertRow(self.model.rowCount())
-                            self.table.clearSelection()
-                        self.barrena = True
-                        self.model.setData(self.model.index(0, 0), self.data_barrena[0])
-                        self.model.setData(self.model.index(0, 1), self.data_barrena[2])
-                        self.diametro_barrenas = Convertidor.fracc_to_dec(self.data_barrena[2])
-                        self.model.setData(self.model.index(0, 2), "-")
-                        self.model.setData(self.model.index(0, 3), float(self.data_barrena[5]) * 0.0254)
-                        self.long_barrena = float(self.data_barrena[5]) * 0.0254
-                        self.model.setData(self.model.index(0, 6), "-")
-                        self.model.setData(self.model.index(0, 5), self.data_barrena[3])
-                        if tipo is 2:
-                            self.model.setData(self.model.index(0, 4), self.data_barrena[7])
-                            self.model.setData(self.model.index(0, 7), self.data_barrena[6])
-                            self.tipo_barrena = "Triconica"
-                        if tipo is 1:
-                            self.model.setData(self.model.index(0, 4), self.data_barrena[6])
-                            self.model.setData(self.model.index(0, 7), self.data_barrena[5])
-                            self.tipo_barrena = "PDC"
+                        if Convertidor.fracc_to_dec(self.data_barrena[2]) == self.diametro_agujero:
+                            self.isclicked(source)
+                            if self.barrena is False:
+                                self.model.insertRow(self.model.rowCount())
+                            self.barrena = True
+                            self.model.setData(self.model.index(0, 0), self.data_barrena[0])
+                            self.model.setData(self.model.index(0, 1), self.data_barrena[2])
+                            self.diametro_barrenas = Convertidor.fracc_to_dec(self.data_barrena[2])
+                            self.model.setData(self.model.index(0, 2), "-")
+                            self.model.setData(self.model.index(0, 3), float(self.data_barrena[5]) * 0.0254)
+                            self.long_barrena = float(self.data_barrena[5]) * 0.0254
+                            self.model.setData(self.model.index(0, 6), "-")
+                            self.model.setData(self.model.index(0, 5), self.data_barrena[3])
+                            if tipo is 2:
+                                self.model.setData(self.model.index(0, 4), self.data_barrena[7])
+                                self.model.setData(self.model.index(0, 7), self.data_barrena[6])
+                                self.tipo_barrena = "Triconica"
+                            if tipo is 1:
+                                self.model.setData(self.model.index(0, 4), self.data_barrena[6])
+                                self.model.setData(self.model.index(0, 7), self.data_barrena[5])
+                                self.tipo_barrena = "PDC"
+                        else:
+                            QMessageBox.critical(self, "Error",
+                                                 "El diametro de la barrena es diferente al del agujero.")
+
                     self.table.clearSelection()
 
         except ValueError:
@@ -524,7 +542,10 @@ class SartaPerforacion(QWidget):
         self.model.setData(self.model.index(pos, 4), peso)
         self.model.setData(self.model.index(pos, 5), ct)
         self.model.setData(self.model.index(pos, 6), cb)
-        # self.model.setData(self.model.index(pos, 7), float(self.model.data(self.model.index(pos - 1, 7))) + long)
+        self.table.setVisible(False)
+        self.table.resizeColumnsToContents()
+        self.table.setVisible(True)
+        self.model.setData(self.model.index(pos, 7), float(self.model.data(self.model.index(pos - 1, 7))) + long)
 
     def get_datos(self):
         datos_sup = self.get_data_sup()

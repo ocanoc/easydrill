@@ -14,8 +14,8 @@ class DatosFluidos(QWidget):
     texto_encabezado.setPixmap(QPixmap("Imagenes/Fluidos/TextoDatosFluido.png"))
 
     tipo_datos = SwitchButton()
-    label_dc = QLabel("Datos de campo")
-    label_dl = QLabel("Datos de laboratorio")
+    label_dc = QLabel("Datos")
+    label_dl = QLabel("Lecturas Fan")
     tipo_datos.setCursor(Qt.PointingHandCursor)
 
     campo_densidad = QLineEdit()

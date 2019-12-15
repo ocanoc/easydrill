@@ -73,6 +73,10 @@ class VistaHerramientas(QWidget):
             self.martillos.agregar()
         elif self.tipo_herramienta.currentIndex() is 2:
             self.amortiguadores.agregar()
+        elif self.tipo_herramienta.currentIndex() is 3:
+            self.monel.agregar()
+        elif self.tipo_herramienta.currentIndex() is 4:
+            self.vcp.agregar()
 
     def eliminar(self):
         if self.tipo_herramienta.currentIndex() is 0:
@@ -81,6 +85,10 @@ class VistaHerramientas(QWidget):
             self.martillos.eliminar()
         elif self.tipo_herramienta.currentIndex() is 2:
             self.amortiguadores.eliminar()
+        elif self.tipo_herramienta.currentIndex() is 3:
+            self.monel.eliminar()
+        elif self.tipo_herramienta.currentIndex() is 4:
+            self.vcp.eliminar()
 
     def modificar(self):
         if self.tipo_herramienta.currentIndex() is 0:
@@ -89,6 +97,10 @@ class VistaHerramientas(QWidget):
             self.martillos.modificar()
         elif self.tipo_herramienta.currentIndex() is 2:
             self.amortiguadores.modificar()
+        elif self.tipo_herramienta.currentIndex() is 3:
+            self.monel.modificar()
+        elif self.tipo_herramienta.currentIndex() is 4:
+            self.vcp.modificar()
 
     def get_data(self):
         if self.tipo_herramienta.currentIndex() is 0:
@@ -97,6 +109,10 @@ class VistaHerramientas(QWidget):
             return self.martillos.get_data()
         elif self.tipo_herramienta.currentIndex() is 2:
             return self.amortiguadores.get_data()
+        elif self.tipo_herramienta.currentIndex() is 3:
+            return self.monel.get_data()
+        elif self.tipo_herramienta.currentIndex() is 4:
+            return self.vcp.get_data()
 
     def get_tipo(self):
         if self.tipo_herramienta.currentIndex() is 0:
@@ -105,3 +121,7 @@ class VistaHerramientas(QWidget):
             return self.martillos.get_tipo()
         elif self.tipo_herramienta.currentIndex() is 2:
             return self.amortiguadores.get_tipo()
+        elif self.tipo_herramienta.currentIndex() is 3:
+            return self.monel.get_tipo()
+        elif self.tipo_herramienta.currentIndex() is 4:
+            return self.vcp.get_tipo()

@@ -169,3 +169,18 @@ class DatosTuberia(QWidget):
         self.acondiciona(self.campo_longitud)
         self.acondiciona(self.campo_od)
         self.acondiciona(self.campo_id)
+
+    def get_long(self):
+        try:
+            return Convertidor.fracc_to_dec(self.campo_longitud.text())
+        except ValueError:
+            return 0
+
+    def get_boca_liner(self):
+        try:
+            return Convertidor.fracc_to_dec(self.campo_bl.text())
+        except ValueError:
+            return 0
+
+    def get_d_agujero(self):
+        return Convertidor.fracc_to_dec(self.campo_od.text())

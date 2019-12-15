@@ -71,18 +71,14 @@ class CreadorCoples(QWidget):
 
     def get_data(self):
         try:
-            if self.llene_top and self.llene_bit:
-                if float(self.campo_longitud.text()) > 0:
-                    print("aqui")
-                    self.collect_data()
-                    return self.datos
-                else:
-                    QMessageBox.critical(self, "Error", "Ingresa una longitud valida.")
-                    return None
+            if float(self.campo_longitud.text()) > 0:
+                self.collect_data()
+                return self.datos
             else:
-                QMessageBox.critical(self, "Error", "Completa los datos.")
+                QMessageBox.critical(self, "Error", "Ingresa una longitud valida.")
+                return None
         except ValueError:
-            QMessageBox.critical(self, "Error", "Ingresa una longitud.")
+            QMessageBox.critical(self, "Error", "Datos erroneos o incompletos.")
             return None
 
     def get_tipo(self):
@@ -95,7 +91,7 @@ class CreadorCoples(QWidget):
         else:
             self.datos.append(self.fl_conexion_bit.itemAt(3).widget().text())
 
-        if Convertidor.fracc_to_dec((self.fl_conexion_top.itemAt(5).widget().text())) >= \
+        if Convertidor.fracc_to_dec((self.fl_conexion_top.itemAt(5).widget().text())) <= \
                 Convertidor.fracc_to_dec(self.fl_conexion_bit.itemAt(5).widget().text()):
             self.datos.append(self.fl_conexion_top.itemAt(5).widget().text())
         else:
@@ -105,5 +101,3 @@ class CreadorCoples(QWidget):
         self.datos.append(self.fl_conexion_bit.itemAt(1).widget().text())
         self.datos.append(self.fl_conexion_top.itemAt(1).widget().text())
         self.datos.append(text)
-        for x in self.datos:
-            print("\n", x)

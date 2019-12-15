@@ -33,8 +33,8 @@ class Nuevo(QWidget):
     DatosFluidos = DatosFluidos()
     DatosFluidos.hide()
 
-    Tuberiras_revetimietno = TuberiasRevestimiento()
-    Tuberiras_revetimietno.hide()
+    Tuberiras_revestimiento = TuberiasRevestimiento()
+    Tuberiras_revestimiento.hide()
 
     Sarta_Perforacion = SartaPerforacion()
     Sarta_Perforacion.hide()
@@ -54,7 +54,7 @@ class Nuevo(QWidget):
     layout_pantalla.addWidget(Trayectoria)
     layout_pantalla.addWidget(DatosTrayectoria)
     layout_pantalla.addWidget(DatosFluidos)
-    layout_pantalla.addWidget(Tuberiras_revetimietno)
+    layout_pantalla.addWidget(Tuberiras_revestimiento)
     layout_pantalla.addWidget(Sarta_Perforacion)
     layout_pantalla.addWidget(menu_resultados)
     layout_pantalla.addLayout(layout_btn)
@@ -109,13 +109,15 @@ class Nuevo(QWidget):
         if self.pos is 2:
             self.DatosTrayectoria.hide()
             self.DatosFluidos.show()
-            self.Tuberiras_revetimietno.hide()
+            self.Tuberiras_revestimiento.hide()
         if self.pos is 3:
             self.DatosFluidos.hide()
-            self.Tuberiras_revetimietno.show()
+            self.Tuberiras_revestimiento.set_long_disp(self.DatosTrayectoria.get_long_max())
+            self.Tuberiras_revestimiento.show()
             self.Sarta_Perforacion.hide()
         if self.pos is 4:
-            self.Tuberiras_revetimietno.hide()
+            self.Tuberiras_revestimiento.hide()
+            self.Sarta_Perforacion.set_diametro_agujero(self.Tuberiras_revestimiento.get_d_agujero())
             self.Sarta_Perforacion.show()
             self.menu_resultados.hide()
         if self.pos is 5:
@@ -166,7 +168,7 @@ class Nuevo(QWidget):
                 self.pos = 3
                 self.cambiar_central()
         elif self.pos is 3:
-            if self.Tuberiras_revetimietno.is_fill():
+            if self.Tuberiras_revestimiento.is_fill():
                 self.pos = 4
                 self.cambiar_central()
                 self.btn_aceptar.setText("Terminar")
@@ -229,7 +231,7 @@ class Nuevo(QWidget):
     def get_datos(self):
         datos_trayectoria = self.DatosTrayectoria.get_datos()
         datos_fluidos = self.DatosFluidos.get_datos(DatosFluidos.MenuFluidos.get_modelo())
-        datos_revestimiento = self.Tuberiras_revetimietno.get_datos(datos_trayectoria)
+        datos_revestimiento = self.Tuberiras_revestimiento.get_datos(datos_trayectoria)
         datos_sup, bomba, datos_sarta, barrena = self.Sarta_Perforacion.get_datos()
         self.menu_resultados.operate_data(datos_trayectoria, datos_fluidos, datos_revestimiento, datos_sup, bomba,
                                           datos_sarta, barrena)

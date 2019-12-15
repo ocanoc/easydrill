@@ -40,7 +40,7 @@ class DatosTrayectoria(QWidget):
     layout_vertical = QFormLayout()
     layout_vertical.setFormAlignment(Qt.AlignCenter)
     layout_vertical.setVerticalSpacing(50)
-    layout_vertical.addRow("Profundidad [md]", campo_profundidad)
+    layout_vertical.addRow("Profundidad desarrollada [md]", campo_profundidad)
     layout_vertical.addRow("KOP [md]", campo_KOP)
     layout_vertical.addRow("Severidad 1 [°/ 30 md]", campo_severidad_incremeto)
     layout_vertical.addRow("Ángulo Máximo [°]", campo_angulo_maximo)
@@ -201,3 +201,9 @@ class DatosTrayectoria(QWidget):
     @staticmethod
     def dato(line):
         return float(line.text())
+
+    def get_long_max(self):
+        try:
+            return self.dato(self.campo_profundidad)
+        except ValueError:
+            return 0
