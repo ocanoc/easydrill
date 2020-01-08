@@ -11,7 +11,6 @@ class Datos(QWidget):
     def __init__(self, tipo, parent=None):
         super(Datos, self).__init__(parent)
         self.table_widht = 770
-        self.table_height = 300
         self.label_title = QLabel()
         self.datos = None
         self.tipo = tipo + 1
@@ -36,7 +35,7 @@ class Datos(QWidget):
         header.setSectionResizeMode(QHeaderView.Stretch)
         obj.setHorizontalHeader(header)
         obj.setAlternatingRowColors(True)
-        obj.setFixedSize(self.table_widht, self.table_height)
+        obj.setFixedWidth(self.table_widht)
         obj.setStyleSheet("""
                                   QTableView {
                                    font-size: 13px;

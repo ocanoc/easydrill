@@ -36,6 +36,7 @@ class MenuResultados(QWidget):
         self.primera_grafica = False
         self.presion_anular = 0
         self.vel_interior = 0
+        self.presion_sup = 0
 
         self.pos_gasto = 50
         self.pos_densi = 50
@@ -57,7 +58,7 @@ class MenuResultados(QWidget):
         self.campo_dp_total.setToolTip("Caída de presión total")
 
         self.fl_dp = QFormLayout()
-        self.fl_dp.addRow("ΔP total [kg/cm<sup>3</>]", self.campo_dp_total)
+        self.fl_dp.addRow("\u0394P total [kg/cm<sup>2</>]", self.campo_dp_total)
 
         self.gasto_nuevo = QLineEdit("0")
         self.gasto_nuevo.setToolTip("Gasto")
@@ -177,7 +178,7 @@ class MenuResultados(QWidget):
             self.check_dec.setChecked(True)
             self.check_p.setChecked(False)
         else:
-            self.g_grafica.setTitle("Gráfica: Comportamiento caidas de Presión.")
+            self.g_grafica.setTitle("Gráfica: Comportamiento caídas de Presión.")
             self.layout_graficador.addWidget(self.grafica_presiones)
             self.check_dec.setChecked(False)
             self.check_p.setChecked(True)
@@ -335,6 +336,7 @@ class MenuResultados(QWidget):
         self.plot_grafica()
 
     def plot_grafica(self):
+        self.presion_sup = 0
         self.presion_anular = 0
         self.presion_bna = 0
         self.equiposup = 0
@@ -427,19 +429,23 @@ class MenuResultados(QWidget):
             self.grafica_dec.plot_dec(profundidad_dec, dec_grafica)
             self.grafica_ph.plot_ph(profundidad_dec, ph_grafica)
             self.campo_dp_total.setText(" %0.3f" % (presion))
+            self.presion_sup = presion
             self.update_campos()
 
     def update_campos(self):
         self.update_tabla()
         self.update_tabla_anular()
-        self.datos_hidraulicos.campo_impacto_h.setText(str(self.barrena.get_imapcto_h()))
-        self.datos_hidraulicos.campo_potencia_h.setText(str(self.barrena.get_potencia_h()))
-        self.datos_hidraulicos.campo_limp_agujero.setText(
-            str(self.barrena.get_potencia_h() / self.barrena.get_diametro()))
-        self.datos_hidraulicos.campo_cap_accarreo.setText(str(self.ica_prom / len(self.listaseciones)))
-        self.datos_hidraulicos.campo_vel_anular_op.setText(str(self.vanular_prom / len(self.listaseciones)))
-        self.datos_hidraulicos.campo_vel_interior.setText(str(self.vel_interior / len(self.lista_sarta)))
-        self.datos_hidraulicos.campo_velocidad_toberas.setText(str(self.barrena.get_vel_toberas()))
+
+        self.datos_hidraulicos.vel_toberas.setText(str(self.barrena.get_vel_toberas()))
+        self.datos_hidraulicos.presion_sup.setText(str(self.presion_sup))
+        self.datos_hidraulicos.potencia_reque.setText(str(self.presion_sup * self.bomba.get_gasto() / 120.7))
+        self.datos_hidraulicos.potencia_hidraulica.setText(str(self.barrena.get_caidad_presion() *
+                                                               self.bomba.get_gasto() / 120.7))
+        self.datos_hidraulicos.fuerza_impacto.setText(str(math.sqrt(self.barrena.get_caidad_presion() *
+                                                                    math.pow(self.bomba.get_gasto(), 2) *
+                                                                    self.fluido.get_dl() / 361)))
+        self.datos_hidraulicos.indice_limpieza.setText(str(float(self.datos_hidraulicos.fuerza_impacto.text()) * 1.27 /
+                                                           (math.pow(self.barrena.get_diametro(), 2))))
 
     def update_desidad(self):
         if self.primera_grafica:
@@ -454,8 +460,8 @@ class MenuResultados(QWidget):
             self.barrena.set_tfa(float(self.tfa_nueva.text()))
 
     def update_tabla(self):
-        columnas = ['Tipo', 'OD\n [pg]', 'ID\n [pg]', "Longitud\n[md]", "inicio \n[md],", "ΔP\n [kg/cc]",
-                    "ΔP\n acumulada \n[kg/cc]"]
+        columnas = ['Elemento', 'OD\n [pg]', 'ID\n [pg]', "Longitud\n[md]", "Inicio \n[md]", "ΔP\n [kg/cm\u00b2]",
+                    "ΔP\n acumulada \n[kg/cm\u00b2]"]
         model = QStandardItemModel()
         model.setHorizontalHeaderLabels(columnas)
         count = 0
@@ -493,9 +499,9 @@ class MenuResultados(QWidget):
         self.datos_hidraulicos.set_model(model)
 
     def update_tabla_anular(self):
-        columnas = ['Diametro\nmayor\n [pg]', 'Diametro\nmenor\n [pg]', "Longitud\n[md]", "inicio \n[md],",
-                    "ΔP\n [kg/cc]",
-                    "ΔP\n acumulada \n[kg/cc]", "Velocidad\nAnular\n[ft/seg]", "Indice\nde\nacarreo"]
+        columnas = ['Diámetro\nmayor\n [pg]', 'Diámetro\nmenor\n [pg]', "Longitud\n[md]", "Inicio \n[md]",
+                    "ΔP\n [kg/cm\u00b2]",
+                    "ΔP\n acumulada \n[kg/cm\u00b2]", "Velocidad\nAnular\n[ft/min]", "Índice\nde\nacarreo"]
         model = QStandardItemModel()
         model.setHorizontalHeaderLabels(columnas)
         dp_acu = 0
