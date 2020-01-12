@@ -382,6 +382,7 @@ class MenuResultados(QWidget):
 
             profundidad_secciones = [-self.datos_equipo_sup[1]]
             presion_secciones = [self.equiposup]
+            presion = self.equiposup
             ControladorSecciones.set_parametros(self.listaseciones, self.bomba, self.fluido)
 
             for x in self.listaseciones:
@@ -420,16 +421,15 @@ class MenuResultados(QWidget):
             dec_grafica.append(self.fluido.get_dl())
 
             for x in self.listaseciones:
-                print(x, "\n")
                 profundidad_dec.append(x.get_fin_pd())
-                ph_grafica.append(x.get_fin_pv() * self.fluido.get_dl())
+                ph_grafica.append(x.get_fin_pv() * self.fluido.get_dl() / 10)
                 dec_grafica.append(x.get_dec())
 
             self.grafica_presiones.plot(profundidad_secciones, presion_secciones)
             self.grafica_dec.plot_dec(profundidad_dec, dec_grafica)
             self.grafica_ph.plot_ph(profundidad_dec, ph_grafica)
             self.campo_dp_total.setText(" %0.3f" % (presion))
-            self.presion_sup = presion
+            self.presion_sup = presion + self.equiposup
             self.update_campos()
 
     def update_campos(self):
@@ -444,8 +444,8 @@ class MenuResultados(QWidget):
         self.datos_hidraulicos.fuerza_impacto.setText(str(math.sqrt((self.barrena.get_caidad_presion() * 14.22) *
                                                                     math.pow(self.bomba.get_gasto(), 2) *
                                                                     self.fluido.get_dl() / 361)))
-        self.datos_hidraulicos.indice_limpieza.setText(str(float(self.datos_hidraulicos.fuerza_impacto.text()) * 1.27 /
-                                                           (math.pow(self.barrena.get_diametro(), 2))))
+        self.datos_hidraulicos.indice_limpieza.setText(str(float(self.datos_hidraulicos.potencia_hidraulica.text()) *
+                                                           1.27 / (math.pow(self.barrena.get_diametro(), 2))))
 
     def update_desidad(self):
         if self.primera_grafica:
