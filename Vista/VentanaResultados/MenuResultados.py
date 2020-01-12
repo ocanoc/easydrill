@@ -501,7 +501,7 @@ class MenuResultados(QWidget):
     def update_tabla_anular(self):
         columnas = ['Diámetro\nmayor\n [pg]', 'Diámetro\nmenor\n [pg]', "Longitud\n[md]", "Inicio \n[md]",
                     "ΔP\n [kg/cm\u00b2]",
-                    "ΔP\n acumulada \n[kg/cm\u00b2]", "Velocidad\nAnular\n[pie/seg]", "CCI\n[adim]"]
+                    "ΔP\n acumulada \n[kg/cm\u00b2]", "Velocidad\nAnular\n[pie/min]", "CCI\n[adim]"]
         model = QStandardItemModel()
         model.setHorizontalHeaderLabels(columnas)
         dp_acu = 0

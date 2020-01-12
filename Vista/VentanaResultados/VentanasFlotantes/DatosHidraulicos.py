@@ -50,7 +50,7 @@ class DatosHidraulicos(QDialog):
         self.indice_limpieza.setToolTip("Potencia Hidraulica")
 
         self.fl_v_toberas = QFormLayout()
-        self.fl_v_toberas.addRow("Vt [ft/seg]:", self.vel_toberas)
+        self.fl_v_toberas.addRow("Vt [pie/seg]:", self.vel_toberas)
 
         self.fl_presion_sup = QFormLayout()
         self.fl_presion_sup.addRow("P. Sup. [kg/cm\u00b2]:", self.presion_sup)
