@@ -16,14 +16,14 @@ class Datos(QWidget):
         self.tipo = tipo + 1
         self.model_table = QStandardItemModel()
         self.table = QTableView()
+        self.table.setFixedHeight(315)
         self.list = []
         self.file = None
         self.csv_file = None
         self.data = []
         self.layout_pantalla = QVBoxLayout()
         self.create_table(tipo)
-        self.layout_pantalla.addWidget(self.table, 1, Qt.AlignHCenter)
-        self.layout_pantalla.addStretch(1)
+        self.layout_pantalla.addWidget(self.table, Qt.AlignHCenter)
         self.setLayout(self.layout_pantalla)
 
     def acondiciona(self, obj):

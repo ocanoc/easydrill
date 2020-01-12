@@ -60,6 +60,7 @@ class MenuEdicion(QWidget):
         self.acodiciona(self.btn_finalizar)
 
         self.layout_widget = QVBoxLayout()
+        self.layout_widget.addStretch(1)
         self.layout_widget.addWidget(self.texto_encabezado, 1, Qt.AlignLeft)
         self.layout_widget.addWidget(self.tab, 1, Qt.AlignHCenter)
         self.layout_widget.addWidget(self.btn_finalizar, 1, Qt.AlignRight)

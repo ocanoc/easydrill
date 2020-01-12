@@ -53,7 +53,7 @@ class DatosHidraulicos(QDialog):
         self.fl_v_toberas.addRow("Vt [ft/seg]:", self.vel_toberas)
 
         self.fl_presion_sup = QFormLayout()
-        self.fl_presion_sup.addRow("P. Sup. [adim]:", self.presion_sup)
+        self.fl_presion_sup.addRow("P. Sup. [kg/cm\u00b2]:", self.presion_sup)
 
         self.fl_potencia_reque = QFormLayout()
         self.fl_potencia_reque.addRow("HP<sub>s</sub>[HP]:", self.potencia_reque)

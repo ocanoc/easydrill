@@ -402,11 +402,12 @@ class SartaPerforacion(QWidget):
                             self.model.setData(self.model.index(0, 5), self.data_barrena[3])
                             if tipo is 2:
                                 self.model.setData(self.model.index(0, 4), self.data_barrena[7])
-                                self.model.setData(self.model.index(0, 7), self.data_barrena[6])
+                                self.model.setData(self.model.index(0, 7), self.long_barrena)
                                 self.tipo_barrena = "Triconica"
                             if tipo is 1:
+                                #pdc
                                 self.model.setData(self.model.index(0, 4), self.data_barrena[6])
-                                self.model.setData(self.model.index(0, 7), self.data_barrena[5])
+                                self.model.setData(self.model.index(0, 7), self.long_barrena)
                                 self.tipo_barrena = "PDC"
                         else:
                             QMessageBox.critical(self, "Error",

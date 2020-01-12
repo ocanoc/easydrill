@@ -393,7 +393,7 @@ class MenuResultados(QWidget):
                 pv += x.get_long()
                 x.set_fin_pv(pv)
 
-            ControladorSecciones.set_dec(self.listaseciones, self.fluido)
+            ControladorSecciones.set_dec(self.listaseciones, self.fluido, self.presion_anular)
             ControladorBarrena.set_vel_toberas(self.barrena, self.bomba)
             ControladorBarrena.set_parametros_hidraulicos(self.barrena, self.bomba, self.presion_hestatica, self.fluido)
             self.barrena.set_caida_presion(self.bomba.get_gasto(), self.fluido.get_dl())
@@ -441,7 +441,7 @@ class MenuResultados(QWidget):
         self.datos_hidraulicos.potencia_reque.setText(str(self.presion_sup * self.bomba.get_gasto() / 120.7))
         self.datos_hidraulicos.potencia_hidraulica.setText(str(self.barrena.get_caidad_presion() *
                                                                self.bomba.get_gasto() / 120.7))
-        self.datos_hidraulicos.fuerza_impacto.setText(str(math.sqrt(self.barrena.get_caidad_presion() *
+        self.datos_hidraulicos.fuerza_impacto.setText(str(math.sqrt((self.barrena.get_caidad_presion() * 14.22) *
                                                                     math.pow(self.bomba.get_gasto(), 2) *
                                                                     self.fluido.get_dl() / 361)))
         self.datos_hidraulicos.indice_limpieza.setText(str(float(self.datos_hidraulicos.fuerza_impacto.text()) * 1.27 /
@@ -501,7 +501,7 @@ class MenuResultados(QWidget):
     def update_tabla_anular(self):
         columnas = ['Diámetro\nmayor\n [pg]', 'Diámetro\nmenor\n [pg]', "Longitud\n[md]", "Inicio \n[md]",
                     "ΔP\n [kg/cm\u00b2]",
-                    "ΔP\n acumulada \n[kg/cm\u00b2]", "Velocidad\nAnular\n[ft/min]", "Índice\nde\nacarreo"]
+                    "ΔP\n acumulada \n[kg/cm\u00b2]", "Velocidad\nAnular\n[pie/seg]", "CCI\n[adim]"]
         model = QStandardItemModel()
         model.setHorizontalHeaderLabels(columnas)
         dp_acu = 0

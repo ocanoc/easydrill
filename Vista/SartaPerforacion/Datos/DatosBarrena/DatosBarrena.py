@@ -125,5 +125,5 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
     app.setStyle('Fusion')
     ex = CreaBarrena()
-    ex.set_tipo(2)
+    ex.set_tipo(1)
     ex.exec_()
