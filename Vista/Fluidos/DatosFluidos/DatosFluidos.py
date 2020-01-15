@@ -163,7 +163,6 @@ class DatosFluidos(QWidget):
     def get_datos(self, modelo):
         if self.flag:
             fluido = Fluido(float(self.campo_densidad.text()), float(self.campo_vp.text()), float(self.campo_pc.text()))
-
         else:
             fluido = Fluido(float(self.campo_densidad.text()), 0, 0)
             fluido.set_lec_fan_600(float(self.campo_l600.text()))

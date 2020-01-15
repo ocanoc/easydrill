@@ -75,7 +75,7 @@ class Prueba(QDialog):
 
 
 if __name__ == "__main__":
-    print("ΔP\n [kg/cm\u00b2]")
+    print("\u0394P\n [kg/cm\u00b2]")
     app = QApplication(sys.argv)
     window = Prueba()
     window.show()

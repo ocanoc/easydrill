@@ -177,7 +177,13 @@ class Nuevo(QWidget):
                 self.get_datos()
                 self.pos = 5
                 self.cambiar_central()
-                self.btn_aceptar.hide()
+                self.btn_aceptar.setText("Salir")
+        elif self.pos is 5:
+            reply = QMessageBox.question(self, 'Confirmación.',
+                                         "¿Seguro que deseas salir?", QMessageBox.Yes |
+                                         QMessageBox.No, QMessageBox.No)
+            if reply == QMessageBox.Yes:
+                sys.exit()
 
     def eventFilter(self, source, event):
         if source is self.DatosFluidos.tipo_datos:

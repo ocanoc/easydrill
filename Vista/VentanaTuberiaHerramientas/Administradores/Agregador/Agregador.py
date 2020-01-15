@@ -65,6 +65,7 @@ class Agregar(QDialog):
 
         if source is 3:
             p.setBrush(10, QBrush(QImage("Imagenes/Fondo/FondoDatosHW.png")))
+            self.setWindowTitle("Easy Drill: Datos Tuberia Extra Pesada")
             self.setFixedSize(580, 200)
             self.tipo_geometria = QComboBox()
             self.tipo_geometria.addItems(["CONVENCIONAL", "ESPIRAL", "TRI-ESPIRAL"])
@@ -78,6 +79,7 @@ class Agregar(QDialog):
 
         if source is 4:
             p.setBrush(10, QBrush(QImage("Imagenes/Fondo/FondoDatosDC.png")))
+            self.setWindowTitle("Easy Drill: Datos Lastrabarrenas")
             self.setFixedSize(580, 200)
             self.tipo_geometria = QComboBox()
             self.tipo_geometria.addItems(["LISO", "ESPIRAL", "NO-MAGNETICO"])
@@ -92,6 +94,7 @@ class Agregar(QDialog):
 
         if source is 5:
             p.setBrush(10, QBrush(QImage("Imagenes/Fondo/FondoDatosEstabilizador.png")))
+            self.setWindowTitle("Easy Drill: Datos Estabilizador")
             self.setFixedSize(700, 250)
             self.tipo_estabilizador = QComboBox()
             self.tipo_estabilizador.addItems(["ROTATIVO RECTO CORTO", "ROTATIVO RECTO LARGO", "ROTATIVO ESPIRAL CORTO",
@@ -110,7 +113,8 @@ class Agregar(QDialog):
 
         if source is 6:
             p.setBrush(10, QBrush(QImage("Imagenes/Fondo/FondoDatosTP.png")))
-            self.setFixedSize(500, 250)
+            self.setWindowTitle("Easy Drill: Datos Tuberia de Perforación")
+            self.setFixedSize(500, 248)
 
             self.tipo = QComboBox()
             self.tipo.addItems(["EU", "IU"])
@@ -125,6 +129,7 @@ class Agregar(QDialog):
 
         if source is 7:
             p.setBrush(10, QBrush(QImage("Imagenes/Fondo/FondoDatosPortaBarrena.png")))
+            self.setWindowTitle("Easy Drill: Datos Porta Barrena")
             self.setFixedSize(580, 275)
 
             self.tipo_conexion_top = QComboBox()
@@ -143,6 +148,7 @@ class Agregar(QDialog):
 
         if source is 8:
             p.setBrush(10, QBrush(QImage("Imagenes/Fondo/FondoDatosMartillo.png")))
+            self.setWindowTitle("Easy Drill: Datos Matillo")
             self.setFixedSize(580, 265)
 
             self.tipo_martillo = QComboBox()
@@ -159,6 +165,7 @@ class Agregar(QDialog):
 
         if source is 9:
             p.setBrush(10, QBrush(QImage("Imagenes/Fondo/FondoDatosBNA.png")))
+            self.setWindowTitle("Easy Drill: Datos Barrena")
 
             self.tipo_barrena = QComboBox()
             self.tipo_barrena.addItems(["Triconicas", "PDC"])
@@ -179,6 +186,7 @@ class Agregar(QDialog):
 
         if source is 10:
             p.setBrush(10, QBrush(QImage("Imagenes/Fondo/FondoDatosMotor.png")))
+            self.setWindowTitle("Easy Drill: Datos Motor de Fondo")
             self.setFixedSize(580, 265)
 
             self.tipo_conexion_top = QComboBox()
@@ -196,6 +204,7 @@ class Agregar(QDialog):
 
         if source is 11:
             p.setBrush(10, QBrush(QImage("Imagenes/Fondo/FondoDatosRegistros.png")))
+            self.setWindowTitle("Easy Drill: Datos Herramienta de Registros")
             self.setFixedSize(580, 300)
 
             self.tipo_registro = QComboBox()
@@ -218,6 +227,7 @@ class Agregar(QDialog):
 
         if source is 13:
             p.setBrush(10, QBrush(QImage("Imagenes/Fondo/FondoDatosConexion.png")))
+            self.setWindowTitle("Easy Drill: Datos Conexión")
             self.setFixedSize(580, 300)
             self.tipo = QComboBox()
             self.tipo.addItems(["EU", "IU"])
@@ -234,6 +244,7 @@ class Agregar(QDialog):
 
         if source is 14:
             p.setBrush(10, QBrush(QImage("Imagenes/Fondo/FondoDatosMartillo.png")))
+            self.setWindowTitle("Easy Drill: Datos Monel")
             self.setFixedSize(580, 265)
             self.layout_campos.addRow("Conexión", QLineEdit())
             self.layout_campos.addRow("OD [pg]:", QLineEdit())
@@ -243,8 +254,9 @@ class Agregar(QDialog):
             self.layout_campos_2.addRow("Peso [lb/ft]:", QLineEdit())
 
         if source is 15:
-            p.setBrush(10, QBrush(QImage("Imagenes/Fondo/FondoDatosMartillo.png")))
-            self.setFixedSize(580, 265)
+            p.setBrush(10, QBrush(QImage("Imagenes/Fondo/FondoVCP.png")))
+            self.setWindowTitle("Easy Drill: Datos VCP")
+            self.setFixedSize(500, 180)
             self.layout_campos.addRow("OD [pg]:", QLineEdit())
             self.layout_campos.addRow("ID [pg]:", QLineEdit())
 
@@ -252,8 +264,8 @@ class Agregar(QDialog):
 
         if source is 16:
             p.setBrush(10, QBrush(QImage("Imagenes/Fondo/FondoDatosMartillo.png")))
+            self.setWindowTitle("Easy Drill: Datos Tuberia Amortiguadores")
             self.setFixedSize(580, 265)
-
             self.tipo_conexion_top = QComboBox()
             self.tipo_conexion_top.addItems(["PIN", "BOX"])
             self.tipo_conexion_bit = QComboBox()
@@ -666,5 +678,5 @@ if __name__ == "__main__":
     print(x)
     print("hola despues de la weas")
     app = QApplication(sys.argv)
-    agregador = Agregar(8)
+    agregador = Agregar(14)
     agregador.exec_()

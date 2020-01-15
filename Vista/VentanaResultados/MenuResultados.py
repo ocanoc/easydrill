@@ -58,7 +58,7 @@ class MenuResultados(QWidget):
         self.campo_dp_total.setToolTip("Caída de presión total")
 
         self.fl_dp = QFormLayout()
-        self.fl_dp.addRow("\u0394P total [kg/cm<sup>2</>]", self.campo_dp_total)
+        self.fl_dp.addRow("\u0394P total [kg/cm\u00b2]", self.campo_dp_total)
 
         self.gasto_nuevo = QLineEdit("0")
         self.gasto_nuevo.setToolTip("Gasto")
@@ -358,15 +358,15 @@ class MenuResultados(QWidget):
                                                            self.fluido.get_visco_plastica())
                 PlascticoBingham.set_plastico_bingham(self.lista_sarta, self.listaseciones, self.fluido, self.bomba)
             if self.fluido.get_tipo() is 2:
-                self.equiposup = LeyDePotencias.interior(self.fluido, self.fluido.set_lec_fan_300(),
-                                                         self.fluido.set_lec_fan_600(), self.bomba.get_gasto(),
+                self.equiposup = LeyDePotencias.interior(self.fluido, self.fluido.get_lec_fan_300(),
+                                                         self.fluido.get_lec_fan_600(), self.bomba.get_gasto(),
                                                          self.datos_equipo_sup[0], self.fluido.get_dl(),
                                                          self.datos_equipo_sup[1], self.fluido.get_p_cedencia(),
                                                          self.fluido.get_visco_plastica())
                 LeyDePotencias.set_ley_potencias(self.lista_sarta, self.listaseciones, self.fluido, self.bomba)
             if self.fluido.get_tipo() is 3:
-                self.equiposup = LeyDePotenciasModificado.interior(self.fluido, self.fluido.set_lec_fan_300(),
-                                                                   self.fluido.set_lec_fan_600(),
+                self.equiposup = LeyDePotenciasModificado.interior(self.fluido, self.fluido.get_lec_fan_300(),
+                                                                   self.fluido.get_lec_fan_600(),
                                                                    self.bomba.get_gasto(), self.datos_equipo_sup[0],
                                                                    self.fluido.get_dl(), self.datos_equipo_sup[1],
                                                                    self.fluido.get_p_cedencia(),

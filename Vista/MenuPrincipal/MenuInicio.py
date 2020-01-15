@@ -123,10 +123,8 @@ class MenuInicio(QMainWindow):
             palette.setBrush(10, QBrush(QImage("Imagenes/Fondo/Fondo 2.png")))
             self.Nuevo.btn_aceptar.setText("Siguiente")
         elif self.Nuevo.pos is 4:
-            self.Nuevo.btn_aceptar.setText("Finalizar")
             palette.setBrush(10, QBrush(QImage("Imagenes/Fondo/Fondo 5.png")))
         elif self.Nuevo.pos is 5:
-            self.Nuevo.btn_aceptar.setText("Finalizar")
             palette.setBrush(10, QBrush(QImage("Imagenes/Fondo/Fondo.png")))
         elif self.Nuevo.pos is 2:
             palette.setBrush(10, QBrush(QImage("Imagenes/Fondo/Fondo 4.png")))
