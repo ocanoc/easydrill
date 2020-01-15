@@ -147,6 +147,7 @@ class Nuevo(QWidget):
             self.pos = 4
             self.cambiar_central()
             self.btn_aceptar.show()
+            self.btn_aceptar.setText("Resultados")
 
     @pyqtSlot()
     def aceptar(self):
@@ -171,7 +172,7 @@ class Nuevo(QWidget):
             if self.Tuberiras_revestimiento.is_fill():
                 self.pos = 4
                 self.cambiar_central()
-                self.btn_aceptar.setText("Terminar")
+                self.btn_aceptar.setText("Resultados")
         elif self.pos is 4:
             if self.Sarta_Perforacion.check():
                 self.get_datos()
