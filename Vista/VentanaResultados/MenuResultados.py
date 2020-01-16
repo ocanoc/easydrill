@@ -428,8 +428,8 @@ class MenuResultados(QWidget):
             self.grafica_presiones.plot(profundidad_secciones, presion_secciones)
             self.grafica_dec.plot_dec(profundidad_dec, dec_grafica)
             self.grafica_ph.plot_ph(profundidad_dec, ph_grafica)
-            self.campo_dp_total.setText(" %0.3f" % (presion))
             self.presion_sup = presion + self.equiposup
+            self.campo_dp_total.setText(" %0.3f" % (self.presion_sup))
             self.update_campos()
 
     def update_campos(self):

@@ -9,6 +9,9 @@ from PyQt5.QtWidgets import *
 class DatosHidraulicos(QDialog):
     def __init__(self, parent=None):
         super(DatosHidraulicos, self).__init__(parent)
+        p = self.palette()
+        p.setBrush(10, QBrush(QImage("Imagenes/Fondo/FondoDatosH.png")))
+        self.setPalette(p)
         self.setWindowFlag(Qt.WindowStaysOnTopHint)
         self.setWindowModality(Qt.NonModal)
         self.setWindowIcon(QIcon("Imagenes/Iconos/Gota.png"))
@@ -85,6 +88,7 @@ class DatosHidraulicos(QDialog):
         self.tab_tables.addTab(self.table_anulares, "Anulares")
 
         self.layout_campos = QHBoxLayout()
+        self.layout_campos.addSpacing(35)
         self.layout_campos.addLayout(self.fl_v_toberas)
         self.layout_campos.addLayout(self.fl_presion_sup)
         self.layout_campos.addLayout(self.fl_potencia_reque)
@@ -93,7 +97,9 @@ class DatosHidraulicos(QDialog):
         self.layout_campos.addLayout(self.fl_indice_limpieza)
 
         self.layout_central = QVBoxLayout()
+        self.layout_central.addSpacing(5)
         self.layout_central.addWidget(self.tab_tables)
+        self.layout_central.addSpacing(6)
         self.layout_central.addLayout(self.layout_campos)
 
         self.setLayout(self.layout_central)
@@ -118,7 +124,7 @@ class DatosHidraulicos(QDialog):
             header.setSectionResizeMode(QHeaderView.Stretch)
             obj.setHorizontalHeader(header)
             obj.setAlternatingRowColors(True)
-            obj.setFixedSize(800, 250)
+            obj.setFixedSize(812, 250)
             obj.setStyleSheet("""
                                       QTableView {
                                        font-size: 13px;
