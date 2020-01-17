@@ -338,15 +338,12 @@ class MenuResultados(QWidget):
     def plot_grafica(self):
         self.presion_sup = 0
         self.presion_anular = 0
-        self.presion_bna = 0
         self.equiposup = 0
-        self.ica_prom = 0
-        self.vanular_prom = 0
         self.presion_hestatica = 0
-        dec_grafica = []
-        ph_grafica = []
-        profundidad_dec = []
-        presion = 0
+        dec_grafica = [self.fluido.get_dl()]
+        ph_grafica = [0]
+        profundidad_dec = [0]
+        presion_secciones = 0
         pv = 0
         if self.primera_grafica:
             self.presion_hestatica = self.trayectoria[
@@ -386,13 +383,10 @@ class MenuResultados(QWidget):
             ControladorSecciones.set_parametros(self.listaseciones, self.bomba, self.fluido)
 
             for x in self.listaseciones:
-                self.ica_prom += x.get_indice_acarreo()
-                self.vanular_prom += x.get_vel_anular()
-                self.presion_hestatica += x.get_dp()
                 self.presion_anular += x.get_dp()
-                # revisar dnde hacer esto
-                pv += x.get_long()
-                x.set_fin_pv(pv)
+                profundidad_dec.append(x.get_fin_pd())
+                ph_grafica.append(x.get_fin_pv() * self.fluido.get_dl() / 10)
+                dec_grafica.append(x.get_dec())
 
             ControladorSecciones.set_dec(self.listaseciones, self.fluido, self.presion_anular)
             ControladorBarrena.set_vel_toberas(self.barrena, self.bomba)
@@ -416,20 +410,11 @@ class MenuResultados(QWidget):
                 presion += x.get_dp()
                 presion_secciones.append(presion)
 
-            profundidad_dec.append(0)
-            ph_grafica.append(0)
-            dec_grafica.append(self.fluido.get_dl())
-
-            for x in self.listaseciones:
-                profundidad_dec.append(x.get_fin_pd())
-                ph_grafica.append(x.get_fin_pv() * self.fluido.get_dl() / 10)
-                dec_grafica.append(x.get_dec())
-
             self.grafica_presiones.plot(profundidad_secciones, presion_secciones)
             self.grafica_dec.plot_dec(profundidad_dec, dec_grafica)
             self.grafica_ph.plot_ph(profundidad_dec, ph_grafica)
             self.presion_sup = presion
-            self.campo_dp_total.setText(" %0.3f" % (self.presion_sup))
+            self.campo_dp_total.setText(" %0.3f" % self.presion_sup)
             self.update_campos()
 
     def update_campos(self):
@@ -493,7 +478,7 @@ class MenuResultados(QWidget):
         model.setData(model.index(count, 1), self.barrena.get_diametro())
         model.setData(model.index(count, 2), self.barrena.get_diametro())
         model.setData(model.index(count, 3), self.barrena.get_long())
-        model.setData(model.index(count, 4), "")
+        model.setData(model.index(count, 4), "-")
         model.setData(model.index(count, 5), self.barrena.get_caidad_presion())
         model.setData(model.index(count, 6), dp_acu)
         self.datos_hidraulicos.set_model(model)
