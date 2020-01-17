@@ -340,7 +340,7 @@ class MenuResultados(QWidget):
         self.presion_anular = 0
         self.equiposup = 0
         self.presion_hestatica = 0
-        dec_grafica = [self.fluido.get_dl()]
+
         ph_grafica = [0]
         profundidad_dec = [0]
         presion_secciones = 0
@@ -381,7 +381,7 @@ class MenuResultados(QWidget):
             presion_secciones = [self.equiposup]
             presion = self.equiposup
             ControladorSecciones.set_parametros(self.listaseciones, self.bomba, self.fluido)
-
+            dec_grafica = [self.fluido.get_dl()]
             for x in self.listaseciones:
                 self.presion_anular += x.get_dp()
                 profundidad_dec.append(x.get_fin_pd())
