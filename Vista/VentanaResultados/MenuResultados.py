@@ -384,7 +384,7 @@ class MenuResultados(QWidget):
             dec_grafica = [self.fluido.get_dl()]
             for x in self.listaseciones:
                 self.presion_anular += x.get_dp()
-                profundidad_dec.append(x.get_fin_pd())
+                profundidad_dec.append(x.get_fin_pv())
                 ph_grafica.append(x.get_fin_pv() * self.fluido.get_dl() / 10)
                 dec_grafica.append(x.get_dec())
 
