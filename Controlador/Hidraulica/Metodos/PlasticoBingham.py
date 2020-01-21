@@ -38,6 +38,9 @@ class PlascticoBingham:
     def espacio_anular(gasto, diametro_mayor, diametro_menor, densidad_lodo, longitud, punto_cedencia, visc_plastica):
         dif_cuadrados = (diametro_mayor ** 2) - (diametro_menor ** 2)
         ea = diametro_mayor - diametro_menor
+        print(diametro_mayor)
+        print(diametro_menor)
+        print(ea)
         vel_flujo = 24.51 * gasto / dif_cuadrados
 
         vel_critica = ((7.75 * visc_plastica) +

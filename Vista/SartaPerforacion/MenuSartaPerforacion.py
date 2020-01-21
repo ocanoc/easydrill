@@ -475,12 +475,12 @@ class SartaPerforacion(QWidget):
 
         if data[0] == "Amortiguador":
             elemento = data[0]
-            od = data[1]
-            di = data[2]
+            od = data[4]
+            di = data[5]
             long = float(data[7])
             peso = float(data[8])
-            ct = data[4]
-            cb = data[5]
+            ct = data[2]
+            cb = data[3]
 
         if data[0] == "Estabilizador":
             elemento = data[0] + " tipo " + data[1]

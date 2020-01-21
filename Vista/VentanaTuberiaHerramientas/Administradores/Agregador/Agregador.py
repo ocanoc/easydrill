@@ -155,11 +155,11 @@ class Agregar(QDialog):
             self.tipo_martillo.addItems(["HIDRAULICO", "MECANICO"])
 
             self.layout_campos.addRow("Tipo martillo:", self.tipo_martillo)
-            self.layout_campos.addRow("OD [pg]:", QLineEdit())
-            self.layout_campos.addRow("ID [pg]:", QLineEdit())
             self.layout_campos.addRow("Conexión Top:", QLineEdit())
+            self.layout_campos.addRow("Conexión Bit:", QLineEdit())
+            self.layout_campos.addRow("OD [pg]:", QLineEdit())
 
-            self.layout_campos_2.addRow("Conexión Bit:", QLineEdit())
+            self.layout_campos_2.addRow("ID [pg]:", QLineEdit())
             self.layout_campos_2.addRow("Longitud [m]:", QLineEdit())
             self.layout_campos_2.addRow("Peso [kg]:", QLineEdit())
 
@@ -358,7 +358,6 @@ class Agregar(QDialog):
             self.datos.append(self.layout_campos_2.itemAt(3).widget().text())
             self.datos.append(self.layout_campos_2.itemAt(5).widget().text())
 
-
         if self.source is 5:
             self.datos.append(self.layout_campos.itemAt(1).widget().currentText())
             self.datos.append(self.layout_campos.itemAt(3).widget().currentText())
@@ -418,6 +417,18 @@ class Agregar(QDialog):
 
             self.datos.append(self.layout_campos_2.itemAt(1).widget().text())
             self.datos.append(self.layout_campos_2.itemAt(3).widget().text())
+            self.datos.append(self.layout_campos_2.itemAt(5).widget().text())
+            self.datos.append(self.layout_campos_2.itemAt(7).widget().text())
+
+        if self.source is 11:
+            self.datos.append(self.layout_campos.itemAt(1).widget().currentText())
+            self.datos.append(self.layout_campos.itemAt(3).widget().text())
+            self.datos.append(self.layout_campos.itemAt(5).widget().text())
+            self.datos.append(self.layout_campos.itemAt(7).widget().text())
+            self.datos.append(self.layout_campos.itemAt(9).widget().currentText())
+
+            self.datos.append(self.layout_campos_2.itemAt(1).widget().text())
+            self.datos.append(self.layout_campos_2.itemAt(3).widget().currentText())
             self.datos.append(self.layout_campos_2.itemAt(5).widget().text())
             self.datos.append(self.layout_campos_2.itemAt(7).widget().text())
 
@@ -485,7 +496,6 @@ class Agregar(QDialog):
             self.layout_campos_2.itemAt(1).widget().setText(data[3])
             self.layout_campos_2.itemAt(3).widget().setText(data[4])
             self.layout_campos_2.itemAt(5).widget().setText(data[5])
-
 
         if self.source is 5:
             if data[0] == '"ROTATIVO RECTO CORTO",':
@@ -678,5 +688,5 @@ if __name__ == "__main__":
     print(x)
     print("hola despues de la weas")
     app = QApplication(sys.argv)
-    agregador = Agregar(14)
+    agregador = Agregar(11)
     agregador.exec_()

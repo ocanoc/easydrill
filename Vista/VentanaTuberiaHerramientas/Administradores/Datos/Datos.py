@@ -60,11 +60,13 @@ class Datos(QWidget):
                          "Peso\n[Kg]"]
             self.file = 'CSV/Martillos.csv'
             self.datos = 8
+            self.table.setFixedHeight(290)
         if tipo is 1:
             self.list = ['OD\n [pg]', 'ID\n [pg]', "Conexión\nTop", "Tipo", "Conexión\nBit", "Tipo", "Longitud\n[m]",
                          "Peso\n[Kg]"]
             self.file = 'CSV/Amortiguadores.csv'
             self.datos = 16
+            self.table.setFixedHeight(290)
 
         if tipo is 3:
             self.list = ['OD\n [pg]', 'ID\n [pg]', "Geometria", "Conexión", "Peso\n Nominal\n[lb/ft]"]
@@ -132,6 +134,7 @@ class Datos(QWidget):
             self.datos = tipo
             self.label_title.setText("Monel.")
             self.layout_pantalla.addWidget(self.label_title, 1, Qt.AlignLeft)
+            self.table.setFixedHeight(290)
 
         if tipo is 15:
             self.list = ['OD\n [pg]', 'ID\n [pg]', "Longitud\n [m]"]
@@ -139,6 +142,7 @@ class Datos(QWidget):
             self.datos = tipo
             self.label_title.setText("VCP.")
             self.layout_pantalla.addWidget(self.label_title, 1, Qt.AlignLeft)
+            self.table.setFixedHeight(290)
 
         self.model_table.setHorizontalHeaderLabels(self.list)
         self.table.setModel(self.model_table)
