@@ -382,13 +382,14 @@ class MenuResultados(QWidget):
             presion = self.equiposup
             ControladorSecciones.set_parametros(self.listaseciones, self.bomba, self.fluido)
             dec_grafica = [self.fluido.get_dl()]
+            ControladorSecciones.set_dec(self.listaseciones, self.fluido)
+
             for x in self.listaseciones:
                 self.presion_anular += x.get_dp()
-            ControladorSecciones.set_dec(self.listaseciones, self.fluido, self.presion_anular)
-            for x in self.listaseciones:
                 profundidad_dec.append(x.get_fin_pd())
                 ph_grafica.append(x.get_fin_pv() * self.fluido.get_dl() / 10)
                 dec_grafica.append(x.get_dec())
+
             ControladorBarrena.set_vel_toberas(self.barrena, self.bomba)
             ControladorBarrena.set_parametros_hidraulicos(self.barrena, self.bomba, self.presion_hestatica, self.fluido)
             self.barrena.set_caida_presion(self.bomba.get_gasto(), self.fluido.get_dl())
